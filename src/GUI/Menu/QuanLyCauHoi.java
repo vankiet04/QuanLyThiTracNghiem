@@ -29,7 +29,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
+// import themcauhoir
+import GUI.CRUD.ThemCauHoi;
 
 
 
@@ -372,6 +373,8 @@ private void jLabel7MousePressed(java.awt.event.MouseEvent evt) {
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
         // TODO add your handling code here:
+        ThemCauHoi tch = new ThemCauHoi((java.awt.Frame) SwingUtilities.getWindowAncestor(this), true);
+        tch.setVisible(true);
         
     }//GEN-LAST:event_jLabel2MousePressed
 
