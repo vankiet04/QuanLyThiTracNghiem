@@ -2,6 +2,7 @@
 package GUI.Component;
 
 import GUI.GUI_Login;
+import GUI.Menu.QuanLyCauHoi;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,7 +22,7 @@ public class MenuTaskBar extends JPanel{
     
     String[][] listComponent = {
             { "Màn hình chính", "home.svg", "home" },
-            { "Ngân hàng câu hỏi", "nganhangcauhoi.svg", "cauhoi" },
+            { "Ngân hàng câu hỏi", "nganhangcauhoi.svg", "QuanLyCauHoi" },
             { "Chủ đề/Môn học", "monhoc.svg", "monhoc" },
             { "Đề thi", "baithi.svg", "dethi"},
             { "Bài thi", "baithi.svg", "baithi"},
@@ -95,6 +96,13 @@ public class MenuTaskBar extends JPanel{
             });
         }
         
+        listitem[1].addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent evt) {
+                QuanLyCauHoi ch = new QuanLyCauHoi(main);
+                main.changePages(ch);
+            }
+        });
         
         //
         // add sự kiện dưới đây
