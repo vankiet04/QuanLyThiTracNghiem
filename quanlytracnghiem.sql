@@ -75,7 +75,7 @@ CREATE TABLE `questions` (
   `qPictures` text DEFAULT NULL,
   `qTopicID` int(11) NOT NULL,
   `qLevel` varchar(10) DEFAULT NULL,
-  `qStatus` tinyint(4) DEFAULT NULL
+  `qStatus` tinyint(4) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
