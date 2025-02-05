@@ -1,6 +1,4 @@
-
 package GUI;
-
 import GUI.Component.MenuTaskBar;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLaf;
@@ -15,7 +13,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
 // khởi tạo giao diện admin hoặc người dùng thường
 // setting UI chính cho giao diện
 public class GUI_MainFrm extends JFrame{

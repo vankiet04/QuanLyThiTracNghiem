@@ -1,6 +1,5 @@
 
 package GUI;
-
 import BUS.BUS_User;
 import GUI.Component.InputForm;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -21,7 +20,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -29,14 +27,11 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-
-
 public class GUI_Login extends JFrame{
     JPanel pnlMain, pnlLogin;
     JLabel lblPc, lblTitleLogin, lblLogin, lblDangKy;
     InputForm txtUsername, txtPass;
     BUS.BUS_User userBUS = new BUS_User();
-
     public GUI_Login() {
         this.setLocationRelativeTo(null);
         this.setSize(new Dimension(1000,600));
@@ -61,7 +56,6 @@ public class GUI_Login extends JFrame{
         gbc.fill = GridBagConstraints.CENTER; 
         gbc.weightx = 1.0; 
         gbc.weighty = 1.0; 
-
         pnlPic.add(lblPc, gbc);
         this.add(pnlPic, BorderLayout.EAST);
         
@@ -69,7 +63,6 @@ public class GUI_Login extends JFrame{
         pnlMain = new JPanel();
         pnlMain.setBackground(Color.WHITE);
         pnlMain.setBorder(new EmptyBorder(50, 0, 0, 0));
-
         pnlMain.setPreferredSize(new Dimension(500, 600));
         pnlMain.setLayout(new FlowLayout(1, 0, 10));
         
@@ -107,7 +100,6 @@ public class GUI_Login extends JFrame{
             public void mouseEntered(MouseEvent evt) {
                 pnlLogin.setBackground(new Color(50,50,50));
             }
-
             @Override
             public void mouseExited(MouseEvent evt) {
                 pnlLogin.setBackground(Color.BLACK); 
@@ -134,11 +126,9 @@ public class GUI_Login extends JFrame{
         pnlLogup.setPreferredSize(new Dimension(100, 45));
         pnlLogup.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         pnlLogup.setLayout(new FlowLayout(1,0,10));
-
         JLabel lblLogup = new JLabel("Đăng ký");
         lblLogup.setFont(new Font(FlatRobotoFont.FAMILY, Font.BOLD, 16));
         lblLogup.setForeground(Color.white);
-
         pnlLogup.add(lblLogup);
         pnlLogup.addMouseListener(new MouseAdapter() {
             @Override
@@ -150,7 +140,6 @@ public class GUI_Login extends JFrame{
             public void mouseEntered(MouseEvent evt) {
                 pnlLogup.setBackground(Color.decode("#5070cc"));
             }
-
             @Override
             public void mouseExited(MouseEvent evt) {
                 pnlLogup.setBackground(Color.decode("#2a48aa")); 
@@ -166,7 +155,6 @@ public class GUI_Login extends JFrame{
                     ValidateLogin(); 
             }
         });
-
         txtPass.getTxtPass().addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -174,10 +162,8 @@ public class GUI_Login extends JFrame{
                     ValidateLogin();
             }
         });
-
         this.add(pnlMain,BorderLayout.WEST);
         this.setVisible(true);
-
     }
     
     private void ValidateLogin(){
@@ -219,6 +205,5 @@ public class GUI_Login extends JFrame{
         login.setVisible(true);
     }
     
-
     
 }
