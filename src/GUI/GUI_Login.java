@@ -33,8 +33,8 @@ public class GUI_Login extends JFrame{
     InputForm txtUsername, txtPass;
     BUS.BUS_User userBUS = new BUS_User();
     public GUI_Login() {
-        this.setLocationRelativeTo(null);
-        this.setSize(new Dimension(1000,600));
+        this.setSize(new Dimension(1000, 600)); // Đặt kích thước trước
+        this.setLocationRelativeTo(null); // Sau đó mới căn giữa cửa sổ
         this.setLayout(new BorderLayout(0, 0));
         this.setTitle("HỆ THỐNG QUẢN LÝ THI TRẮC NGHIỆM");
         this.setResizable(false);

@@ -175,11 +175,6 @@ private void jLabel7MousePressed(java.awt.event.MouseEvent evt) {
                 jLabel1MousePressed(evt);
             }
         });
-        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel7MousePressed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
