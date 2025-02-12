@@ -82,21 +82,6 @@ public class SuaTaiKhoan extends javax.swing.JDialog {
         txtFullName.setLabelText("Fullname");
         txtFullName.setPreferredSize(new java.awt.Dimension(450, 50));
         txtFullName.setSelectionColor(new java.awt.Color(0, 102, 255));
-        txtFullName.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtFullNameFocusGained(evt);
-            }
-        });
-        txtFullName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFullNameActionPerformed(evt);
-            }
-        });
-        txtFullName.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtFullNameKeyReleased(evt);
-            }
-        });
 
         txtEmail.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
         txtEmail.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -104,21 +89,6 @@ public class SuaTaiKhoan extends javax.swing.JDialog {
         txtEmail.setLabelText("Email");
         txtEmail.setPreferredSize(new java.awt.Dimension(450, 50));
         txtEmail.setSelectionColor(new java.awt.Color(0, 102, 255));
-        txtEmail.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtEmailFocusGained(evt);
-            }
-        });
-        txtEmail.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtEmailActionPerformed(evt);
-            }
-        });
-        txtEmail.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtEmailKeyReleased(evt);
-            }
-        });
 
         txtUserName.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
         txtUserName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -127,21 +97,6 @@ public class SuaTaiKhoan extends javax.swing.JDialog {
         txtUserName.setLabelText("Username");
         txtUserName.setPreferredSize(new java.awt.Dimension(450, 50));
         txtUserName.setSelectionColor(new java.awt.Color(0, 102, 255));
-        txtUserName.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtUserNameFocusGained(evt);
-            }
-        });
-        txtUserName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUserNameActionPerformed(evt);
-            }
-        });
-        txtUserName.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtUserNameKeyReleased(evt);
-            }
-        });
 
         txtPass.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
         txtPass.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -149,21 +104,6 @@ public class SuaTaiKhoan extends javax.swing.JDialog {
         txtPass.setLabelText("Password");
         txtPass.setPreferredSize(new java.awt.Dimension(450, 50));
         txtPass.setSelectionColor(new java.awt.Color(0, 102, 255));
-        txtPass.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtPassFocusGained(evt);
-            }
-        });
-        txtPass.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPassActionPerformed(evt);
-            }
-        });
-        txtPass.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtPassKeyReleased(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -284,59 +224,10 @@ public class SuaTaiKhoan extends javax.swing.JDialog {
             txtEmail.requestFocus();
             return;    
         }
-        System.out.println(res);
         JOptionPane.showMessageDialog(this, "Đã sửa thành công", "Thông báo!", JOptionPane.INFORMATION_MESSAGE);
         this.curUI.loadData(userBUS.getAllData());
         this.dispose();
     }//GEN-LAST:event_btnSuaActionPerformed
-
-    private void txtFullNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtFullNameFocusGained
-
-    }//GEN-LAST:event_txtFullNameFocusGained
-
-    private void txtFullNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFullNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFullNameActionPerformed
-
-    private void txtFullNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFullNameKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFullNameKeyReleased
-
-    private void txtEmailFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEmailFocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtEmailFocusGained
-
-    private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtEmailActionPerformed
-
-    private void txtEmailKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEmailKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtEmailKeyReleased
-
-    private void txtUserNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUserNameFocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtUserNameFocusGained
-
-    private void txtUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtUserNameActionPerformed
-
-    private void txtUserNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUserNameKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtUserNameKeyReleased
-
-    private void txtPassFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPassFocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPassFocusGained
-
-    private void txtPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPassActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPassActionPerformed
-
-    private void txtPassKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPassKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPassKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

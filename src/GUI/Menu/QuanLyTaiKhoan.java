@@ -5,12 +5,20 @@ import BUS.BUS_User;
 import DTO.DTO_User;
 import GUI.CRUD.SuaTaiKhoan;
 import GUI.CRUD.ThemTaiKhoan;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import static org.apache.poi.hssf.usermodel.HeaderFooter.file;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class QuanLyTaiKhoan extends javax.swing.JPanel {
 
@@ -67,19 +75,19 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
     private void initComponents() {
 
         pnlQLTK = new javax.swing.JPanel();
-        pnlSearch = new javax.swing.JPanel();
-        txtSearch = new com.raven.suportSwing.TextField();
-        btnReset = new com.raven.suportSwing.MyButton();
-        lblSearch = new javax.swing.JLabel();
         pnlNav = new javax.swing.JPanel();
         btnThem = new javax.swing.JLabel();
         btnXoa = new javax.swing.JLabel();
         lblThem = new javax.swing.JLabel();
         lblSua = new javax.swing.JLabel();
         lblXoa = new javax.swing.JLabel();
-        lblExcel = new javax.swing.JLabel();
-        btnExcel = new javax.swing.JButton();
+        btnExcel = new javax.swing.JLabel();
         btnSua = new javax.swing.JLabel();
+        lblXoa1 = new javax.swing.JLabel();
+        pnlSearch = new javax.swing.JPanel();
+        txtSearch = new com.raven.suportSwing.TextField();
+        btnReset = new com.raven.suportSwing.MyButton();
+        lblSearch = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableTaiKhoan = new javax.swing.JTable();
 
@@ -87,25 +95,113 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
         setForeground(new java.awt.Color(0, 0, 0));
         setPreferredSize(new java.awt.Dimension(1744, 738));
 
+        pnlNav.setBackground(new java.awt.Color(255, 255, 255));
+
+        btnThem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8-add-75.png"))); // NOI18N
+        btnThem.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnThem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnThemMousePressed(evt);
+            }
+        });
+
+        btnXoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8-delete-85.png"))); // NOI18N
+        btnXoa.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnXoa.setEnabled(false);
+        btnXoa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnXoaMousePressed(evt);
+            }
+        });
+
+        lblThem.setText("Thêm");
+        lblThem.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        lblSua.setText("Sửa");
+        lblSua.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        lblXoa.setText("Xóa");
+        lblXoa.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        btnExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8-export-excel-75.png"))); // NOI18N
+        btnExcel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnExcel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnExcelMousePressed(evt);
+            }
+        });
+
+        btnSua.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8-edit-75.png"))); // NOI18N
+        btnSua.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSua.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnSuaMousePressed(evt);
+            }
+        });
+
+        lblXoa1.setText("Import");
+        lblXoa1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        javax.swing.GroupLayout pnlNavLayout = new javax.swing.GroupLayout(pnlNav);
+        pnlNav.setLayout(pnlNavLayout);
+        pnlNavLayout.setHorizontalGroup(
+            pnlNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlNavLayout.createSequentialGroup()
+                .addGroup(pnlNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlNavLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnThem))
+                    .addGroup(pnlNavLayout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(lblThem)))
+                .addGroup(pnlNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlNavLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnXoa))
+                    .addGroup(pnlNavLayout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addComponent(lblSua)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblXoa)
+                        .addGap(27, 27, 27)))
+                .addGroup(pnlNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnExcel)
+                    .addGroup(pnlNavLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(lblXoa1)))
+                .addContainerGap(56, Short.MAX_VALUE))
+        );
+        pnlNavLayout.setVerticalGroup(
+            pnlNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlNavLayout.createSequentialGroup()
+                .addComponent(btnSua, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblSua)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(pnlNavLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(btnThem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblXoa)
+                    .addComponent(lblThem))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlNavLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnExcel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblXoa1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(13, 13, 13))
+        );
+
         pnlSearch.setBackground(new java.awt.Color(255, 255, 255));
 
         txtSearch.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtSearch.setLabelText("Tìm theo fullname/username");
-        txtSearch.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtSearchFocusGained(evt);
-            }
-        });
-        txtSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSearchActionPerformed(evt);
-            }
-        });
-        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtSearchKeyReleased(evt);
-            }
-        });
 
         btnReset.setBackground(new java.awt.Color(204, 255, 255));
         btnReset.setText("Reset");
@@ -147,105 +243,6 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
                 .addContainerGap(759, Short.MAX_VALUE))
         );
 
-        pnlNav.setBackground(new java.awt.Color(255, 255, 255));
-
-        btnThem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8-add-75.png"))); // NOI18N
-        btnThem.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnThem.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                btnThemMousePressed(evt);
-            }
-        });
-
-        btnXoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8-delete-85.png"))); // NOI18N
-        btnXoa.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnXoa.setEnabled(false);
-        btnXoa.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                btnXoaMousePressed(evt);
-            }
-        });
-
-        lblThem.setText("Thêm");
-        lblThem.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        lblSua.setText("Sửa");
-        lblSua.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        lblXoa.setText("Xóa");
-        lblXoa.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        lblExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8-export-excel-75.png"))); // NOI18N
-        lblExcel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        btnExcel.setText("Import");
-        btnExcel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnExcel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExcelActionPerformed(evt);
-            }
-        });
-
-        btnSua.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8-edit-75.png"))); // NOI18N
-        btnSua.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnSua.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                btnSuaMousePressed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout pnlNavLayout = new javax.swing.GroupLayout(pnlNav);
-        pnlNav.setLayout(pnlNavLayout);
-        pnlNavLayout.setHorizontalGroup(
-            pnlNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlNavLayout.createSequentialGroup()
-                .addGroup(pnlNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlNavLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnThem))
-                    .addGroup(pnlNavLayout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(lblThem)))
-                .addGroup(pnlNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlNavLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnXoa))
-                    .addGroup(pnlNavLayout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(lblSua)
-                        .addGap(69, 69, 69)
-                        .addComponent(lblXoa)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblExcel)
-                    .addComponent(btnExcel))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        pnlNavLayout.setVerticalGroup(
-            pnlNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlNavLayout.createSequentialGroup()
-                .addComponent(btnSua, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblThem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(pnlNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblSua, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblXoa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(pnlNavLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(btnThem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(lblExcel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnExcel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         tableTaiKhoan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -275,7 +272,7 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1744, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlQLTKLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(pnlNav, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlNav, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(pnlQLTKLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnlQLTKLayout.createSequentialGroup()
@@ -322,10 +319,6 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
         dialog.setVisible(true);
     }//GEN-LAST:event_btnSuaMousePressed
 
-    private void btnExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcelActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnExcelActionPerformed
-
     private void btnXoaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaMousePressed
         //        if ( curSelect == -1){
             //            JOptionPane.showMessageDialog(null, "Chưa chọn tài khoản để xóa", "Cảnh báo!", JOptionPane.WARNING_MESSAGE);
@@ -355,50 +348,79 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
         loadData(busTK.getAllData());
     }//GEN-LAST:event_btnResetActionPerformed
 
-    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
-        String cur = txtSearch.getText().trim();
-        if( cur.contains("%"))
-        cur= cur.replace("%", "!");
-        if(cur.equals("")){
-            loadData(busTK.getAllData());
-            return;
-        }
-        ArrayList<DTO_User> res = busTK.search(cur);
-        if (res.size() > 0) {
-            lblSearch.setText("Tìm thấy " + res.size() + " kết quả");
-            loadData(res);
-        } else {
-            lblSearch.setText("Không tìm thấy kết quả");
-            loadData(busTK.getAllData());
-        }
-
-    }//GEN-LAST:event_txtSearchKeyReleased
-
-    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchActionPerformed
-
-    private void txtSearchFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchFocusGained
-
-    }//GEN-LAST:event_txtSearchFocusGained
+    private void btnExcelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExcelMousePressed
+//        JFileChooser fileChooser = new JFileChooser();
+//        int returnValue = fileChooser.showOpenDialog(this);
+//
+//        if (returnValue == JFileChooser.APPROVE_OPTION) {
+//            File selectedFile = fileChooser.getSelectedFile();
+//            List<DTO_User> users = ImportExcel(selectedFile);
+//            for (DTO_User user : users)
+//                busTK.insert(user);
+//
+//            JOptionPane.showMessageDialog(this, "Thêm " + users.size() + " user thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+//            loadData(busTK.getAllData());
+//        }
+        
+    }//GEN-LAST:event_btnExcelMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnExcel;
+    private javax.swing.JLabel btnExcel;
     private com.raven.suportSwing.MyButton btnReset;
     private javax.swing.JLabel btnSua;
     private javax.swing.JLabel btnThem;
     private javax.swing.JLabel btnXoa;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblExcel;
     private javax.swing.JLabel lblSearch;
     private javax.swing.JLabel lblSua;
     private javax.swing.JLabel lblThem;
     private javax.swing.JLabel lblXoa;
+    private javax.swing.JLabel lblXoa1;
     private javax.swing.JPanel pnlNav;
     private javax.swing.JPanel pnlQLTK;
     private javax.swing.JPanel pnlSearch;
     private javax.swing.JTable tableTaiKhoan;
     private com.raven.suportSwing.TextField txtSearch;
     // End of variables declaration//GEN-END:variables
+
+//    private List<DTO_User> ImportExcel(File selectedFile) {
+//        List<DTO_User> userList = new ArrayList<>();
+//            try (FileInputStream fis = new FileInputStream(selectedFile);
+//                Workbook workbook = new XSSFWorkbook(fis)) { // Đọc file .xlsx
+//                    Sheet sheet = workbook.getSheetAt(0); // Lấy sheet đầu tiên
+//
+//                    for (int i = 0; i <= sheet.getLastRowNum(); i++) {
+//                        Row row = sheet.getRow(i);
+//                        if (row == null) continue;
+//
+//                        // Đọc dữ liệu từ từng cột
+//                        String fullName = CheckString(row.getCell(0));
+//                        String userName = CheckString(row.getCell(1));
+//                        String pass = CheckString(row.getCell(2));
+//                        String email = CheckString(row.getCell(3));
+//                        boolean isAdmin = Boolean.valueOf(CheckString(row.getCell(4)));
+//                        // Tạo đối tượng DTO_User và thêm vào danh sách
+//                        DTO_User user = new DTO_User(userName, pass, email, fullName, isAdmin);
+//                        userList.add(user);
+//                    }
+//                } catch (Exception e) {
+//                    JOptionPane.showMessageDialog(null, "Lỗi khi đọc file Excel: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+//                }
+//                return userList;
+//    }
+//    
+//    private String CheckString(Cell cell){
+//        if( cell == null) return "";
+//        switch (cell.getCellType()) {
+//            case STRING:
+//                return cell.getStringCellValue().trim();
+//            case NUMERIC:
+//                return String.valueOf((long) cell.getNumericCellValue()); // Chuyển số thành chuỗi (loại bỏ phần thập phân)
+//            case BOOLEAN:
+//                return String.valueOf(cell.getBooleanCellValue()); // "true" hoặc "false"
+//            default:
+//                return "";
+//        }
+//    }
 }

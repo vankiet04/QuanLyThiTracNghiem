@@ -148,7 +148,7 @@ public class MenuTaskBar extends JPanel{
         listitem[6].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                QuanLyThongTinCaNhan qlttcn = new QuanLyThongTinCaNhan();
+                QuanLyThongTinCaNhan qlttcn = new QuanLyThongTinCaNhan(user);
                 main.changePages(qlttcn);
             }
         });
