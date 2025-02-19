@@ -43,8 +43,28 @@ public class DAO_Questions implements DAOInterface<DTO.DTO_Questions> {
 
     @Override
     public ArrayList<DTO_Questions> getAllData() {
+        try{
+            Connection con = (Connection) JDBCUtil.getConnectDB();
+            String sql = "SELECT * FROM questions";
+            java.sql.PreparedStatement pst = con.prepareStatement(sql);
+            java.sql.ResultSet rs = pst.executeQuery();
+            ArrayList<DTO_Questions> list = new ArrayList<>();
+            while(rs.next()){
+                DTO_Questions q = new DTO_Questions();
+                q.setqID(rs.getInt("qID"));
+                q.setqContent(rs.getString("qContent"));
+                q.setqPictures(rs.getString("qPictures"));
+                q.setqTopicID(rs.getInt("qTopicID"));
+                q.setqLevel(rs.getString("qLevel"));
+                list.add(q);
+            }
+            return list;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
-    }
+    }   
 
     @Override
     public DTO_Questions selectById(String t) {

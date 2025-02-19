@@ -3,7 +3,7 @@ package GUI.Menu;
 
 import BUS.BUS_User;
 import DTO.DTO_User;
-import GUI.CRUD.SuaTaiKhoan;
+//import GUI.CRUD.SuaTaiKhoan;
 import GUI.CRUD.ThemTaiKhoan;
 import java.io.*;
 import java.util.ArrayList;
@@ -315,8 +315,8 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Không thể chỉnh sửa tài khoản admin", "Cảnh báo!", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        SuaTaiKhoan dialog = new SuaTaiKhoan(curSelect, this);
-        dialog.setVisible(true);
+//        SuaTaiKhoan dialog = new SuaTaiKhoan(curSelect, this);
+//        dialog.setVisible(true);
     }//GEN-LAST:event_btnSuaMousePressed
 
     private void btnXoaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaMousePressed

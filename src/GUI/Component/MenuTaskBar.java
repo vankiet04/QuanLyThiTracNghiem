@@ -3,8 +3,10 @@ package GUI.Component;
 
 import GUI.GUI_Login;
 import GUI.Menu.QuanLyCauHoi;
+import GUI.Menu.QuanLyDeThi;
+import GUI.Menu.QuanLyBaiThi;
 import GUI.Menu.QuanLyTaiKhoan;
-import GUI.Menu.QuanLyThongTinCaNhan;
+// import GUI.Menu.QuanLyThongTinCaNhan;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -83,6 +85,7 @@ public class MenuTaskBar extends JPanel{
         if (!user.isIsAdmin()){
             listitem[1].setVisible(false);
             listitem[2].setVisible(false);
+            listitem[3].setVisible(false);
             listitem[4].setVisible(false);
             listitem[5].setVisible(false);
             listitem[7].setVisible(false);
@@ -125,14 +128,16 @@ public class MenuTaskBar extends JPanel{
         listitem[3].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-
+                QuanLyDeThi ch = new QuanLyDeThi(main);
+                main.changePages(ch);
             }
         });
         //  bài thi
         listitem[4].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-
+                QuanLyBaiThi ch = new QuanLyBaiThi(main);
+                main.changePages(ch);
             }
         });
         
@@ -148,8 +153,8 @@ public class MenuTaskBar extends JPanel{
         listitem[6].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                QuanLyThongTinCaNhan qlttcn = new QuanLyThongTinCaNhan(user);
-                main.changePages(qlttcn);
+                // QuanLyThongTinCaNhan qlttcn = new QuanLyThongTinCaNhan(user);
+                // main.changePages(qlttcn);
             }
         });
         // log thí sinh
