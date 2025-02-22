@@ -4,6 +4,7 @@ package GUI.Component;
 import GUI.GUI_Login;
 import GUI.Menu.QuanLyCauHoi;
 import GUI.Menu.QuanLyTaiKhoan;
+import GUI.Menu.QuanLyChuDe;
 import GUI.Menu.QuanLyThongTinCaNhan;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -118,7 +119,8 @@ public class MenuTaskBar extends JPanel{
         listitem[2].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-
+                QuanLyChuDe qlcd = new QuanLyChuDe();
+                main.changePages(qlcd);
             }
         });
         // đề thi
