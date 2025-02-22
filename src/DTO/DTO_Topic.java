@@ -1,15 +1,16 @@
 package DTO;
 
 public class DTO_Topic {
-    private int tpID;         // Topic ID
-    private String tpTitle;   // Topic Title
-    private int tpParent;     // Parent Topic ID
-    private int tpStatus;     // Status (e.g., active/inactive)
 
-    // Default Constructor
-    public DTO_Topic() {}
+    private int tpID;
+    private String tpTitle;
+    private int tpParent;  // Changed default to 0 for "None"
+    private int tpStatus;
 
-    // Parameterized Constructor
+    public DTO_Topic() {
+        this.tpParent = 0; // Default value for no parent
+    }
+
     public DTO_Topic(int tpID, String tpTitle, int tpParent, int tpStatus) {
         this.tpID = tpID;
         this.tpTitle = tpTitle;
@@ -17,7 +18,6 @@ public class DTO_Topic {
         this.tpStatus = tpStatus;
     }
 
-    // Getters and Setters
     public int getTpID() {
         return tpID;
     }
@@ -52,11 +52,10 @@ public class DTO_Topic {
 
     @Override
     public String toString() {
-        return "DTO_Topic{" +
-                "tpID=" + tpID +
-                ", tpTitle='" + tpTitle + '\'' +
-                ", tpParent=" + tpParent +
-                ", tpStatus=" + tpStatus +
-                '}';
+        return "DTO_Topic{" + 
+        "tpID=" + tpID + 
+        ", tpTitle='" + tpTitle + 
+        '\'' + ", tpParent=" + tpParent + 
+        ", tpStatus=" + tpStatus + '}';
     }
 }
