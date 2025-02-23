@@ -169,9 +169,9 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
                 .addGroup(pnlNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnExcel)
                     .addGroup(pnlNavLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
+                        .addGap(23, 23, 23)
                         .addComponent(lblXoa1)))
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         pnlNavLayout.setVerticalGroup(
             pnlNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -319,23 +319,6 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
         dialog.setVisible(true);
     }//GEN-LAST:event_btnSuaMousePressed
 
-    private void btnXoaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaMousePressed
-        //        if ( curSelect == -1){
-            //            JOptionPane.showMessageDialog(null, "Chưa chọn tài khoản để xóa", "Cảnh báo!", JOptionPane.WARNING_MESSAGE);
-            //            return;
-            //        }
-        //        if ( curSelect == 1){
-            //            JOptionPane.showMessageDialog(null, "Không thể xóa tài khoản admin", "Cảnh báo!", JOptionPane.WARNING_MESSAGE);
-            //            return;
-            //        }
-        //        int res = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn xóa tài khoản này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
-        //        if (res == JOptionPane.YES_OPTION) {
-            //            busTK.delete(busTK.getInfoByID(curSelect));
-            //            JOptionPane.showMessageDialog(null, "Xóa tài khoản thành công");
-            //            loadData(busTK.getAllData());
-            //        }
-    }//GEN-LAST:event_btnXoaMousePressed
-
     private void btnThemMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemMousePressed
         // TODO add your handling code here:
         ThemTaiKhoan dialog = new ThemTaiKhoan(this);
@@ -363,6 +346,23 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
 //        }
         
     }//GEN-LAST:event_btnExcelMousePressed
+
+    private void btnXoaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaMousePressed
+        //        if ( curSelect == -1){
+            //            JOptionPane.showMessageDialog(null, "Chưa chọn tài khoản để xóa", "Cảnh báo!", JOptionPane.WARNING_MESSAGE);
+            //            return;
+            //        }
+        //        if ( curSelect == 1){
+            //            JOptionPane.showMessageDialog(null, "Không thể xóa tài khoản admin", "Cảnh báo!", JOptionPane.WARNING_MESSAGE);
+            //            return;
+            //        }
+        //        int res = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn xóa tài khoản này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+        //        if (res == JOptionPane.YES_OPTION) {
+            //            busTK.delete(busTK.getInfoByID(curSelect));
+            //            JOptionPane.showMessageDialog(null, "Xóa tài khoản thành công");
+            //            loadData(busTK.getAllData());
+            //        }
+    }//GEN-LAST:event_btnXoaMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -289,7 +289,7 @@ public class QuanLyThongTinCaNhan extends javax.swing.JPanel {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel5.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 560, 249, 89));
+        jPanel5.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 550, 249, 89));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

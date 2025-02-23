@@ -10,7 +10,7 @@ public class JDBCUtil {
         Connection res = null;
         try {
             DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-            String url = "jdbc:mySQL://localhost:3306/quanlytracnghiem";
+            String url = "jdbc:mySQL://localhost:3306/tracnghiem";
             String name = "root";
             String pass = "";
 

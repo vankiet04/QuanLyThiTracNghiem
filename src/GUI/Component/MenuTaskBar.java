@@ -2,6 +2,7 @@
 package GUI.Component;
 
 import GUI.GUI_Login;
+import GUI.Menu.QuanLyCacBaiThi;
 import GUI.Menu.QuanLyCauHoi;
 import GUI.Menu.QuanLyTaiKhoan;
 import GUI.Menu.QuanLyChuDe;
@@ -24,14 +25,14 @@ public class MenuTaskBar extends JPanel{
     public itemTaskbar[] listitem;
     
     String[][] listComponent = {
-            { "Màn hình chính", "home.svg", "home" },
+            { "Màn hình chính", "home.svg", "home" }, // bỏ đi
             { "Ngân hàng câu hỏi", "nganhangcauhoi.svg", "QuanLyCauHoi" },
             { "Chủ đề/Môn học", "monhoc.svg", "monhoc" },
             { "Đề thi", "baithi.svg", "dethi"},
             { "Bài thi", "baithi.svg", "baithi"},
             { "Quản lý tài khoản", "qly.svg", "qltaikhoan"},
             { "Cài đặt tài khoản", "account.svg", "taikhoan" },
-            { "Log thí sinh", "logs.svg", "log" },
+            { "Thống kê", "thongke.svg", "thongke" }, // đổi về thống kê bài thi
             { "Đăng xuất", "logout.svg", "dangxuat" },
     };
     
@@ -103,7 +104,8 @@ public class MenuTaskBar extends JPanel{
         listitem[0].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-
+                QuanLyCacBaiThi qlcbt = new QuanLyCacBaiThi(main);
+                main.changePages(qlcbt);
             }
         });
         
@@ -154,11 +156,11 @@ public class MenuTaskBar extends JPanel{
                 main.changePages(qlttcn);
             }
         });
-        // log thí sinh
+        // thống kê
         listitem[7].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-
+                
             }
         });
         
@@ -178,7 +180,9 @@ public class MenuTaskBar extends JPanel{
                 }
             }
         });
-        
+
+
+
     }
     
     public void AddHover(MouseEvent evt) {

@@ -73,6 +73,7 @@ public class GUI_Login extends JFrame{
         // nội dung
         JPanel pnlNoiDung = new JPanel();
         pnlNoiDung.setBackground(Color.WHITE);
+        
         pnlNoiDung.setLayout(new GridLayout(2, 1));
         pnlNoiDung.setBorder(new EmptyBorder(0, 0, 20, 0));
         txtUsername = new InputForm("Tên đăng nhập");
