@@ -1,4 +1,3 @@
-
 package GUI;
 
 import BUS.BUS_User;
@@ -84,6 +83,10 @@ public class GUI_Login extends JFrame {
         pnlNoiDung.add(txtUsername);
         txtPass = new InputForm("Mật khẩu", "password");
         pnlNoiDung.add(txtPass);
+
+        txtUsername.setText("admin");
+        txtPass.getTxtPass().setText("123456");
+
         pnlMain.add(pnlNoiDung);
         // button
         lblLogin = new JLabel("ĐĂNG NHẬP");
