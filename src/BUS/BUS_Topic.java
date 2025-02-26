@@ -74,4 +74,13 @@ public class BUS_Topic {
     public void refreshData() {
         list = topicDAO.getAllData();
     }
+
+    public String getTopicName(int id) {
+        for (DTO_Topic topic : list) {
+            if (topic.getTpID() == id) {
+                return topic.getTpTitle();
+            }
+        }
+        return null;
+    }
 }

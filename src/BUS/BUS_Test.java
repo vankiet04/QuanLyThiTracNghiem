@@ -17,14 +17,21 @@ import DTO.DTO_Test;
 public class BUS_Test implements DAOInterface<DTO_Test> {
     private ArrayList<DTO_Test> listTest;
     private DAO.DAO_Test daoTest;
-public BUS_Test() {
+    public BUS_Test() {
         this.daoTest = new DAO_Test();
+        this.listTest = daoTest.getAllData();
     }
 
     @Override
     public int insert(DTO_Test t) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'insert'");
+        int result = daoTest.insert(t);
+        if (result > 0) {
+            if (listTest == null) {
+                listTest = new ArrayList<>();
+            }
+            listTest.add(t);
+        }
+        return result;
     }
 
     @Override

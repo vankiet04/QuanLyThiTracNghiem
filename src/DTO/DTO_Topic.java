@@ -11,6 +11,7 @@ public class DTO_Topic {
         this.tpParent = 0; // Default value for no parent
     }
 
+    
     public DTO_Topic(int tpID, String tpTitle, int tpParent, int tpStatus) {
         this.tpID = tpID;
         this.tpTitle = tpTitle;
