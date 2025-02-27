@@ -37,12 +37,12 @@ public class QuanLyCacBaiThi extends JPanel {
 
         try {
             Connection con = JDBCUtil.getConnectDB();
-            String query = "SELECT testTilte, testLimit FROM test";
+            String query = "SELECT testTitle, testLimit FROM test";
             PreparedStatement ps = con.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                String tenBaiThi = rs.getString("testTilte");
+                String tenBaiThi = rs.getString("testTitle");
                 int soLuotLam = rs.getInt("testLimit");
                 double diem = 0;
 
