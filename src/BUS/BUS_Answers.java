@@ -12,7 +12,7 @@ public class BUS_Answers implements DAOInterface<DTO_Answer> {
     public BUS_Answers() {
         this.listAnswers = new ArrayList<>();
         this.daoAnswers = new DAO_Answers();
-        // this.listAnswers = daoAnswers.getAllData();
+        this.listAnswers = daoAnswers.getAllData();
     }
 
     @Override
@@ -27,15 +27,18 @@ public class BUS_Answers implements DAOInterface<DTO_Answer> {
         return 0;
     }
 
-    @Override
-    public int update(DTO_Answer answer) {
-        if (validate(answer)) {
-            int result = daoAnswers.update(answer);
+    public int updateAns(ArrayList<DTO_Answer> listAnswer, int questionId) throws Exception {
+        int result = daoAnswers.updateAns(listAnswer, questionId);
             if (result > 0) {
                 this.listAnswers = daoAnswers.getAllData();
             }
             return result;
-        }
+    
+    }
+
+    @Override
+    public int update(DTO_Answer answer) {
+        
         return 0;
     }
 

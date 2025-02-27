@@ -4,17 +4,30 @@
  */
 package GUI.CRUD;
 
+import javax.swing.DefaultCellEditor;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
+// import org.apache.logging.log4j.core.config.builder.api.Component;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
@@ -44,10 +57,13 @@ public class ThemCauHoi extends javax.swing.JDialog {
         int cur_ans_index = -1;
         BUS.BUS_Questions questionBUS = new BUS_Questions();
         BUS.BUS_Answers answerBUS = new BUS_Answers();
+        private javax.swing.JButton deleteBtn;
 
         public ThemCauHoi(java.awt.Frame parent, boolean modal) {
 
                 initComponents();
+                createDeleteButton();
+                // Removed addUpdateButton() call since we don't need this button
         }
 
         public ThemCauHoi() {
@@ -60,16 +76,46 @@ public class ThemCauHoi extends javax.swing.JDialog {
                                                                                // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         }
 
+        class ImageRenderer extends DefaultTableCellRenderer {
+                @Override
+                public java.awt.Component getTableCellRendererComponent(JTable table, Object value,
+                                boolean isSelected, boolean hasFocus, int row, int column) {
+                        JLabel label = (JLabel) super.getTableCellRendererComponent(table, value,
+                                        isSelected, hasFocus, row, column);
+                        if (value instanceof String && !((String) value).isEmpty()) {
+                                ImageIcon icon = new ImageIcon((String) value);
+                                java.awt.Image scaledImage = icon.getImage().getScaledInstance(50, 50,
+                                                java.awt.Image.SCALE_SMOOTH);
+                                label.setIcon(new ImageIcon(scaledImage));
+                                label.setText("");
+                        } else {
+                                label.setIcon(null);
+                                label.setText("No Image");
+                        }
+                        label.setHorizontalAlignment(JLabel.CENTER);
+                        return label;
+                }
+        }
+
+        // Modify the loadListAnswer method to include a delete column
         public void loadListAnswer() {
                 try {
-                        String[] columns = { "Lựa chọn", "Nội dung lựa chọn", "Hình ảnh", "Đáp án" };
+                        // Update columns to include a Delete column
+                        String[] columns = { "Lựa chọn", "Nội dung lựa chọn", "Hình ảnh", "Đáp án", "Xóa" };
                         DefaultTableModel model = new DefaultTableModel(columns, 0) {
                                 @Override
                                 public Class<?> getColumnClass(int columnIndex) {
                                         if (columnIndex == 3) {
                                                 return Boolean.class;
+                                        } else if (columnIndex == 4) {
+                                                return Object.class;
                                         }
                                         return super.getColumnClass(columnIndex);
+                                }
+
+                                @Override
+                                public boolean isCellEditable(int row, int column) {
+                                        return column == 3 || column == 4; // Only Đáp án and Xóa columns are editable
                                 }
                         };
 
@@ -86,20 +132,10 @@ public class ThemCauHoi extends javax.swing.JDialog {
                                                                 }
                                                         }
                                                 }
-                                                // update cur_ans_index
-                                                if (checked) {
-                                                        cur_ans_index = row;
-                                                } else {
-                                                        cur_ans_index = -1;
-                                                }
-                                                // update isright in list answer
+                                                cur_ans_index = (checked ? row : -1);
                                                 for (int i = 0; i < listAnswer.size(); i++) {
                                                         DTO_Answer answer = listAnswer.get(i);
-                                                        if (i == row) {
-                                                                answer.setRight(1);
-                                                        } else {
-                                                                answer.setRight(0);
-                                                        }
+                                                        answer.setRight(i == row ? 1 : 0);
                                                 }
                                         }
                                 }
@@ -110,8 +146,17 @@ public class ThemCauHoi extends javax.swing.JDialog {
 
                         jTable1.setModel(model);
 
+                        // Set up renderers and editors
                         for (int i = 0; i < jTable1.getColumnCount(); i++) {
-                                if (i != 3) {
+                                if (i == 2) { // image column uses our custom renderer
+                                        jTable1.getColumnModel().getColumn(i).setCellRenderer(new ImageRenderer());
+                                } else if (i == 4) { // Delete column
+                                        jTable1.getColumnModel().getColumn(i).setCellRenderer(
+                                                        (javax.swing.table.TableCellRenderer) new ButtonRenderer());
+                                        jTable1.getColumnModel().getColumn(i)
+                                                        .setCellEditor((javax.swing.table.TableCellEditor) new ButtonEditor(
+                                                                        new JCheckBox()));
+                                } else if (i != 3) { // not the boolean column
                                         jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
                                 }
                         }
@@ -122,7 +167,8 @@ public class ThemCauHoi extends javax.swing.JDialog {
                                                 i + 1,
                                                 answer.getContent(),
                                                 answer.getImage(),
-                                                false
+                                                answer.isRight() == 1,
+                                                "Xóa"
                                 };
                                 model.addRow(rowData);
                         }
@@ -132,12 +178,89 @@ public class ThemCauHoi extends javax.swing.JDialog {
                 }
         }
 
+        // Add ButtonRenderer and ButtonEditor classes for the delete column
+        class ButtonRenderer extends JButton implements TableCellRenderer {
+                public ButtonRenderer() {
+                        setOpaque(true);
+                        setForeground(Color.RED);
+                        setFont(new Font("Segoe UI", Font.BOLD, 12));
+                }
+
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value,
+                                boolean isSelected, boolean hasFocus, int row, int column) {
+                        setText(value.toString());
+                        return this;
+                }
+        }
+
+        // Replace the ButtonEditor class with this fixed version
+        class ButtonEditor extends DefaultCellEditor {
+                private JButton button;
+                private String label;
+                private boolean isPushed;
+                private int targetRow;
+
+                public ButtonEditor(JCheckBox checkBox) {
+                        super(checkBox);
+                        button = new JButton();
+                        button.setOpaque(true);
+                        button.setForeground(Color.RED);
+                        button.setFont(new Font("Segoe UI", Font.BOLD, 12));
+
+                        button.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                        fireEditingStopped();
+                                }
+                        });
+                }
+
+                @Override
+                public Component getTableCellEditorComponent(JTable table, Object value,
+                                boolean isSelected, int row, int column) {
+                        label = (value == null) ? "" : value.toString();
+                        button.setText(label);
+                        targetRow = row;
+                        isPushed = true;
+                        return button;
+                }
+
+                @Override
+                public Object getCellEditorValue() {
+                        if (isPushed) {
+                                // Use SwingUtilities.invokeLater to avoid concurrent modification
+                                if (targetRow >= 0 && targetRow < listAnswer.size()) {
+                                        final int rowToRemove = targetRow;
+
+                                        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+                                                public void run() {
+                                                        if (rowToRemove < listAnswer.size()) {
+                                                                listAnswer.remove(rowToRemove);
+                                                                loadListAnswer(); // Reload the table
+                                                        }
+                                                }
+                                        });
+                                }
+                        }
+                        isPushed = false;
+                        return label;
+                }
+
+                @Override
+                public boolean stopCellEditing() {
+                        isPushed = false;
+                        return super.stopCellEditing();
+                }
+        }
+
         /**
          * This method is called from within the constructor to initialize the form.
          * WARNING: Do NOT modify this code. The content of this method is always
          * regenerated by the Form Editor.
          */
         @SuppressWarnings("unchecked")
+        // <editor-fold defaultstate="collapsed" desc="Generated
         // <editor-fold defaultstate="collapsed" desc="Generated
         // Code">//GEN-BEGIN:initComponents
         private void initComponents() {
@@ -161,6 +284,9 @@ public class ThemCauHoi extends javax.swing.JDialog {
                 jComboBox1 = new javax.swing.JComboBox<>();
                 jLabel8 = new javax.swing.JLabel();
                 jComboBox2 = new javax.swing.JComboBox<>();
+                jLabel9 = new javax.swing.JLabel();
+                jLabel11 = new javax.swing.JLabel();
+                jLabel10 = new javax.swing.JLabel();
 
                 setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -189,6 +315,7 @@ public class ThemCauHoi extends javax.swing.JDialog {
                 jButton2.setText("Thêm hình");
                 jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mousePressed(java.awt.event.MouseEvent evt) {
+
                                 jButton2MousePressed(evt);
                         }
                 });
@@ -234,9 +361,8 @@ public class ThemCauHoi extends javax.swing.JDialog {
                 jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
                 jLabel6.setText("Nhập nội dung câu hỏi (văn bản)");
 
-                jComboBox1.setModel(
-                                new javax.swing.DefaultComboBoxModel<>(
-                                                new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+                jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(
+                                new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
                 jLabel8.setBackground(new java.awt.Color(102, 102, 255));
                 jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -273,11 +399,33 @@ public class ThemCauHoi extends javax.swing.JDialog {
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                 .addGap(0, 0, Short.MAX_VALUE))
                                                                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING,
-                                                                                                jPanel1Layout
-                                                                                                                .createSequentialGroup()
+                                                                                                jPanel1Layout.createSequentialGroup()
                                                                                                                 .addGroup(jPanel1Layout
                                                                                                                                 .createParallelGroup(
                                                                                                                                                 javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                                                                                .addGroup(jPanel1Layout
+                                                                                                                                                .createParallelGroup(
+                                                                                                                                                                javax.swing.GroupLayout.Alignment.LEADING,
+                                                                                                                                                                false)
+                                                                                                                                                .addComponent(jTextField1,
+                                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                                320,
+                                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                .addComponent(jButton3)
+                                                                                                                                                .addGroup(jPanel1Layout
+                                                                                                                                                                .createSequentialGroup()
+                                                                                                                                                                .addComponent(jLabel2,
+                                                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                                                164,
+                                                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                .addPreferredGap(
+                                                                                                                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                                                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                                                                Short.MAX_VALUE)
+                                                                                                                                                                .addComponent(jLabel9,
+                                                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                                                37,
+                                                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                                                                                                 .addGroup(jPanel1Layout
                                                                                                                                                 .createSequentialGroup()
                                                                                                                                                 .addGroup(jPanel1Layout
@@ -302,33 +450,36 @@ public class ThemCauHoi extends javax.swing.JDialog {
                                                                                                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                                                                                                 Short.MAX_VALUE)
-                                                                                                                                                                .addComponent(jComboBox2,
-                                                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                                                                                                146,
-                                                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                                                                                                .addGroup(jPanel1Layout
-                                                                                                                                                .createParallelGroup(
-                                                                                                                                                                javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                                                                                .addComponent(jTextField1,
-                                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                                                                                320,
-                                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                                                                .addComponent(jButton3)
-                                                                                                                                                .addComponent(jLabel2,
-                                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                                                                                320,
-                                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                                                                                                                                .addGroup(jPanel1Layout
+                                                                                                                                                                                .createSequentialGroup()
+                                                                                                                                                                                .addComponent(jComboBox2,
+                                                                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                                                                146,
+                                                                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                                                .addGap(0, 0, Short.MAX_VALUE)))))
                                                                                                                 .addPreferredGap(
                                                                                                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED,
                                                                                                                                 197,
                                                                                                                                 Short.MAX_VALUE)
                                                                                                                 .addGroup(jPanel1Layout
                                                                                                                                 .createParallelGroup(
-                                                                                                                                                javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                                                                .addComponent(jLabel5,
-                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                                                                320,
-                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                                                                                .addGroup(jPanel1Layout
+                                                                                                                                                .createSequentialGroup()
+                                                                                                                                                .addComponent(jLabel5,
+                                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                                147,
+                                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                .addGap(74, 74, 74)
+                                                                                                                                                .addComponent(jLabel11,
+                                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                                37,
+                                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                                .addGap(32, 32, 32)
+                                                                                                                                                .addComponent(jLabel10,
+                                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                                                31,
+                                                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                                                                                 .addGroup(jPanel1Layout
                                                                                                                                                 .createParallelGroup(
                                                                                                                                                                 javax.swing.GroupLayout.Alignment.LEADING,
@@ -363,8 +514,7 @@ public class ThemCauHoi extends javax.swing.JDialog {
                                                                                 .addGap(109, 109, 109)
                                                                                 .addComponent(jLabel6,
                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                320,
-                                                                                                Short.MAX_VALUE)
+                                                                                                320, Short.MAX_VALUE)
                                                                                 .addGap(617, 617, 617))));
                 jPanel1Layout.setVerticalGroup(
                                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -398,28 +548,58 @@ public class ThemCauHoi extends javax.swing.JDialog {
                                                                 .addPreferredGap(
                                                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                 .addGroup(jPanel1Layout.createParallelGroup(
-                                                                                javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                                .addComponent(jLabel2)
-                                                                                .addComponent(jLabel5))
-                                                                .addPreferredGap(
-                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addGroup(jPanel1Layout.createParallelGroup(
-                                                                                javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                                .addComponent(jLabel1)
-                                                                                .addComponent(jLabel8))
-                                                                .addPreferredGap(
-                                                                                javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                .addGroup(jPanel1Layout.createParallelGroup(
-                                                                                javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                                .addComponent(jComboBox1,
-                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                .addComponent(jComboBox2,
-                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                .addGap(8, 8, 8)
+                                                                                javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                .addGroup(jPanel1Layout
+                                                                                                .createSequentialGroup()
+                                                                                                .addGroup(jPanel1Layout
+                                                                                                                .createParallelGroup(
+                                                                                                                                javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                                .addComponent(jLabel9,
+                                                                                                                                javax.swing.GroupLayout.Alignment.TRAILING,
+                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                Short.MAX_VALUE)
+                                                                                                                .addGroup(jPanel1Layout
+                                                                                                                                .createSequentialGroup()
+                                                                                                                                .addGroup(jPanel1Layout
+                                                                                                                                                .createParallelGroup(
+                                                                                                                                                                javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                                                                                .addComponent(jLabel2)
+                                                                                                                                                .addComponent(jLabel5))
+                                                                                                                                .addGap(0, 0, Short.MAX_VALUE))
+                                                                                                                .addComponent(jLabel10,
+                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                Short.MAX_VALUE))
+                                                                                                .addPreferredGap(
+                                                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                .addGroup(jPanel1Layout
+                                                                                                                .createParallelGroup(
+                                                                                                                                javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                                                .addComponent(jLabel1)
+                                                                                                                .addComponent(jLabel8))
+                                                                                                .addPreferredGap(
+                                                                                                                javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                                                .addGroup(jPanel1Layout
+                                                                                                                .createParallelGroup(
+                                                                                                                                javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                                                                .addComponent(jComboBox1,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                .addComponent(jComboBox2,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                                .addGap(8, 8, 8))
+                                                                                .addGroup(jPanel1Layout
+                                                                                                .createSequentialGroup()
+                                                                                                .addComponent(jLabel11,
+                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                Short.MAX_VALUE)
+                                                                                                .addPreferredGap(
+                                                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                                                                 .addComponent(jLabel4)
                                                                 .addGap(18, 18, 18)
                                                                 .addComponent(jScrollPane1,
@@ -428,7 +608,7 @@ public class ThemCauHoi extends javax.swing.JDialog {
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addGap(35, 35, 35)
                                                                 .addComponent(jButton1)
-                                                                .addContainerGap(41, Short.MAX_VALUE))
+                                                                .addGap(41, 41, 41))
                                                 .addGroup(jPanel1Layout.createParallelGroup(
                                                                 javax.swing.GroupLayout.Alignment.LEADING)
                                                                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -436,6 +616,25 @@ public class ThemCauHoi extends javax.swing.JDialog {
                                                                                 .addComponent(jLabel6)
                                                                                 .addContainerGap(658,
                                                                                                 Short.MAX_VALUE))));
+
+                jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
+                        @Override
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                jLabel9MouseClicked(evt);
+                        }
+                });
+                jLabel10.addMouseListener(new java.awt.event.MouseAdapter() {
+                        @Override
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                jLabel10MouseClicked(evt);
+                        }
+                });
+                jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
+                        @Override
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                jLabel11MouseClicked(evt);
+                        }
+                });
 
                 javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
                 getContentPane().setLayout(layout);
@@ -488,21 +687,40 @@ public class ThemCauHoi extends javax.swing.JDialog {
         }// GEN-LAST:event_jButton4ActionPerformed
 
         private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton1ActionPerformed
-                // TODO add your handling code here:
+                // Validate answer count
                 if (listAnswer.size() < 2 || listAnswer.size() > 6) {
-                        JOptionPane.showMessageDialog(this, "Số lượng câu trả lời phải từ 2 đến 6");
+                        JOptionPane.showMessageDialog(this, "Số lượng câu trả lời phải từ 2 đến 6",
+                                        "Lỗi", JOptionPane.WARNING_MESSAGE);
                         return;
                 }
+
+                // Validate that a correct answer is selected
+                boolean hasCorrectAnswer = false;
+                for (DTO_Answer answer : listAnswer) {
+                        if (answer.isRight() == 1) {
+                                hasCorrectAnswer = true;
+                                break;
+                        }
+                }
+
+                if (!hasCorrectAnswer) {
+                        JOptionPane.showMessageDialog(this, "Vui lòng chọn ít nhất một câu trả lời làm đáp án đúng.",
+                                        "Lỗi", JOptionPane.WARNING_MESSAGE);
+                        return;
+                }
+
+                // Continue with original functionality
                 DTO_Questions question = new DTO_Questions();
                 question.setqContent(jTextField1.getText().toString());
                 question.setqPictures(imgQuestion);
                 String level = jComboBox2.getSelectedItem().toString();
                 question.setqLevel(level);
                 question.setqTopicID(1);
+
                 if (questionBUS.insert(question) > 0) {
                         JOptionPane.showMessageDialog(this, "Thêm câu hỏi thành công");
                         int largestID = questionBUS.getLargestID();
-                        // add to ansswer
+                        // add answers
                         for (int i = 0; i < listAnswer.size(); i++) {
                                 DTO_Answer answer = listAnswer.get(i);
                                 answer.setQuestionId(largestID);
@@ -547,6 +765,7 @@ public class ThemCauHoi extends javax.swing.JDialog {
                                 String relativePath = "src/img/" + newFileName;
                                 jLabel2.setText(newFileName);
                                 imgQuestion = relativePath;
+                                jLabel9.setText("Xóa");
                         }
                 } catch (Exception ex) {
                         JOptionPane.showMessageDialog(this, "Lỗi khi copy file: " + ex.getMessage());
@@ -556,11 +775,10 @@ public class ThemCauHoi extends javax.swing.JDialog {
         private void jButton2MousePressed(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButton2MousePressed
                 // TODO add your handling code here: them hinh cau tra loi
                 try {
-
                         JFileChooser chooser = new JFileChooser();
 
                         FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                                        "Image Files", "jpg", "jpeg", "gif");
+                                        "Image Files", "jpg", "jpeg", "gif", "png");
                         chooser.setFileFilter(filter);
 
                         int result = chooser.showOpenDialog(this);
@@ -583,14 +801,82 @@ public class ThemCauHoi extends javax.swing.JDialog {
                                                 StandardCopyOption.REPLACE_EXISTING);
 
                                 String relativePath = "src/img/" + newFileName;
-                                jLabel2.setText(newFileName);
+
+                                // Ensure proper UI updates
                                 imgAnswer = relativePath;
+                                jLabel5.setText(newFileName);
+                                jLabel11.setText("Xóa");
+
+                                // Refresh the UI to make sure changes are visible
+                                jLabel5.revalidate();
+                                jLabel5.repaint();
+                                jLabel11.revalidate();
+                                jLabel11.repaint();
+
+                                System.out.println("Image selected: " + newFileName); // Debug output
                         }
                 } catch (Exception ex) {
+                        ex.printStackTrace(); // More detailed error info
                         JOptionPane.showMessageDialog(this, "Lỗi khi copy file: " + ex.getMessage());
                 }
-
         }// GEN-LAST:event_jButton2MousePressed
+
+        private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {
+                if (!imgQuestion.isEmpty()) {
+                        imgQuestion = "";
+                        jLabel2.setText(""); // clear question image label
+                        jLabel9.setText("");
+                }
+        }
+
+        private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {
+                if (!imgAnswer.isEmpty()) {
+                        imgAnswer = "";
+                        jLabel5.setText(""); // clear answer image label
+                        jLabel10.setText("");
+                }
+        }
+
+        private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {
+                if (!imgAnswer.isEmpty()) {
+                        imgAnswer = "";
+                        jLabel5.setText(""); // clear answer image label
+                        jLabel11.setText(""); // clear the "Xóa" text
+
+                        // Refresh the UI
+                        jLabel5.revalidate();
+                        jLabel5.repaint();
+                        jLabel11.revalidate();
+                        jLabel11.repaint();
+
+                        System.out.println("Image cleared"); // Debug output
+                }
+        }
+
+        private void createDeleteButton() {
+                deleteBtn = new javax.swing.JButton("Xóa");
+                deleteBtn.setForeground(java.awt.Color.RED);
+                deleteBtn.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+                deleteBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+                deleteBtn.setBounds(jLabel5.getX() + jLabel5.getWidth() + 10, jLabel5.getY(), 60, 25);
+                deleteBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 8, 2, 8));
+                deleteBtn.setBackground(new java.awt.Color(255, 240, 240));
+
+                deleteBtn.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                imgAnswer = "";
+                                jLabel5.setText("");
+                                deleteBtn.setVisible(false);
+                                System.out.println("Image cleared via delete button");
+                        }
+                });
+
+                jPanel1.add(deleteBtn);
+                jPanel1.setComponentZOrder(deleteBtn, 0); // Ensure it's at the top of component stack
+                deleteBtn.setVisible(false);
+                jPanel1.revalidate();
+                jPanel1.repaint();
+        }
 
         /**
          * @param args the command line arguments
@@ -656,6 +942,8 @@ public class ThemCauHoi extends javax.swing.JDialog {
         private javax.swing.JComboBox<String> jComboBox1;
         private javax.swing.JComboBox<String> jComboBox2;
         private javax.swing.JLabel jLabel1;
+        private javax.swing.JLabel jLabel10;
+        private javax.swing.JLabel jLabel11;
         private javax.swing.JLabel jLabel2;
         private javax.swing.JLabel jLabel3;
         private javax.swing.JLabel jLabel4;
@@ -663,6 +951,7 @@ public class ThemCauHoi extends javax.swing.JDialog {
         private javax.swing.JLabel jLabel6;
         private javax.swing.JLabel jLabel7;
         private javax.swing.JLabel jLabel8;
+        private javax.swing.JLabel jLabel9;
         private javax.swing.JPanel jPanel1;
         private javax.swing.JScrollPane jScrollPane1;
         private javax.swing.JTable jTable1;
