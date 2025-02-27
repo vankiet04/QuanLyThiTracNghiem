@@ -1,24 +1,35 @@
-# Ignore build artifacts
-/build/
-/dist/
-/bin/
-/out/
-/target/
+# Ignore build directory
+build/
+
+# Ignore NetBeans project files
+nbproject/private/
+nbproject/nbproject.xml
+nbproject/genfiles.properties
+nbproject/project.properties
+nbproject/project.xml
+
+# Ignore compiled Java classes
 *.class
+
+# Ignore JAR files
 *.jar
 
-# Ignore IDE-specific files
-.idea/
-.vscode/
-*.iml
+# Ignore log files
+*.log
 
-# Ignore OS-specific files
+# Ignore temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# Ignore IDE specific files
+.vscode/
+.idea/
+
+# Ignore OS specific files
 .DS_Store
 Thumbs.db
 
-# Ignore logs and temporary files
-*.log
-*.tmp
-
-# Ignore other unnecessary files
-/nbproject/private/
+# Ignore other files
+dist/

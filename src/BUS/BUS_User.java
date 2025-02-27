@@ -26,6 +26,10 @@ public class BUS_User {
         return userDAO.GetInfo(userName, pass);
     }
     
+    public DTO_User getInfoByID(int id){
+        return userDAO.selectById(String.valueOf(id));
+    }
+    
     public int insert(DTO_User cur) {
 
         for (int i = 0; i < list.size(); i++) {
@@ -39,11 +43,18 @@ public class BUS_User {
     }
 
     public int update(DTO_User cur) {
-        return -1;
+        for(int i = 0; i < list.size(); i++)
+            if (list.get(i).getEmail().equals(cur.getEmail()) && list.get(i).getUserID() != cur.getUserID())
+                return -1;
+        return userDAO.update(cur);
     }
 
     public int delete(DTO_User cur) {
-        return -1;
+        return userDAO.delete(cur.getUserID());
+    }
+    public ArrayList<DTO_User> search(String cur){
+        ArrayList<DTO_User> res = userDAO.search(cur);
+        return res;
     }
     
     

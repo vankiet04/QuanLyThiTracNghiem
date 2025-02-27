@@ -28,6 +28,13 @@ public class DTO_User {
         this.email = email;
         this.fullName = fullName;
     }
+    public DTO_User(String userName, String pass, String email, String fullName, boolean isAdmin) {
+        this.userName = userName;
+        this.pass = pass;
+        this.email = email;
+        this.fullName = fullName;
+        this.isAdmin = isAdmin;
+    }
     
 
     public int getUserID() {

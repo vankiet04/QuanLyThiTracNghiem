@@ -2,21 +2,39 @@
 package DTO;
 
 import java.util.Date;
+import java.util.List;
 
 
 public class DTO_Log {
     private int logID;
     private int logUserID;
-    private int logExId;
+    private int logExCode;
     private Date logDate;
+    private List<String> logContent;
+
+    public void setLogContent(List<String> logContent) {
+        this.logContent = logContent;
+    }
+
+    public List<String> getLogContent() {
+        return logContent;
+    }
 
     public DTO_Log() {
+    }
+
+    public DTO_Log(int logID, int logUserID, int logExCode, Date logDate, List<String> logContent) {
+        this.logID = logID;
+        this.logUserID = logUserID;
+        this.logExCode = logExCode;
+        this.logDate = logDate;
+        this.logContent = logContent;
     }
 
     public DTO_Log(int logID, int logUserID, int logExId, Date logDate) {
         this.logID = logID;
         this.logUserID = logUserID;
-        this.logExId = logExId;
+        this.logExCode = logExId;
         this.logDate = logDate;
     }
 
@@ -28,8 +46,8 @@ public class DTO_Log {
         return logUserID;
     }
 
-    public int getLogExId() {
-        return logExId;
+    public int getLogExCode() {
+        return logExCode;
     }
 
     public Date getLogDate() {
@@ -44,8 +62,8 @@ public class DTO_Log {
         this.logUserID = logUserID;
     }
 
-    public void setLogExId(int logExId) {
-        this.logExId = logExId;
+    public void setLogExCode(int logExId) {
+        this.logExCode = logExId;
     }
 
     public void setLogDate(Date logDate) {
