@@ -2,7 +2,11 @@
 package GUI.Component;
 
 import GUI.GUI_Login;
+import GUI.Menu.QuanLyCacBaiThi;
 import GUI.Menu.QuanLyCauHoi;
+import GUI.Menu.QuanLyTaiKhoan;
+import GUI.Menu.QuanLyChuDe;
+import GUI.Menu.QuanLyThongTinCaNhan;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,14 +25,14 @@ public class MenuTaskBar extends JPanel{
     public itemTaskbar[] listitem;
     
     String[][] listComponent = {
-            { "Màn hình chính", "home.svg", "home" },
+            { "Màn hình chính", "home.svg", "home" }, // bỏ đi
             { "Ngân hàng câu hỏi", "nganhangcauhoi.svg", "QuanLyCauHoi" },
             { "Chủ đề/Môn học", "monhoc.svg", "monhoc" },
             { "Đề thi", "baithi.svg", "dethi"},
             { "Bài thi", "baithi.svg", "baithi"},
             { "Quản lý tài khoản", "qly.svg", "qltaikhoan"},
-            { "Thông tin cá nhân", "account.svg", "taikhoan" },
-            { "Log thí sinh", "logs.svg", "log" },
+            { "Cài đặt tài khoản", "account.svg", "taikhoan" },
+            { "Thống kê", "thongke.svg", "thongke" }, // đổi về thống kê bài thi
             { "Đăng xuất", "logout.svg", "dangxuat" },
     };
     
@@ -82,7 +86,8 @@ public class MenuTaskBar extends JPanel{
             listitem[1].setVisible(false);
             listitem[2].setVisible(false);
             listitem[4].setVisible(false);
-            listitem[6].setVisible(false);
+            listitem[5].setVisible(false);
+            listitem[7].setVisible(false);
         }
 
         
@@ -95,7 +100,16 @@ public class MenuTaskBar extends JPanel{
                 }
             });
         }
+        // màn hình chính 
+        listitem[0].addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent evt) {
+                QuanLyCacBaiThi qlcbt = new QuanLyCacBaiThi(main);
+                main.changePages(qlcbt);
+            }
+        });
         
+        // quản lý câu hỏi 
         listitem[1].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
@@ -103,13 +117,55 @@ public class MenuTaskBar extends JPanel{
                 main.changePages(ch);
             }
         });
+        // chủ đề / môn học
+        listitem[2].addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent evt) {
+                QuanLyChuDe qlcd = new QuanLyChuDe();
+                main.changePages(qlcd);
+            }
+        });
+        // đề thi
+        listitem[3].addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent evt) {
+
+            }
+        });
+        //  bài thi
+        listitem[4].addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent evt) {
+
+            }
+        });
         
-        //
-        // add sự kiện dưới đây
+        // quản lý tài khoản
+        listitem[5].addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent evt) {
+                QuanLyTaiKhoan qltk = new QuanLyTaiKhoan();
+                main.changePages(qltk);
+            }
+        });
+        // thông tin cá nhân
+        listitem[6].addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent evt) {
+                QuanLyThongTinCaNhan qlttcn = new QuanLyThongTinCaNhan(user);
+                main.changePages(qlttcn);
+            }
+        });
+        // thống kê
+        listitem[7].addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent evt) {
+                
+            }
+        });
         
         
-        
-        // sự kiện đăng xuất
+        //  đăng xuất
         listitem[listitem.length-1].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
@@ -124,7 +180,9 @@ public class MenuTaskBar extends JPanel{
                 }
             }
         });
-        
+
+
+
     }
     
     public void AddHover(MouseEvent evt) {

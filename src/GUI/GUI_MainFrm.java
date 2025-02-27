@@ -1,7 +1,6 @@
-
 package GUI;
-
 import GUI.Component.MenuTaskBar;
+import GUI.Menu.QuanLyCacBaiThi;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -15,7 +14,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
 // khởi tạo giao diện admin hoặc người dùng thường
 // setting UI chính cho giao diện
 public class GUI_MainFrm extends JFrame{
@@ -30,6 +28,9 @@ public class GUI_MainFrm extends JFrame{
         this.user = user;
         loadUI();
         initComponent();
+        // Hiển thị màn hình chính ngay khi load giao diện
+        QuanLyCacBaiThi qlcbt = new QuanLyCacBaiThi(this);
+        changePages(qlcbt);
     }
     
     private  void initComponent(){

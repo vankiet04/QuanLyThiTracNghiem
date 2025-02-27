@@ -34,8 +34,8 @@ public class GUI_SignUp extends JFrame{
     BUS.BUS_User BUSUser = new BUS_User();
 
     public GUI_SignUp() {
-        this.setLocationRelativeTo(null);
         this.setSize(new Dimension(1000,800));
+        this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout(0, 0));
         this.setTitle("HỆ THỐNG QUẢN LÝ THI TRẮC NGHIỆM");
         this.setResizable(false);
