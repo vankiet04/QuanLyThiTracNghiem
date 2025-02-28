@@ -1,10 +1,12 @@
 package GUI.Component;
 
+import BUS.BUS_Answers;
 import BUS.BUS_Exam;
 import BUS.BUS_Questions;
 import BUS.BUS_Test;
 import BUS.BUS_Topic;
 import DTO.DTO_Exam;
+import DTO.DTO_Answer;
 import DTO.DTO_Questions;
 import GUI.Component.CauHoiThi;
 import java.awt.BorderLayout;
@@ -12,7 +14,9 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -25,10 +29,12 @@ public class LamBaiThi extends javax.swing.JPanel {
     private ArrayList<CauHoiThi> danhSachCauHoi = new ArrayList<>();
     private ArrayList<DTO_Questions> listCauHoi = new ArrayList<>();
     private JScrollPane scrollPane;
+    private HashMap<Integer, ArrayList<DTO_Answer>> myMap = new HashMap<>();
     
     
     private BUS_Exam examBUS =  new BUS_Exam();
     private BUS_Questions questBUS = new BUS_Questions();
+    private BUS_Answers answerBUS =  new BUS_Answers();
     private DTO_Exam examCur;
     
 
@@ -38,11 +44,10 @@ public class LamBaiThi extends javax.swing.JPanel {
         this.setLayout(new BorderLayout());
         
         // xử lý thông tin chuỗi của exam
+
         examCur = examBUS.selectById(exCode);
-        System.out.println(examCur.getEx_quesIDs());
         listCauHoi = questBUS.getAllData(examCur.getEx_quesIDs());
-        
-        taoCauHoi();
+        XuLyDuLieu();
         hienThiTatCaCauHoi();
         taoNutCauHoi();
         
@@ -60,14 +65,22 @@ public class LamBaiThi extends javax.swing.JPanel {
         this.revalidate();
         this.repaint();
     }
-
-    // Lấy từ BUS của list đề thi lên
-    private void taoCauHoi() {
-        for (int i = 0; i < 50; i++)
-            // ex_quesIDs => có id => DTO, quest : qContent: đề bài, qID => answer: gom theo qID => tạo button 
-            // câu hỏi, đề bài, các lựa chọn
-            danhSachCauHoi.add(new CauHoiThi("Câu hỏi số " + (i + 1), "Đây là đề bài", "Đáp án A", "Đáp án B", "Đáp án C", "Đáp án D"));
+    
+    public void XuLyDuLieu(){
+        for(DTO_Questions ques : listCauHoi){
+                ArrayList<DTO_Answer> list = answerBUS.getAllData(ques.getqID());
+                myMap.put(ques.getqID(), list);
+        }
+        taoCauHoi();
     }
+        private void taoCauHoi() {
+            for (int i = 0; i < listCauHoi.size(); i++){
+                DTO_Questions quest = listCauHoi.get(i);
+                ArrayList<DTO_Answer> listAnswer = myMap.get(quest.getqID());
+                danhSachCauHoi.add(new CauHoiThi("Câu hỏi số " + (i + 1), quest.getqContent(), listAnswer));
+            }
+
+        }
 
     //  
     private void hienThiTatCaCauHoi() {

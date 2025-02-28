@@ -72,6 +72,30 @@ public class DAO_Answers implements DAOInterface<DTO_Answer> {
         return list;
     }
 
+    public ArrayList<DTO_Answer> getAllData(int qID) {
+        ArrayList<DTO_Answer> list = new ArrayList<>();
+        try {
+            Connection con = JDBCUtil.getConnectDB();
+            String sql = "SELECT * FROM answers WHERE qID = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1, qID);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                DTO_Answer answer = new DTO_Answer();
+                answer.setQuestionId(rs.getInt("qID"));
+                answer.setContent(rs.getString("awContent"));
+                answer.setImage(rs.getString("awPictures"));
+                answer.setRight(rs.getInt("isRight"));
+                answer.setStatus(rs.getInt("awStatus"));
+                list.add(answer);
+            }
+            JDBCUtil.close(con);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
     @Override
     public int delete(int t) {
         try {

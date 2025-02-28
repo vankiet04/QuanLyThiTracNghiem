@@ -28,6 +28,7 @@ public class BUS_Questions {
     }
     
     public ArrayList<DTO_Questions> getAllData(String quesID) {
+        quesID = quesID.replace("[", "").replace("]", "");
         return questionsDAO.getAllData(quesID);
     }
 

@@ -96,8 +96,9 @@ public class DAO_Questions implements DAOInterface<DTO.DTO_Questions> {
     public ArrayList<DTO_Questions> getAllData(String quesID) {
         ArrayList<DTO_Questions> list = new ArrayList<>();
         try {
+
             Connection con = JDBCUtil.getConnectDB();
-            String sql = "SELECT qID, qContent, qPictures, qTopicID, qLevel FROM questions";
+            String sql = "SELECT * FROM questions WHERE qID IN (" + quesID + ")";
             PreparedStatement pst = con.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
