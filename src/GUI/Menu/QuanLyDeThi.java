@@ -46,7 +46,6 @@ public class QuanLyDeThi extends javax.swing.JPanel {
      jTable1.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
      jTable1.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
      jTable1.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
-     jTable1.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
         
 
     }
