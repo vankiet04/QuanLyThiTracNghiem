@@ -33,13 +33,12 @@ public class DAO_Exam implements DAOInterface<DTO_Exam> {
     public int update(DTO_Exam exam) {
         try {
             Connection con = JDBCUtil.getConnectDB();
-            String sql = "UPDATE exams SET testCode = ?, exOrder = ?, exCode = ?, ex_quesIDs = ? WHERE exID = ?";
+            String sql = "UPDATE exams SET testCode = ?, exOrder = ?, ex_quesIDs = ? WHERE exCode = ?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, exam.getTestCode());
             pst.setString(2, exam.getExOrder());
-            pst.setString(3, exam.getExCode());
-            pst.setString(4, exam.getEx_quesIDs());
-            pst.setInt(5, exam.getExID());
+            pst.setString(3, exam.getEx_quesIDs());
+            pst.setString(4, exam.getExCode());
             int result = pst.executeUpdate();
             JDBCUtil.close(con);
             return result;
@@ -50,12 +49,12 @@ public class DAO_Exam implements DAOInterface<DTO_Exam> {
     }
 
     @Override
-    public int delete(int exID) {
+    public int delete(int exCode) {
         try {
             Connection con = JDBCUtil.getConnectDB();
-            String sql = "DELETE FROM exams WHERE exID = ?";
+            String sql = "DELETE FROM exams WHERE exCode = ?";
             PreparedStatement pst = con.prepareStatement(sql);
-            pst.setInt(1, exID);
+            pst.setInt(1, exCode);
             int result = pst.executeUpdate();
             JDBCUtil.close(con);
             return result;
@@ -66,20 +65,19 @@ public class DAO_Exam implements DAOInterface<DTO_Exam> {
     }
 
     @Override
-    public DTO_Exam selectById(String exID) {
+    public DTO_Exam selectById(String code) {
         try {
             Connection con = JDBCUtil.getConnectDB();
-            String sql = "SELECT * FROM exams WHERE exID = ?";
+            String sql = "SELECT * FROM exams WHERE exCode = ?";
             PreparedStatement pst = con.prepareStatement(sql);
-            pst.setInt(1, Integer.parseInt(exID));
+            pst.setString(1, code);
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
-                int id = rs.getInt("exID");
                 String testCode = rs.getString("testCode");
                 String exOrder = rs.getString("exOrder");
                 String exCode = rs.getString("exCode");
                 String ex_quesIDs = rs.getString("ex_quesIDs");
-                DTO_Exam exam = new DTO_Exam(id, testCode, exOrder, exCode, ex_quesIDs);
+                DTO_Exam exam = new DTO_Exam(testCode, exOrder, exCode, ex_quesIDs);
                 JDBCUtil.close(con);
                 return exam;
             }
@@ -98,12 +96,11 @@ public class DAO_Exam implements DAOInterface<DTO_Exam> {
             PreparedStatement pst = con.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                int exID = rs.getInt("exID");
                 String testCode = rs.getString("testCode");
                 String exOrder = rs.getString("exOrder");
                 String exCode = rs.getString("exCode");
                 String ex_quesIDs = rs.getString("ex_quesIDs");
-                DTO_Exam exam = new DTO_Exam(exID, testCode, exOrder, exCode, ex_quesIDs);
+                DTO_Exam exam = new DTO_Exam(testCode, exOrder, exCode, ex_quesIDs);
                 list.add(exam);
             }
             JDBCUtil.close(con);

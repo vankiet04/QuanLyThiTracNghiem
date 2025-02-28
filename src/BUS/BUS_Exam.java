@@ -43,8 +43,8 @@ public class BUS_Exam implements DAOInterface<DTO_Exam> {
     }
 
     @Override
-    public DTO_Exam selectById(String exID) {
-        return daoExam.selectById(exID);
+    public DTO_Exam selectById(String exCode) {
+        return daoExam.selectById(exCode);
     }
 
     @Override

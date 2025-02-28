@@ -1,5 +1,11 @@
 package GUI.Component;
 
+import BUS.BUS_Exam;
+import BUS.BUS_Questions;
+import BUS.BUS_Test;
+import BUS.BUS_Topic;
+import DTO.DTO_Exam;
+import DTO.DTO_Questions;
 import GUI.Component.CauHoiThi;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -16,31 +22,41 @@ import javax.swing.SwingUtilities;
 public class LamBaiThi extends javax.swing.JPanel {
 
     //test data
-    private List<CauHoiThi> danhSachCauHoi = new ArrayList<>();
+    private ArrayList<CauHoiThi> danhSachCauHoi = new ArrayList<>();
+    private ArrayList<DTO_Questions> listCauHoi = new ArrayList<>();
     private JScrollPane scrollPane;
+    
+    
+    private BUS_Exam examBUS =  new BUS_Exam();
+    private BUS_Questions questBUS = new BUS_Questions();
+    private DTO_Exam examCur;
+    
 
     public LamBaiThi(GUI.GUI_MainFrm main, String exCode) {
         initComponents();
         this.removeAll();
         this.setLayout(new BorderLayout());
         
+        // xử lý thông tin chuỗi của exam
+        examCur = examBUS.selectById(exCode);
+        System.out.println(examCur.getEx_quesIDs());
+        listCauHoi = questBUS.getAllData(examCur.getEx_quesIDs());
+        
         taoCauHoi();
         hienThiTatCaCauHoi();
         taoNutCauHoi();
         
+        
+        // code liên quan đến giao diện
         pnlListCauHoi.setLayout(new BoxLayout(pnlListCauHoi, BoxLayout.Y_AXIS));
         pnlListCauHoi.setPreferredSize(null);
-        
         scrollPane = new JScrollPane();
         scrollPane.setViewportView(pnlListCauHoi);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        
-
         this.add(pnlTieuDe, BorderLayout.NORTH);
         this.add(scrollPane, BorderLayout.CENTER);
         this.add(pnlTableCauHoi, BorderLayout.EAST);
-        
         this.revalidate();
         this.repaint();
     }
@@ -48,6 +64,8 @@ public class LamBaiThi extends javax.swing.JPanel {
     // Lấy từ BUS của list đề thi lên
     private void taoCauHoi() {
         for (int i = 0; i < 50; i++)
+            // ex_quesIDs => có id => DTO, quest : qContent: đề bài, qID => answer: gom theo qID => tạo button 
+            // câu hỏi, đề bài, các lựa chọn
             danhSachCauHoi.add(new CauHoiThi("Câu hỏi số " + (i + 1), "Đây là đề bài", "Đáp án A", "Đáp án B", "Đáp án C", "Đáp án D"));
     }
 

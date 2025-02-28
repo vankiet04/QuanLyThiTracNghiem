@@ -55,7 +55,6 @@ public class QuanLyDeThi extends javax.swing.JPanel {
         model.setRowCount(0); // Clear existing data
         for (DTO_Exam exam : listExam) {
             model.addRow(new Object[] {
-                    exam.getExID(),
                     exam.getTestCode(),
                     exam.getExOrder(),
                     exam.getExCode()
@@ -275,13 +274,13 @@ public class QuanLyDeThi extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Mã đề thi", "Code Bài Thi", "Mã Order", "Mã Code"
+                "TestCode", "ExOrder", "ExCode"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
