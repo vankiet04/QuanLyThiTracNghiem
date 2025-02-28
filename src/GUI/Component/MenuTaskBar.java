@@ -28,14 +28,14 @@ public class MenuTaskBar extends JPanel {
     public itemTaskbar[] listitem;
 
     String[][] listComponent = {
-            { "Màn hình chính", "home.svg", "home" }, // bỏ đi
+            { "Màn hình chính", "home.svg", "home" },
             { "Ngân hàng câu hỏi", "nganhangcauhoi.svg", "QuanLyCauHoi" },
             { "Chủ đề/Môn học", "monhoc.svg", "monhoc" },
             { "Đề thi", "baithi.svg", "dethi" },
             { "Bài thi", "baithi.svg", "baithi" },
             { "Quản lý tài khoản", "qly.svg", "qltaikhoan" },
             { "Cài đặt tài khoản", "account.svg", "taikhoan" },
-            { "Thống kê", "thongke.svg", "thongke" }, // đổi về thống kê bài thi
+            { "Thống kê", "thongke.svg", "thongke" },
             { "Đăng xuất", "logout.svg", "dangxuat" },
     };
 
@@ -155,8 +155,8 @@ public class MenuTaskBar extends JPanel {
         listitem[6].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                // QuanLyThongTinCaNhan qlttcn = new QuanLyThongTinCaNhan(user);
-                // main.changePages(qlttcn);
+                 QuanLyThongTinCaNhan qlttcn = new QuanLyThongTinCaNhan(user);
+                 main.changePages(qlttcn);
             }
         });
         // thống kê

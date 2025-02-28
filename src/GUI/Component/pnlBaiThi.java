@@ -6,11 +6,11 @@ import javax.swing.JLayeredPane;
 
 public class pnlBaiThi extends JLayeredPane {
 
-    public pnlBaiThi(String tenBaiThi, int soLuotLam, double diem) {
+    public pnlBaiThi(String tenBaiThi, int soLuotLam, String ngayThi) {
     initComponents();
     lblBaiThi.setText(tenBaiThi);
     lblLuotLam.setText("Số lượt làm: " + soLuotLam);
-    lblDiem.setText("Điểm: " + diem);
+    lblDiem.setText("Ngày thi: " + ngayThi);
 }
 
 
@@ -51,7 +51,7 @@ public class pnlBaiThi extends JLayeredPane {
         lblDiem.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblDiem.setForeground(new java.awt.Color(0, 0, 0));
         lblDiem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblDiem.setText("Điểm:");
+        lblDiem.setText("Ngày thi:");
         lblDiem.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout testpnl1Layout = new javax.swing.GroupLayout(testpnl1);

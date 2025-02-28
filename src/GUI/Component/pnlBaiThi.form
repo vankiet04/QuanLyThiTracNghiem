@@ -119,7 +119,7 @@
               <Color blue="0" green="0" red="0" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="&#x110;i&#x1ec3;m:"/>
+            <Property name="text" type="java.lang.String" value="Ng&#xe0;y thi:"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
           </Properties>
         </Component>

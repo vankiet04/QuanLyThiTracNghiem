@@ -1,19 +1,29 @@
 
 package GUI.CRUD;
 
+import BUS.BUS_Test;
 import GUI.Component.LamBaiThi;
 
 
 
 public class ChiTietBaiThi extends javax.swing.JFrame {
     private GUI.GUI_MainFrm main;
+    private BUS.BUS_Test testBUS = new BUS_Test();
 
-    public ChiTietBaiThi(GUI.GUI_MainFrm main) {
+    public ChiTietBaiThi(GUI.GUI_MainFrm main, String testCode) {
+        // getByID bài thi
+        //DTO.BaiThi baiThi = testBUS.
+        
+        // getListExam từ bài thi
         this.main = main;
         initComponents();
         this.setLocationRelativeTo(null);
+        LoadData();
     }
     
+    private void LoadData(){
+        
+    }
 
 
     @SuppressWarnings("unchecked")

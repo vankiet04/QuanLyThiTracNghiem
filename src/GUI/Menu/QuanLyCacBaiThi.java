@@ -1,6 +1,8 @@
 package GUI.Menu;
 
+import BUS.BUS_Test;
 import ConnectDB.JDBCUtil;
+import DTO.DTO_Test;
 import GUI.CRUD.ChiTietBaiThi;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -23,6 +25,7 @@ public class QuanLyCacBaiThi extends JPanel {
     private ArrayList<pnlBaiThi> listPnl = new ArrayList<>();
     private GUI.GUI_MainFrm main;
     private javax.swing.JPanel pnlContent;
+    private BUS.BUS_Test testBUS =  new BUS_Test();
     
     public QuanLyCacBaiThi(GUI.GUI_MainFrm main) {
         this.main = main;
@@ -32,21 +35,12 @@ public class QuanLyCacBaiThi extends JPanel {
     }
     
     private void LoadBaiThi() {
+        ArrayList<DTO_Test> listTest = testBUS.getAllData();
         listPnl.clear();
         pnlContent.removeAll();
 
-        try {
-            Connection con = JDBCUtil.getConnectDB();
-            String query = "SELECT testTitle, testLimit FROM test";
-            PreparedStatement ps = con.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                String tenBaiThi = rs.getString("testTitle");
-                int soLuotLam = rs.getInt("testLimit");
-                double diem = 0;
-
-                pnlBaiThi pnl = new pnlBaiThi(tenBaiThi, soLuotLam, diem);
+        for(DTO_Test item : listTest){
+                pnlBaiThi pnl = new pnlBaiThi(item.getTestTitle(), item.getTestLimit(), item.getTestDate().toString());
                 pnl.setPreferredSize(new java.awt.Dimension(250, 150));
                 listPnl.add(pnl);
                 pnlContent.add(pnl);
@@ -54,22 +48,18 @@ public class QuanLyCacBaiThi extends JPanel {
                 pnl.addMouseListener(new MouseAdapter(){
                     @Override
                     public void mouseClicked(MouseEvent e){
-                        ChayBaiThi();
+                        ChayBaiThi(item.getTestCode());
                     }
-                });
-            }
-
-            con.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+                });     
         }
 
+           
         pnlContent.revalidate();
         pnlContent.repaint();
     }
 
-    private void ChayBaiThi(){
-        ChiTietBaiThi ctbt = new ChiTietBaiThi(this.main);
+    private void ChayBaiThi(String testCode){
+        ChiTietBaiThi ctbt = new ChiTietBaiThi(this.main, testCode);
         ctbt.setVisible(true);
     }
 

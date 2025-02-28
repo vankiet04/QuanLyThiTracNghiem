@@ -107,7 +107,6 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
 
         btnXoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8-delete-85.png"))); // NOI18N
         btnXoa.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnXoa.setEnabled(false);
         btnXoa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 btnXoaMousePressed(evt);
@@ -202,6 +201,11 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
 
         txtSearch.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtSearch.setLabelText("Tìm theo fullname/username");
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+        });
 
         btnReset.setBackground(new java.awt.Color(204, 255, 255));
         btnReset.setText("Reset");
@@ -332,37 +336,57 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void btnExcelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExcelMousePressed
-//        JFileChooser fileChooser = new JFileChooser();
-//        int returnValue = fileChooser.showOpenDialog(this);
-//
-//        if (returnValue == JFileChooser.APPROVE_OPTION) {
-//            File selectedFile = fileChooser.getSelectedFile();
-//            List<DTO_User> users = ImportExcel(selectedFile);
-//            for (DTO_User user : users)
-//                busTK.insert(user);
-//
-//            JOptionPane.showMessageDialog(this, "Thêm " + users.size() + " user thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-//            loadData(busTK.getAllData());
-//        }
+        JFileChooser fileChooser = new JFileChooser();
+        int returnValue = fileChooser.showOpenDialog(this);
+
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            List<DTO_User> users = ImportExcel(selectedFile);
+            int count=0;
+            for (DTO_User user : users){
+                int res = busTK.insert(user);
+                if ( res != 0 || res != -1) // username trùng or email trùng
+                    count++;
+            }
+
+            JOptionPane.showMessageDialog(this, "Thêm " + count + " user thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            loadData(busTK.getAllData());
+        }
         
     }//GEN-LAST:event_btnExcelMousePressed
 
     private void btnXoaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaMousePressed
-        //        if ( curSelect == -1){
-            //            JOptionPane.showMessageDialog(null, "Chưa chọn tài khoản để xóa", "Cảnh báo!", JOptionPane.WARNING_MESSAGE);
-            //            return;
-            //        }
-        //        if ( curSelect == 1){
-            //            JOptionPane.showMessageDialog(null, "Không thể xóa tài khoản admin", "Cảnh báo!", JOptionPane.WARNING_MESSAGE);
-            //            return;
-            //        }
-        //        int res = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn xóa tài khoản này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
-        //        if (res == JOptionPane.YES_OPTION) {
-            //            busTK.delete(busTK.getInfoByID(curSelect));
-            //            JOptionPane.showMessageDialog(null, "Xóa tài khoản thành công");
-            //            loadData(busTK.getAllData());
-            //        }
+                if ( curSelect == -1){
+                        JOptionPane.showMessageDialog(null, "Chưa chọn tài khoản để xóa", "Cảnh báo!", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                if ( curSelect == 1){
+                        JOptionPane.showMessageDialog(null, "Không thể xóa tài khoản admin", "Cảnh báo!", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                int res = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn xóa tài khoản này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+                if (res == JOptionPane.YES_OPTION) {
+                        busTK.delete(busTK.getInfoByID(curSelect));
+                        JOptionPane.showMessageDialog(null, "Xóa tài khoản thành công");
+                        loadData(busTK.getAllData());
+                    }
     }//GEN-LAST:event_btnXoaMousePressed
+
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        String key = txtSearch.getText().trim();
+        if (key.isEmpty()){
+        lblSearch.setText("");
+        loadData(busTK.getAllData()); 
+        return;
+        }
+        ArrayList<DTO_User> timKiem = busTK.search(key);
+        if(timKiem.isEmpty())
+        lblSearch.setText("Không tìm thấy kết quả!");
+        else 
+        lblSearch.setText("Đã tìm thấy " + timKiem.size() + " kết quả");
+        loadData(timKiem); 
+
+    }//GEN-LAST:event_txtSearchKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -384,43 +408,59 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
     private com.raven.suportSwing.TextField txtSearch;
     // End of variables declaration//GEN-END:variables
 
-//    private List<DTO_User> ImportExcel(File selectedFile) {
-//        List<DTO_User> userList = new ArrayList<>();
-//            try (FileInputStream fis = new FileInputStream(selectedFile);
-//                Workbook workbook = new XSSFWorkbook(fis)) { // Đọc file .xlsx
-//                    Sheet sheet = workbook.getSheetAt(0); // Lấy sheet đầu tiên
-//
-//                    for (int i = 0; i <= sheet.getLastRowNum(); i++) {
-//                        Row row = sheet.getRow(i);
-//                        if (row == null) continue;
-//
-//                        // Đọc dữ liệu từ từng cột
-//                        String fullName = CheckString(row.getCell(0));
-//                        String userName = CheckString(row.getCell(1));
-//                        String pass = CheckString(row.getCell(2));
-//                        String email = CheckString(row.getCell(3));
-//                        boolean isAdmin = Boolean.valueOf(CheckString(row.getCell(4)));
-//                        // Tạo đối tượng DTO_User và thêm vào danh sách
-//                        DTO_User user = new DTO_User(userName, pass, email, fullName, isAdmin);
-//                        userList.add(user);
-//                    }
-//                } catch (Exception e) {
-//                    JOptionPane.showMessageDialog(null, "Lỗi khi đọc file Excel: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-//                }
-//                return userList;
-//    }
-//    
-//    private String CheckString(Cell cell){
-//        if( cell == null) return "";
-//        switch (cell.getCellType()) {
-//            case STRING:
-//                return cell.getStringCellValue().trim();
-//            case NUMERIC:
-//                return String.valueOf((long) cell.getNumericCellValue()); // Chuyển số thành chuỗi (loại bỏ phần thập phân)
-//            case BOOLEAN:
-//                return String.valueOf(cell.getBooleanCellValue()); // "true" hoặc "false"
-//            default:
-//                return "";
-//        }
-//    }
+    private List<DTO_User> ImportExcel(File selectedFile) {
+        List<DTO_User> userList = new ArrayList<>();
+        StringBuilder errorLog = new StringBuilder(); // Lưu lỗi để thông báo sau
+
+        try (FileInputStream fis = new FileInputStream(selectedFile);
+            Workbook workbook = new XSSFWorkbook(fis)) {
+            Sheet sheet = workbook.getSheetAt(0); 
+
+            for (int i = 0; i <= sheet.getLastRowNum(); i++) {
+                try {
+                    Row row = sheet.getRow(i);
+                    if (row == null) continue;
+                    
+                    String fullName = CheckString(row.getCell(0));
+                    String userName = CheckString(row.getCell(1));
+                    String pass = CheckString(row.getCell(2));
+                    String email = CheckString(row.getCell(3));
+                    boolean isAdmin = Boolean.parseBoolean(CheckString(row.getCell(4)));
+
+                    if (userName.isEmpty() || pass.isEmpty() || email.isEmpty()) {
+                        continue;
+                    }
+
+                    DTO_User user = new DTO_User(userName, pass, email, fullName, isAdmin);
+                    userList.add(user);
+                } catch (Exception e) {
+                    errorLog.append("Lỗi ở dòng ").append(i + 1).append(": ").append(e.getMessage()).append("\n");
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Lỗi khi đọc file Excel: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+
+        // Hiển thị lỗi nếu có dòng nào bị bỏ qua
+        if (errorLog.length() > 0) {
+            JOptionPane.showMessageDialog(null, "Quá trình nhập đã xong nhưng có lỗi:\n" + errorLog.toString(), "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+        }
+
+        return userList;
+    }
+
+    
+    private String CheckString(Cell cell){
+        if( cell == null) return "";
+        switch (cell.getCellType()) {
+            case STRING:
+                return cell.getStringCellValue().trim();
+            case NUMERIC:
+                return String.valueOf((long) cell.getNumericCellValue()); // Chuyển số thành chuỗi (loại bỏ phần thập phân)
+            case BOOLEAN:
+                return String.valueOf(cell.getBooleanCellValue()); // "true" hoặc "false"
+            default:
+                return "";
+        }
+    }
 }
