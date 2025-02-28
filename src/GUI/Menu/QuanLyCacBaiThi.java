@@ -20,6 +20,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class QuanLyCacBaiThi extends JPanel {
     private ArrayList<pnlBaiThi> listPnl = new ArrayList<>();
@@ -32,30 +34,48 @@ public class QuanLyCacBaiThi extends JPanel {
         initComponents();
         LoadBaiThi();
         
+        txtSearch2.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String searchText = txtSearch2.getText().trim();
+                System.out.println(searchText);
+                searchBaiThi(searchText);
+            }
+        });
     }
     
+    private void LoadUIBaiThi(ArrayList<DTO_Test> list){
+        for(DTO_Test item : list){
+            pnlBaiThi pnl = new pnlBaiThi(item.getTestCode(), item.getTestTitle(), item.getTestLimit(), item.getTestDate().toString());
+            pnl.setPreferredSize(new java.awt.Dimension(250, 150));
+            listPnl.add(pnl);
+            pnlContent.add(pnl);
+            
+            pnl.addMouseListener(new MouseAdapter(){
+                @Override
+                public void mouseClicked(MouseEvent e){
+                    ChayBaiThi(item.getTestCode());
+                }
+            });     
+        }
+        pnlContent.revalidate();
+        pnlContent.repaint();
+    }
+
     private void LoadBaiThi() {
         ArrayList<DTO_Test> listTest = testBUS.getAllData();
         listPnl.clear();
         pnlContent.removeAll();
+        LoadUIBaiThi(listTest);
 
-        for(DTO_Test item : listTest){
-                pnlBaiThi pnl = new pnlBaiThi(item.getTestTitle(), item.getTestLimit(), item.getTestDate().toString());
-                pnl.setPreferredSize(new java.awt.Dimension(250, 150));
-                listPnl.add(pnl);
-                pnlContent.add(pnl);
-                
-                pnl.addMouseListener(new MouseAdapter(){
-                    @Override
-                    public void mouseClicked(MouseEvent e){
-                        ChayBaiThi(item.getTestCode());
-                    }
-                });     
-        }
+    }
 
-           
-        pnlContent.revalidate();
-        pnlContent.repaint();
+    private void searchBaiThi(String searchText){
+        ArrayList<DTO_Test> listTest = testBUS.searchData(searchText);
+        listPnl.clear();
+        pnlContent.removeAll();
+
+        LoadUIBaiThi(listTest);
     }
 
     private void ChayBaiThi(String testCode){
@@ -136,8 +156,10 @@ public class QuanLyCacBaiThi extends JPanel {
     }
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {
-
+        txtSearch2.setText("");
+        LoadBaiThi();
     }
+    
 
     // Variables declaration - do not modify
     private com.raven.suportSwing.MyButton btnReset;

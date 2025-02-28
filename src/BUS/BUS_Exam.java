@@ -52,6 +52,12 @@ public class BUS_Exam implements DAOInterface<DTO_Exam> {
         return listExam;
     }
 
+    public ArrayList<DTO_Exam> getAllWithTestCode(String testcode) {
+        return daoExam.getAllData(testcode);
+    }
+
+    
+    
     @Override
     public int getAutoIncrement() {
         return daoExam.getAutoIncrement();

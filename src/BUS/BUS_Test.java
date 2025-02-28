@@ -54,8 +54,11 @@ public class BUS_Test implements DAOInterface<DTO_Test> {
 
     @Override
     public DTO_Test selectById(String t) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'selectById'");
+        return daoTest.selectById(t);
+    }
+
+    public ArrayList<DTO_Test> searchData(String searchText) {
+        return daoTest.searchData(searchText);
     }
 
     @Override

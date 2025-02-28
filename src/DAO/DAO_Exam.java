@@ -112,6 +112,31 @@ public class DAO_Exam implements DAOInterface<DTO_Exam> {
         }
         return list;
     }
+    
+    
+    // lấy  tất cả bài thi theo mã bài testCode
+    public ArrayList<DTO_Exam> getAllData(String code) {
+        ArrayList<DTO_Exam> list = new ArrayList<>();
+        try {
+            Connection con = JDBCUtil.getConnectDB();
+            String sql = "SELECT * FROM exams WHERE testCode = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, code);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                String testCode = rs.getString("testCode");
+                String exOrder = rs.getString("exOrder");
+                String exCode = rs.getString("exCode");
+                String ex_quesIDs = rs.getString("ex_quesIDs");
+                DTO_Exam exam = new DTO_Exam(testCode, exOrder, exCode, ex_quesIDs);
+                list.add(exam);
+            }
+            JDBCUtil.close(con);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
     @Override
     public int getAutoIncrement() {

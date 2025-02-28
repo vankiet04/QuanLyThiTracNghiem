@@ -14,6 +14,15 @@ public class DTO_Exam {
         this.exCode = exCode;
         this.ex_quesIDs = ex_quesIDs;
     }
+    
+    public DTO_Exam(String testCode, String exOrder, String exCode, String ex_quesIDs) {
+        this.testCode = testCode;
+        this.exOrder = exOrder;
+        this.exCode = exCode;
+        this.ex_quesIDs = ex_quesIDs;
+    }
+    
+    
 
     public DTO_Exam() {
         this.exID = 0;

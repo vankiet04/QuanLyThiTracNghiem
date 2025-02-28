@@ -19,9 +19,8 @@ public class LamBaiThi extends javax.swing.JPanel {
     private List<CauHoiThi> danhSachCauHoi = new ArrayList<>();
     private JScrollPane scrollPane;
 
-    public LamBaiThi(GUI.GUI_MainFrm main) {
+    public LamBaiThi(GUI.GUI_MainFrm main, String exCode) {
         initComponents();
-        // Remove auto-added components from initComponents to avoid layout conflicts
         this.removeAll();
         this.setLayout(new BorderLayout());
         
@@ -29,17 +28,15 @@ public class LamBaiThi extends javax.swing.JPanel {
         hienThiTatCaCauHoi();
         taoNutCauHoi();
         
-        // Use BoxLayout for dynamic height and remove fixed preferred size
         pnlListCauHoi.setLayout(new BoxLayout(pnlListCauHoi, BoxLayout.Y_AXIS));
-        pnlListCauHoi.setPreferredSize(null); // Allow pnlListCauHoi to grow with its content
+        pnlListCauHoi.setPreferredSize(null);
         
-        // Initialize scrollPane without passing pnlListCauHoi; then set it explicitly
         scrollPane = new JScrollPane();
         scrollPane.setViewportView(pnlListCauHoi);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         
-        // Manually add components using BorderLayout
+
         this.add(pnlTieuDe, BorderLayout.NORTH);
         this.add(scrollPane, BorderLayout.CENTER);
         this.add(pnlTableCauHoi, BorderLayout.EAST);

@@ -13,6 +13,9 @@ import ConnectDB.JDBCUtil;
 import DTO.DTO_Answer;
 import DTO.DTO_Test;
 import DTO.DTO_User;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -58,10 +61,35 @@ public int insert(DTO_Test t) {
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
 
+    
+    // lấy bài thi theo testCode có trạng thái == 1
     @Override
     public DTO_Test selectById(String t) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'selectById'");
+        DTO_Test res = null;
+        try {
+            Connection con = JDBCUtil.getConnectDB();
+            String sql = "SELECT * FROM test WHERE testCode=? AND testStatus=1";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, t);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()){
+                int testID = rs.getInt("testID");
+                String testCode = rs.getString("testCode");
+                String testTitle = rs.getString("testTitle");
+                int tpID = rs.getInt("tpID");
+                int testTime = rs.getInt("testTime");
+                int numEasy = rs.getInt("num_easy");
+                int numMedium = rs.getInt("num_medium");
+                int numDiff = rs.getInt("num_diff");
+                int testLimit = rs.getInt("testLimit");
+                java.sql.Timestamp testDate = rs.getTimestamp("testDate");
+                int testStatus = rs.getInt("testStatus");
+                res = new DTO_Test(testID, testCode, testTitle, tpID, testTime, numEasy, numMedium, numDiff, testLimit, testDate.toLocalDateTime(), testStatus);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAO_User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return res;
     }
 
     @Override
@@ -75,7 +103,7 @@ public int insert(DTO_Test t) {
         ArrayList<DTO_Test> list = new ArrayList<>();
         try {
             Connection con = JDBCUtil.getConnectDB();
-            String sql = "SELECT * FROM test";
+            String sql = "SELECT * FROM test WHERE testStatus = 1";
             PreparedStatement pst = con.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
@@ -93,6 +121,40 @@ public int insert(DTO_Test t) {
                 DTO_Test test = new DTO_Test(testID, testCode, testTitle, tpID, testTime, numEasy, numMedium, numDiff, testLimit, testDate.toLocalDateTime(), testStatus);
                 list.add(test);
                 System.out.println(test);
+            }
+            
+            JDBCUtil.close(con);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+
+    // tìm theo tiêu đề + mã bài
+    public ArrayList<DTO_Test> searchData(String searchText) {
+        ArrayList<DTO_Test> list = new ArrayList<>();
+        try {
+            Connection con = JDBCUtil.getConnectDB();
+            String sql = "SELECT * FROM test WHERE (testTitle LIKE ? OR testCode LIKE ?) AND testStatus = 1";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, "%" + searchText + "%");
+            pst.setString(2, "%" + searchText + "%");
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                int testID = rs.getInt("testID");
+                String testCode = rs.getString("testCode");
+                String testTitle = rs.getString("testTitle");
+                int tpID = rs.getInt("tpID");
+                int testTime = rs.getInt("testTime");
+                int numEasy = rs.getInt("num_easy");
+                int numMedium = rs.getInt("num_medium");
+                int numDiff = rs.getInt("num_diff");
+                int testLimit = rs.getInt("testLimit");
+                java.sql.Timestamp testDate = rs.getTimestamp("testDate");
+                int testStatus = rs.getInt("testStatus");
+                DTO_Test test = new DTO_Test(testID, testCode, testTitle, tpID, testTime, numEasy, numMedium, numDiff, testLimit, testDate.toLocalDateTime(), testStatus);
+                list.add(test);
             }
             
             JDBCUtil.close(con);
