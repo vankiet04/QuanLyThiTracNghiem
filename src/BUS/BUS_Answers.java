@@ -75,6 +75,10 @@ public class BUS_Answers implements DAOInterface<DTO_Answer> {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getAllData'");
     }
+    
+    public ArrayList<DTO_Answer> getAllData(int qID) {
+        return daoAnswers.getAllData(qID);
+    }
 
     @Override
     public int getAutoIncrement() {

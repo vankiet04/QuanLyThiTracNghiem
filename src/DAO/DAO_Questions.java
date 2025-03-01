@@ -91,6 +91,32 @@ public class DAO_Questions implements DAOInterface<DTO.DTO_Questions> {
         }
         return list;
     }
+    
+    // lấy câu hỏi theo danh sách ID từ exam
+    public ArrayList<DTO_Questions> getAllData(String quesID) {
+        ArrayList<DTO_Questions> list = new ArrayList<>();
+        try {
+
+            Connection con = JDBCUtil.getConnectDB();
+            String sql = "SELECT * FROM questions WHERE qID IN (" + quesID + ")";
+            PreparedStatement pst = con.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                DTO_Questions obj = new DTO_Questions(
+                        rs.getInt("qID"),
+                        rs.getString("qContent"),
+                        rs.getString("qPictures"),
+                        rs.getInt("qTopicID"),
+                        rs.getString("qLevel")
+                );
+                list.add(obj);
+            }
+            JDBCUtil.close(con);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
     @Override
     public DTO_Questions selectById(String idStr) {

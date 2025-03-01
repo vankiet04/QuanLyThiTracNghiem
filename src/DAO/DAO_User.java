@@ -21,7 +21,7 @@ public class DAO_User implements DAOInterface<DTO.DTO_User>{
         int res=0;
         try {
             Connection con = (Connection) JDBCUtil.getConnectDB();
-            String sql = "SELECT * FROM users WHERE userName=? AND userPassword=?";
+            String sql = "SELECT * FROM users WHERE userName=? AND userPassword=? AND trangThai=1";
             PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
             pst.setString(1, user);
             pst.setString(2, pass);
@@ -41,7 +41,7 @@ public class DAO_User implements DAOInterface<DTO.DTO_User>{
         DTO_User res = null;
         try {
             Connection con = (Connection) JDBCUtil.getConnectDB();
-            String sql = "SELECT * FROM users WHERE userName=? AND userPassword=?";
+            String sql = "SELECT * FROM users WHERE userName=? AND userPassword=? AND trangThai=1";
             PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
             pst.setString(1, user);
             pst.setString(2, pass);
@@ -88,7 +88,7 @@ public class DAO_User implements DAOInterface<DTO.DTO_User>{
         int x =0;
         try{
             Connection con = (Connection) JDBCUtil.getConnectDB();
-            String sql = "UPDATE `users` SET `userFullName`=?, `userPassword`=?, `userEmail`=? WHERE `userID`=?";
+            String sql = "UPDATE `users` SET `userFullName`=?, `userPassword`=?, `userEmail`=? WHERE `userID`=? AND trangThai=1";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, t.getFullName());
             pst.setString(2, t.getPass());
@@ -107,7 +107,21 @@ public class DAO_User implements DAOInterface<DTO.DTO_User>{
 
     @Override
     public int delete(int t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int x =0;
+        try{
+            Connection con = (Connection) JDBCUtil.getConnectDB();
+            String sql = "UPDATE `users` SET `trangThai`=0 WHERE `userID`=?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1, t);
+            int res = pst.executeUpdate();
+            if (res >0)
+                x=1;
+           
+            JDBCUtil.close(con);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return x;  
     }
 
     @Override
@@ -115,7 +129,7 @@ public class DAO_User implements DAOInterface<DTO.DTO_User>{
         ArrayList<DTO_User> list = new ArrayList<>();
         try {
         Connection con = JDBCUtil.getConnectDB();
-        String sql = "SELECT * FROM users";
+        String sql = "SELECT * FROM users WHERE trangThai=1";
         PreparedStatement pst = con.prepareStatement(sql);
         
         ResultSet rs = pst.executeQuery();
@@ -142,7 +156,7 @@ public class DAO_User implements DAOInterface<DTO.DTO_User>{
         DTO_User res = null;
         try {
             Connection con = JDBCUtil.getConnectDB();
-            String sql = "SELECT * FROM users WHERE userID=?";
+            String sql = "SELECT * FROM users WHERE userID=? AND trangThai=1";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, t);
             ResultSet rs = pst.executeQuery();
@@ -165,7 +179,7 @@ public class DAO_User implements DAOInterface<DTO.DTO_User>{
         ArrayList<DTO_User> list = new ArrayList<>();
         try {
         Connection con = JDBCUtil.getConnectDB();
-        String sql = "SELECT * FROM users WHERE userFullName LIKE ? or userName LIKE ?";
+        String sql = "SELECT * FROM users WHERE (userFullName LIKE ? OR userName LIKE ?) AND trangThai=1";
         PreparedStatement pst = con.prepareStatement(sql);
         pst.setString(1, "%" + cur + "%");
         pst.setString(2, "%" + cur + "%");
