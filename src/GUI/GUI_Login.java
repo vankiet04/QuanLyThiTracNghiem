@@ -20,6 +20,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 public class GUI_Login extends JFrame{
@@ -34,6 +38,7 @@ public class GUI_Login extends JFrame{
         this.setTitle("HỆ THỐNG QUẢN LÝ THI TRẮC NGHIỆM");
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        InitComponent();
     }
     
     private void InitComponent(){
