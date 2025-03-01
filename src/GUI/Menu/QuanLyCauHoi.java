@@ -20,6 +20,7 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -42,15 +43,31 @@ import GUI.CRUD.ThemCauHoi;
 public final class QuanLyCauHoi extends javax.swing.JPanel {
         GUI.GUI_MainFrm main;
 
+        // Add these variables at the class level
+        private javax.swing.JComboBox<String> cboTopic;
+        private javax.swing.JComboBox<String> cboDifficulty;
+        private ArrayList<DTO.DTO_Topic> topics;
+
         public QuanLyCauHoi(GUI.GUI_MainFrm main) {
                 this.main = main;
                 initComponents();
+                loadTopics(); // Load topics for the combo box
                 loadQuestionsTable();
         }
 
         private void jLabel7MousePressed(java.awt.event.MouseEvent evt) {
-                // TODO add your handling code here:
 
+                int selectedRow = jTable1.getSelectedRow();
+                if (selectedRow >= 0) {
+                        int questionId = (Integer) jTable1.getModel().getValueAt(selectedRow, 0);
+                        GUI.CRUD.XemChiTietCauHoi xemChiTietDlg = new GUI.CRUD.XemChiTietCauHoi(
+                                        (java.awt.Frame) SwingUtilities.getWindowAncestor(this), true, questionId);
+                        xemChiTietDlg.setVisible(true);
+                } else {
+                        javax.swing.JOptionPane.showMessageDialog(this,
+                                        "Vui lòng chọn một câu hỏi để xem chi tiết!",
+                                        "Thông báo", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                }
         }
 
         /**
@@ -76,10 +93,6 @@ public final class QuanLyCauHoi extends javax.swing.JPanel {
                 jLabel6 = new javax.swing.JLabel();
                 jLabel7 = new javax.swing.JLabel();
                 jLabel8 = new javax.swing.JLabel();
-                jLabel11 = new javax.swing.JLabel();
-                jLabel13 = new javax.swing.JLabel();
-                jLabel15 = new javax.swing.JLabel();
-                jButton2 = new javax.swing.JButton();
                 jLabel1 = new javax.swing.JLabel();
                 jScrollPane1 = new javax.swing.JScrollPane();
                 jTable1 = new javax.swing.JTable();
@@ -146,24 +159,6 @@ public final class QuanLyCauHoi extends javax.swing.JPanel {
 
                 jLabel8.setText("Xem chi tiết");
 
-                jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8-export-excel-75.png"))); // NOI18N
-
-                jLabel13.setText("Cài đặt phiên bản sản phẩm");
-
-                jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8-config-75.png"))); // NOI18N
-                jLabel15.addMouseListener(new java.awt.event.MouseAdapter() {
-                        public void mousePressed(java.awt.event.MouseEvent evt) {
-                                jLabel15MousePressed(evt);
-                        }
-                });
-
-                jButton2.setText("Xuất");
-                jButton2.addActionListener(new java.awt.event.ActionListener() {
-                        public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jButton2ActionPerformed(evt);
-                        }
-                });
-
                 jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/icons8-edit-75.png"))); // NOI18N
                 jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -218,36 +213,8 @@ public final class QuanLyCauHoi extends javax.swing.JPanel {
                                                                                                 .createSequentialGroup()
                                                                                                 .addGap(6, 6, 6)
                                                                                                 .addComponent(jLabel8)))
-                                                                .addGroup(jPanel7Layout.createParallelGroup(
-                                                                                javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                .addGroup(jPanel7Layout
-                                                                                                .createSequentialGroup()
-                                                                                                .addGap(11, 11, 11)
-                                                                                                .addComponent(jLabel11)
-                                                                                                .addPreferredGap(
-                                                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                                Short.MAX_VALUE))
-                                                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-                                                                                                jPanel7Layout
-                                                                                                                .createSequentialGroup()
-                                                                                                                .addPreferredGap(
-                                                                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                                                Short.MAX_VALUE)
-                                                                                                                .addComponent(jButton2)
-                                                                                                                .addGap(18, 18, 18)))
-                                                                .addGroup(jPanel7Layout.createParallelGroup(
-                                                                                javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                .addComponent(jLabel13,
-                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                148,
-                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                .addGroup(jPanel7Layout
-                                                                                                .createSequentialGroup()
-                                                                                                .addGap(33, 33, 33)
-                                                                                                .addComponent(jLabel15)))
-                                                                .addContainerGap()));
+                                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                Short.MAX_VALUE)));
                 jPanel7Layout.setVerticalGroup(
                                 jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addGroup(jPanel7Layout.createSequentialGroup()
@@ -282,9 +249,7 @@ public final class QuanLyCauHoi extends javax.swing.JPanel {
                                                                                                                                                                 .addComponent(jLabel2,
                                                                                                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                                                                                                Short.MAX_VALUE))
-                                                                                                                                                .addComponent(jLabel11)
-                                                                                                                                                .addComponent(jLabel15))))
+                                                                                                                                                                                Short.MAX_VALUE)))))
                                                                                                 .addGap(19, 19, 19))
                                                                                 .addGroup(jPanel7Layout
                                                                                                 .createSequentialGroup()
@@ -296,8 +261,7 @@ public final class QuanLyCauHoi extends javax.swing.JPanel {
                                                                                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                                                                 .addGroup(jPanel7Layout
                                                                                 .createParallelGroup(
-                                                                                                javax.swing.GroupLayout.Alignment.LEADING,
-                                                                                                false)
+                                                                                                javax.swing.GroupLayout.Alignment.LEADING, false)
                                                                                 .addComponent(jLabel3,
                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
@@ -313,9 +277,7 @@ public final class QuanLyCauHoi extends javax.swing.JPanel {
                                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                                 Short.MAX_VALUE)
-                                                                                                .addComponent(jLabel8)
-                                                                                                .addComponent(jButton2)
-                                                                                                .addComponent(jLabel13)))
+                                                                                                .addComponent(jLabel8)))
                                                                 .addContainerGap(12, Short.MAX_VALUE)));
 
                 jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -331,6 +293,28 @@ public final class QuanLyCauHoi extends javax.swing.JPanel {
                                 }));
                 jScrollPane1.setViewportView(jTable1);
 
+                // Add topic combobox with label
+                JLabel lblTopic = new javax.swing.JLabel("Chủ đề:");
+                lblTopic.setFont(new java.awt.Font("Segoe UI", 0, 14));
+                cboTopic = new javax.swing.JComboBox<>();
+                cboTopic.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả chủ đề" }));
+                cboTopic.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                filterQuestions();
+                        }
+                });
+
+                // Add difficulty combobox with label
+                JLabel lblDifficulty = new javax.swing.JLabel("Độ khó:");
+                lblDifficulty.setFont(new java.awt.Font("Segoe UI", 0, 14));
+                cboDifficulty = new javax.swing.JComboBox<>();
+                cboDifficulty.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Dễ", "Vừa", "Khó" }));
+                cboDifficulty.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                filterQuestions();
+                        }
+                });
+
                 javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
                 jPanel2.setLayout(jPanel2Layout);
                 jPanel2Layout.setHorizontalGroup(
@@ -344,6 +328,20 @@ public final class QuanLyCauHoi extends javax.swing.JPanel {
                                                                                                 .addComponent(txtSearch,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                                 220,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                .addGap(20, 20, 20)
+                                                                                                .addComponent(lblTopic)
+                                                                                                .addGap(10, 10, 10)
+                                                                                                .addComponent(cboTopic,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                150,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                .addGap(20, 20, 20)
+                                                                                                .addComponent(lblDifficulty)
+                                                                                                .addGap(10, 10, 10)
+                                                                                                .addComponent(cboDifficulty,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                100,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                 .addPreferredGap(
                                                                                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED,
@@ -387,12 +385,22 @@ public final class QuanLyCauHoi extends javax.swing.JPanel {
                                                                                                 .createSequentialGroup()
                                                                                                 .addGroup(jPanel2Layout
                                                                                                                 .createParallelGroup(
-                                                                                                                                javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                                                                .addComponent(myButton2,
+                                                                                                                                javax.swing.GroupLayout.Alignment.CENTER)
+                                                                                                                .addComponent(txtSearch,
                                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                                .addComponent(txtSearch,
+                                                                                                                .addComponent(lblTopic)
+                                                                                                                .addComponent(cboTopic,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                .addComponent(lblDifficulty)
+                                                                                                                .addComponent(cboDifficulty,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                .addComponent(myButton2,
                                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -469,19 +477,14 @@ public final class QuanLyCauHoi extends javax.swing.JPanel {
                 // Reset the search field and reload all questions
                 txtSearch.setText("");
                 lblSearch.setText("");
+                cboTopic.setSelectedIndex(0); // Reset topic to "All topics"
+                cboDifficulty.setSelectedIndex(0); // Reset difficulty to "All"
                 loadQuestionsTable();
         }// GEN-LAST:event_myButton2ActionPerformed
 
         private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_txtSearchKeyReleased
                 // Search for questions matching the keyword
-                String keyword = txtSearch.getText().trim();
-                if (keyword.isEmpty()) {
-                        // If search field is empty, load all questions
-                        loadQuestionsTable();
-                        lblSearch.setText("");
-                } else {
-                        searchQuestions(keyword);
-                }
+                filterQuestions();
         }// GEN-LAST:event_txtSearchKeyReleased
 
         private void txtSearchFocusGained(java.awt.event.FocusEvent evt) {// GEN-FIRST:event_txtSearchFocusGained
@@ -507,21 +510,53 @@ public final class QuanLyCauHoi extends javax.swing.JPanel {
         }// GEN-LAST:event_jLabel1MousePressed
 
         private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jLabel4MousePressed
+                // Handle delete question
+                int selectedRow = jTable1.getSelectedRow();
+                if (selectedRow >= 0) {
+                        int questionId = (Integer) jTable1.getModel().getValueAt(selectedRow, 0);
 
+                        // Show confirmation dialog
+                        int option = JOptionPane.showConfirmDialog(
+                                        this,
+                                        "Bạn có chắc chắn muốn xóa câu hỏi này không?",
+                                        "Xác nhận xóa",
+                                        JOptionPane.YES_NO_OPTION);
+
+                        if (option == JOptionPane.YES_OPTION) {
+                                // Soft delete the question by setting status to 0
+                                BUS_Questions busQuestions = new BUS_Questions();
+                                int result = busQuestions.softDelete(questionId);
+
+                                if (result > 0) {
+                                        JOptionPane.showMessageDialog(this, "Xóa câu hỏi thành công!");
+                                        // Reload the questions table to reflect the changes
+                                        loadQuestionsTable();
+                                } else {
+                                        JOptionPane.showMessageDialog(this, "Xóa câu hỏi thất bại. Vui lòng thử lại.",
+                                                        "Lỗi", JOptionPane.ERROR_MESSAGE);
+                                }
+                        }
+                } else {
+                        JOptionPane.showMessageDialog(this, "Vui lòng chọn một câu hỏi để xóa!",
+                                        "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                }
         }// GEN-LAST:event_jLabel4MousePressed
-
-        private void jLabel15MousePressed(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jLabel15MousePressed
-
-        }// GEN-LAST:event_jLabel15MousePressed
 
         private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtSearchActionPerformed
                 // TODO add your handling code here:
         }// GEN-LAST:event_txtSearchActionPerformed
 
-        private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton2ActionPerformed
-                // TODO add your handling code here:
-
-        }// GEN-LAST:event_jButton2ActionPerformed
+        // Add a helper method to get topic name from ID
+        private String getTopicName(int topicId) {
+                if (topics != null) {
+                        for (DTO.DTO_Topic topic : topics) {
+                                if (topic.getTpID() == topicId) {
+                                        return topic.getTpTitle();
+                                }
+                        }
+                }
+                return "Không xác định";
+        }
 
         public void loadQuestionsTable() {
                 BUS.BUS_Questions busQuestions = new BUS_Questions();
@@ -535,10 +570,13 @@ public final class QuanLyCauHoi extends javax.swing.JPanel {
                 };
                 int stt = 1;
                 for (DTO.DTO_Questions q : questions) {
+                        // Look up topic name instead of using the topic ID directly
+                        String topicName = getTopicName(q.getqTopicID());
+
                         Object[] rowData = new Object[] {
                                         q.getqID(),
                                         q.getqContent(),
-                                        q.getqTopicID(),
+                                        topicName, // Use topic name instead of ID
                                         q.getqLevel()
                         };
                         model.addRow(rowData);
@@ -587,10 +625,121 @@ public final class QuanLyCauHoi extends javax.swing.JPanel {
                                 };
 
                                 for (DTO_Questions q : questions) {
+                                        // Look up topic name
+                                        String topicName = getTopicName(q.getqTopicID());
+
                                         Object[] rowData = new Object[] {
                                                         q.getqID(),
                                                         q.getqContent(),
-                                                        q.getqTopicID(),
+                                                        topicName, // Use topic name instead of ID
+                                                        q.getqLevel()
+                                        };
+                                        model.addRow(rowData);
+                                }
+
+                                jTable1.setModel(model);
+
+                                // Format the table columns
+                                DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+                                centerRenderer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                                for (int i = 0; i < jTable1.getColumnCount(); i++) {
+                                        jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+                                }
+
+                                lblSearch.setText("Tìm thấy " + questions.size() + " kết quả.");
+                                lblSearch.setForeground(new Color(0, 102, 0)); // Dark green
+                        }
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        lblSearch.setText("Lỗi tìm kiếm: " + e.getMessage());
+                        lblSearch.setForeground(Color.RED);
+                }
+        }
+
+        // Add this method to your class to load topics into the combo box
+        private void loadTopics() {
+                try {
+                        BUS.BUS_Topics topicsBUS = new BUS.BUS_Topics();
+                        topics = topicsBUS.getAllTopics();
+
+                        // First item is "All topics"
+                        cboTopic.removeAllItems();
+                        cboTopic.addItem("Tất cả chủ đề");
+
+                        // Add topics to combo box
+                        if (topics != null && !topics.isEmpty()) {
+                                for (DTO.DTO_Topic topic : topics) {
+                                        cboTopic.addItem(topic.getTpTitle());
+                                }
+                        }
+                } catch (Exception e) {
+                        e.printStackTrace();
+                }
+        }
+
+        // New method to handle filtering based on all criteria
+        private void filterQuestions() {
+                String keyword = txtSearch.getText().trim();
+                int topicIndex = cboTopic.getSelectedIndex();
+                String difficulty = cboDifficulty.getSelectedItem().toString();
+
+                // Get the topic ID (-1 means all topics)
+                int topicId = -1;
+                if (topicIndex > 0) { // If not "All topics"
+                        topicId = topics.get(topicIndex - 1).getTpID();
+                }
+
+                // If difficulty is "All", set to empty
+                if (difficulty.equals("Tất cả")) {
+                        difficulty = "";
+                }
+
+                // If all filters are default, load all questions
+                if (keyword.isEmpty() && topicId == -1 && difficulty.isEmpty()) {
+                        loadQuestionsTable();
+                        lblSearch.setText("");
+                } else {
+                        searchQuestions(keyword, topicId, difficulty);
+                }
+        }
+
+        // Update the searchQuestions method to include the new filters
+        private void searchQuestions(String keyword, int topicId, String difficulty) {
+                try {
+                        BUS_Questions busQuestions = new BUS_Questions();
+                        ArrayList<DTO.DTO_Questions> questions = busQuestions.searchQuestionsFiltered(keyword, topicId, difficulty);
+
+                        if (questions.isEmpty()) {
+                                lblSearch.setText("Không tìm thấy câu hỏi phù hợp.");
+                                lblSearch.setForeground(Color.RED);
+
+                                // Clear the table
+                                String[] columns = { "ID", "Nội dung", "Chủ đề", "Độ khó" };
+                                DefaultTableModel model = new DefaultTableModel(columns, 0) {
+                                        @Override
+                                        public boolean isCellEditable(int row, int column) {
+                                                return false;
+                                        }
+                                };
+                                jTable1.setModel(model);
+                        } else {
+                                // Update the table with search results
+                                String[] columns = { "ID", "Nội dung", "Chủ đề", "Độ khó" };
+                                DefaultTableModel model = new DefaultTableModel(columns, 0) {
+                                        @Override
+                                        public boolean isCellEditable(int row, int column) {
+                                                return false;
+                                        }
+                                };
+
+                                for (DTO_Questions q : questions) {
+                                        // Look up topic name
+                                        String topicName = getTopicName(q.getqTopicID());
+
+                                        Object[] rowData = new Object[] {
+                                                        q.getqID(),
+                                                        q.getqContent(),
+                                                        topicName, 
                                                         q.getqLevel()
                                         };
                                         model.addRow(rowData);
@@ -617,11 +766,7 @@ public final class QuanLyCauHoi extends javax.swing.JPanel {
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private javax.swing.ButtonGroup buttonGroup1;
-        private javax.swing.JButton jButton2;
         private javax.swing.JLabel jLabel1;
-        private javax.swing.JLabel jLabel11;
-        private javax.swing.JLabel jLabel13;
-        private javax.swing.JLabel jLabel15;
         private javax.swing.JLabel jLabel2;
         private javax.swing.JLabel jLabel3;
         private javax.swing.JLabel jLabel4;
