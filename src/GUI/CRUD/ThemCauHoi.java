@@ -34,6 +34,7 @@ import javax.swing.event.TableModelListener;
 import java.util.ArrayList;
 import DTO.DTO_Answer;
 import DTO.DTO_Questions;
+import DTO.DTO_Topic;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -41,6 +42,7 @@ import javax.swing.JOptionPane;
 
 import BUS.BUS_Answers;
 import BUS.BUS_Questions;
+import BUS.BUS_Topics;
 
 /**
  *
@@ -58,12 +60,13 @@ public class ThemCauHoi extends javax.swing.JDialog {
         BUS.BUS_Questions questionBUS = new BUS_Questions();
         BUS.BUS_Answers answerBUS = new BUS_Answers();
         private javax.swing.JButton deleteBtn;
+        private ArrayList<DTO.DTO_Topic> topics;
 
         public ThemCauHoi(java.awt.Frame parent, boolean modal) {
 
                 initComponents();
                 createDeleteButton();
-                // Removed addUpdateButton() call since we don't need this button
+                loadTopics(); // Load topics from database
         }
 
         public ThemCauHoi() {
@@ -715,7 +718,7 @@ public class ThemCauHoi extends javax.swing.JDialog {
                 question.setqPictures(imgQuestion);
                 String level = jComboBox2.getSelectedItem().toString();
                 question.setqLevel(level);
-                question.setqTopicID(1);
+                question.setqTopicID(getSelectedTopicId());
 
                 if (questionBUS.insert(question) > 0) {
                         JOptionPane.showMessageDialog(this, "Thêm câu hỏi thành công");
@@ -876,6 +879,41 @@ public class ThemCauHoi extends javax.swing.JDialog {
                 deleteBtn.setVisible(false);
                 jPanel1.revalidate();
                 jPanel1.repaint();
+        }
+
+        // Add method to load topics from database to JComboBox
+        private void loadTopics() {
+                try {
+                        BUS.BUS_Topics topicsBUS = new BUS_Topics();
+                        topics = topicsBUS.getAllTopics();
+
+                        // Clear default model
+                        jComboBox1.removeAllItems();
+
+                        // Add topics to combo box
+                        if (topics != null && !topics.isEmpty()) {
+                                for (DTO_Topic topic : topics) {
+                                        jComboBox1.addItem(topic.getTpTitle());
+                                }
+                        } else {
+                                // Add default item if no topics found
+                                jComboBox1.addItem("Không có chủ đề");
+                        }
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        JOptionPane.showMessageDialog(this,
+                                        "Lỗi khi tải danh sách chủ đề: " + e.getMessage(),
+                                        "Lỗi", JOptionPane.ERROR_MESSAGE);
+                }
+        }
+
+        // Get selected topic ID
+        private int getSelectedTopicId() {
+                int selectedIndex = jComboBox1.getSelectedIndex();
+                if (selectedIndex >= 0 && selectedIndex < topics.size()) {
+                        return topics.get(selectedIndex).getTpID();
+                }
+                return 1; // Default if no selection or error
         }
 
         /**

@@ -52,10 +52,6 @@ public class DTO_Topic {
 
     @Override
     public String toString() {
-        return "DTO_Topic{" + 
-        "tpID=" + tpID + 
-        ", tpTitle='" + tpTitle + 
-        '\'' + ", tpParent=" + tpParent + 
-        ", tpStatus=" + tpStatus + '}';
+        return this.tpTitle;
     }
 }
