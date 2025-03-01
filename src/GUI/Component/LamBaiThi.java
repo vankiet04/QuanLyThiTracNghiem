@@ -1,12 +1,22 @@
 package GUI.Component;
 
+import BUS.BUS_Answers;
+import BUS.BUS_Exam;
+import BUS.BUS_Questions;
+import BUS.BUS_Test;
+import BUS.BUS_Topic;
+import DTO.DTO_Exam;
+import DTO.DTO_Answer;
+import DTO.DTO_Questions;
 import GUI.Component.CauHoiThi;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -16,43 +26,61 @@ import javax.swing.SwingUtilities;
 public class LamBaiThi extends javax.swing.JPanel {
 
     //test data
-    private List<CauHoiThi> danhSachCauHoi = new ArrayList<>();
+    private ArrayList<CauHoiThi> danhSachCauHoi = new ArrayList<>();
+    private ArrayList<DTO_Questions> listCauHoi = new ArrayList<>();
     private JScrollPane scrollPane;
+    private HashMap<Integer, ArrayList<DTO_Answer>> myMap = new HashMap<>();
+    
+    
+    private BUS_Exam examBUS =  new BUS_Exam();
+    private BUS_Questions questBUS = new BUS_Questions();
+    private BUS_Answers answerBUS =  new BUS_Answers();
+    private DTO_Exam examCur;
+    
 
-    public LamBaiThi(GUI.GUI_MainFrm main) {
+    public LamBaiThi(GUI.GUI_MainFrm main, String exCode) {
         initComponents();
-        // Remove auto-added components from initComponents to avoid layout conflicts
         this.removeAll();
         this.setLayout(new BorderLayout());
         
-        taoCauHoi();
+        // xử lý thông tin chuỗi của exam
+
+        examCur = examBUS.selectById(exCode);
+        listCauHoi = questBUS.getAllData(examCur.getEx_quesIDs());
+        XuLyDuLieu();
         hienThiTatCaCauHoi();
         taoNutCauHoi();
         
-        // Use BoxLayout for dynamic height and remove fixed preferred size
-        pnlListCauHoi.setLayout(new BoxLayout(pnlListCauHoi, BoxLayout.Y_AXIS));
-        pnlListCauHoi.setPreferredSize(null); // Allow pnlListCauHoi to grow with its content
         
-        // Initialize scrollPane without passing pnlListCauHoi; then set it explicitly
+        // code liên quan đến giao diện
+        pnlListCauHoi.setLayout(new BoxLayout(pnlListCauHoi, BoxLayout.Y_AXIS));
+        pnlListCauHoi.setPreferredSize(null);
         scrollPane = new JScrollPane();
         scrollPane.setViewportView(pnlListCauHoi);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        
-        // Manually add components using BorderLayout
         this.add(pnlTieuDe, BorderLayout.NORTH);
         this.add(scrollPane, BorderLayout.CENTER);
         this.add(pnlTableCauHoi, BorderLayout.EAST);
-        
         this.revalidate();
         this.repaint();
     }
-
-    // Lấy từ BUS của list đề thi lên
-    private void taoCauHoi() {
-        for (int i = 0; i < 50; i++)
-            danhSachCauHoi.add(new CauHoiThi("Câu hỏi số " + (i + 1), "Đây là đề bài", "Đáp án A", "Đáp án B", "Đáp án C", "Đáp án D"));
+    
+    public void XuLyDuLieu(){
+        for(DTO_Questions ques : listCauHoi){
+                ArrayList<DTO_Answer> list = answerBUS.getAllData(ques.getqID());
+                myMap.put(ques.getqID(), list);
+        }
+        taoCauHoi();
     }
+        private void taoCauHoi() {
+            for (int i = 0; i < listCauHoi.size(); i++){
+                DTO_Questions quest = listCauHoi.get(i);
+                ArrayList<DTO_Answer> listAnswer = myMap.get(quest.getqID());
+                danhSachCauHoi.add(new CauHoiThi("Câu hỏi số " + (i + 1), quest.getqContent(), listAnswer));
+            }
+
+        }
 
     //  
     private void hienThiTatCaCauHoi() {

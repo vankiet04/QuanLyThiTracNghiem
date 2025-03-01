@@ -1,6 +1,8 @@
 package GUI.Menu;
 
+import BUS.BUS_Test;
 import ConnectDB.JDBCUtil;
+import DTO.DTO_Test;
 import GUI.CRUD.ChiTietBaiThi;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -18,58 +20,66 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class QuanLyCacBaiThi extends JPanel {
     private ArrayList<pnlBaiThi> listPnl = new ArrayList<>();
     private GUI.GUI_MainFrm main;
     private javax.swing.JPanel pnlContent;
+    private BUS.BUS_Test testBUS =  new BUS_Test();
     
     public QuanLyCacBaiThi(GUI.GUI_MainFrm main) {
         this.main = main;
         initComponents();
         LoadBaiThi();
         
+        txtSearch2.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String searchText = txtSearch2.getText().trim();
+                System.out.println(searchText);
+                searchBaiThi(searchText);
+            }
+        });
     }
     
-    private void LoadBaiThi() {
-        listPnl.clear();
-        pnlContent.removeAll();
-
-        try {
-            Connection con = JDBCUtil.getConnectDB();
-            String query = "SELECT testTilte, testLimit FROM test";
-            PreparedStatement ps = con.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                String tenBaiThi = rs.getString("testTilte");
-                int soLuotLam = rs.getInt("testLimit");
-                double diem = 0;
-
-                pnlBaiThi pnl = new pnlBaiThi(tenBaiThi, soLuotLam, diem);
-                pnl.setPreferredSize(new java.awt.Dimension(250, 150));
-                listPnl.add(pnl);
-                pnlContent.add(pnl);
-                
-                pnl.addMouseListener(new MouseAdapter(){
-                    @Override
-                    public void mouseClicked(MouseEvent e){
-                        ChayBaiThi();
-                    }
-                });
-            }
-
-            con.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void LoadUIBaiThi(ArrayList<DTO_Test> list){
+        for(DTO_Test item : list){
+            pnlBaiThi pnl = new pnlBaiThi(item.getTestCode(), item.getTestTitle(), item.getTestLimit(), item.getTestDate().toString());
+            pnl.setPreferredSize(new java.awt.Dimension(250, 150));
+            listPnl.add(pnl);
+            pnlContent.add(pnl);
+            
+            pnl.addMouseListener(new MouseAdapter(){
+                @Override
+                public void mouseClicked(MouseEvent e){
+                    ChayBaiThi(item.getTestCode());
+                }
+            });     
         }
-
         pnlContent.revalidate();
         pnlContent.repaint();
     }
 
-    private void ChayBaiThi(){
-        ChiTietBaiThi ctbt = new ChiTietBaiThi(this.main);
+    private void LoadBaiThi() {
+        ArrayList<DTO_Test> listTest = testBUS.getAllData();
+        listPnl.clear();
+        pnlContent.removeAll();
+        LoadUIBaiThi(listTest);
+
+    }
+
+    private void searchBaiThi(String searchText){
+        ArrayList<DTO_Test> listTest = testBUS.searchData(searchText);
+        listPnl.clear();
+        pnlContent.removeAll();
+
+        LoadUIBaiThi(listTest);
+    }
+
+    private void ChayBaiThi(String testCode){
+        ChiTietBaiThi ctbt = new ChiTietBaiThi(this.main, testCode);
         ctbt.setVisible(true);
     }
 
@@ -146,8 +156,10 @@ public class QuanLyCacBaiThi extends JPanel {
     }
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {
-
+        txtSearch2.setText("");
+        LoadBaiThi();
     }
+    
 
     // Variables declaration - do not modify
     private com.raven.suportSwing.MyButton btnReset;

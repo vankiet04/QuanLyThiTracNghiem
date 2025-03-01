@@ -23,8 +23,13 @@ public class BUS_Questions {
         return questionsDAO.delete(cur);
     }
 
-    public java.util.ArrayList<DTO.DTO_Questions> getAllData() {
+    public ArrayList<DTO_Questions> getAllData() {
         return questionsDAO.getAllData();
+    }
+    
+    public ArrayList<DTO_Questions> getAllData(String quesID) {
+        quesID = quesID.replace("[", "").replace("]", "");
+        return questionsDAO.getAllData(quesID);
     }
 
     public int getLargestID() {
