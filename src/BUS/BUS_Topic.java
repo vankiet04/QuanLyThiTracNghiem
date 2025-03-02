@@ -14,6 +14,10 @@ public class BUS_Topic {
         list = topicDAO.getAllData();
     }
 
+    public void refreshData() {
+        list = topicDAO.getAllData();
+    }
+
     public ArrayList<DTO_Topic> getAllData() {
         return list;
     }
@@ -63,15 +67,23 @@ public class BUS_Topic {
 
     // Delete a topic by its ID
     public int delete(int id) {
-        int result = topicDAO.delete(id);
-        if (result > 0) {
-            list.removeIf(topic -> topic.getTpID() == id); // Remove from the local list
+        DTO_Topic topicToDelete = getInfo(id);
+        if (topicToDelete != null) {
+            topicToDelete.setTpStatus(0); // Set status to 0 (inactive)
+            int result = topicDAO.update(topicToDelete);
+            if (result > 0) {
+                // Update status of child topics
+                for (DTO_Topic topic : list) {
+                    if (topic.getTpParent() == id && topic.getTpStatus() == 1) {
+                        topic.setTpStatus(0);
+                        topicDAO.update(topic);
+                    }
+                }
+                refreshData(); // Refresh the local list
+                return result;
+            }
         }
-        return result;
+        return 0;
     }
-
-    // Refresh the local data from the database
-    public void refreshData() {
-        list = topicDAO.getAllData();
-    }
+    
 }
