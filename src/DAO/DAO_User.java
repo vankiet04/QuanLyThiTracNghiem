@@ -129,7 +129,7 @@ public class DAO_User implements DAOInterface<DTO.DTO_User>{
         ArrayList<DTO_User> list = new ArrayList<>();
         try {
         Connection con = JDBCUtil.getConnectDB();
-        String sql = "SELECT * FROM users WHERE trangThai=1";
+        String sql = "SELECT * FROM users WHERE `trangThai`=1";
         PreparedStatement pst = con.prepareStatement(sql);
         
         ResultSet rs = pst.executeQuery();

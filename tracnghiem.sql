@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 28, 2025 at 11:24 AM
+-- Generation Time: Feb 27, 2025 at 10:09 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -45,62 +45,13 @@ INSERT INTO `answers` (`awID`, `qID`, `awContent`, `awPictures`, `isRight`, `awS
 (5, 2, '150,000,000 m/s', '', 0, 1),
 (6, 3, 'NaOH + H2', '', 1, 1),
 (7, 3, 'NaCl', '', 0, 1),
-(8, 4, '4', '', 1, 1),
-(9, 4, '5', '', 0, 1),
-(10, 4, '6', '', 0, 1),
-(11, 5, '3.14159', '', 1, 1),
-(12, 5, '3.5', '', 0, 1),
-(13, 5, '2.718', '', 0, 1),
-(14, 6, '7', '', 1, 1),
-(15, 6, '6', '', 0, 1),
-(16, 6, '8', '', 0, 1),
-(17, 7, '180 độ', '', 1, 1),
-(18, 7, '90 độ', '', 0, 1),
-(19, 7, '360 độ', '', 0, 1),
-(20, 8, '120', '', 1, 1),
-(21, 8, '60', '', 0, 1),
-(22, 8, '24', '', 0, 1),
-(23, 9, '19', '', 1, 1),
-(24, 9, '17', '', 0, 1),
-(25, 9, '15', '', 0, 1),
-(26, 10, '27', '', 1, 1),
-(27, 10, '9', '', 0, 1),
-(28, 10, '18', '', 0, 1),
-(29, 11, '2πr', '', 1, 1),
-(30, 11, 'πr^2', '', 0, 1),
-(31, 11, 'd^2', '', 0, 1),
-(32, 12, '0', '', 1, 1),
-(33, 12, '1', '', 0, 1),
-(34, 12, 'Vô hạn', '', 0, 1),
-(35, 13, '55', '', 1, 1),
-(36, 13, '34', '', 0, 1),
-(37, 13, '89', '', 0, 1),
-(38, 14, 'x = 2 hoặc x = 3', '', 1, 1),
-(39, 14, 'x = 1 hoặc x = 6', '', 0, 1),
-(40, 14, 'x = 3 hoặc x = 4', '', 0, 1),
-(41, 15, 'Hình tròn', '', 1, 1),
-(42, 15, 'Hình vuông', '', 0, 1),
-(43, 15, 'Hình tam giác đều', '', 0, 1),
-(44, 1, '2', '', 1, 1),
-(45, 1, '1', '', 0, 1),
-(46, 1, '3', '', 0, 1),
-(47, 1, '4', '', 0, 1),
-(48, 2, '299,792 km/s', '', 0, 1),
-(49, 2, '300,000 km/s', '', 0, 1),
-(50, 3, 'H2O', '', 0, 1),
-(51, 3, 'NaOH', '', 0, 1),
-(52, 4, '3', '', 0, 1),
-(53, 5, '4.14', '', 0, 1),
-(54, 6, '9', '', 0, 1),
-(55, 7, '270 độ', '', 0, 1),
-(56, 8, '720', '', 0, 1),
-(57, 9, '13', '', 0, 1),
-(58, 10, '36', '', 0, 1),
-(59, 11, 'πd', '', 0, 1),
-(60, 12, 'Không xác định', '', 0, 1),
-(61, 13, '21', '', 0, 1),
-(62, 14, 'x = 1 hoặc x = 2', '', 0, 1),
-(63, 15, 'Hình chữ nhật', '', 0, 1);
+(8, 4, '12', '', 0, 1),
+(9, 4, '13', '', 1, 1),
+(10, 4, '33', '', 0, 1),
+(11, 4, '43', '', 0, 1),
+(15, 1, '1', '', 0, 1),
+(16, 1, '2', '', 1, 1),
+(17, 1, '3', '', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -161,18 +112,7 @@ INSERT INTO `questions` (`qID`, `qContent`, `qPictures`, `qTopicID`, `qLevel`, `
 (1, '1 + 1 bằng bao nhiêu?', '', 1, 'easy', 1),
 (2, 'Tốc độ ánh sáng là bao nhiêu?', '', 2, 'medium', 1),
 (3, 'Phản ứng hóa học giữa Na và H2O tạo ra chất gì?', '', 3, 'diff', 1),
-(4, '2 + 2 bằng bao nhiêu?', '', 1, 'easy', 1),
-(5, 'Giá trị của π (pi) xấp xỉ bằng bao nhiêu?', '', 1, 'easy', 1),
-(6, 'Căn bậc hai của 49 là bao nhiêu?', '', 1, 'easy', 1),
-(7, 'Tổng các góc trong tam giác bằng bao nhiêu độ?', '', 1, 'easy', 1),
-(8, '5! (5 giai thừa) bằng bao nhiêu?', '', 1, 'medium', 1),
-(9, 'Số nguyên tố lớn nhất nhỏ hơn 20 là số nào?', '', 1, 'medium', 1),
-(10, 'Giá trị của biểu thức 3^3 là bao nhiêu?', '', 1, 'medium', 1),
-(11, 'Chu vi của hình tròn có bán kính r được tính bằng công thức nào?', '', 1, 'medium', 1),
-(12, 'Tích vô hướng của hai vectơ vuông góc bằng bao nhiêu?', '', 1, 'diff', 1),
-(13, 'Số Fibonacci thứ 10 là số nào?', '', 1, 'diff', 1),
-(14, 'Giải phương trình x^2 - 5x + 6 = 0', '', 1, 'diff', 1),
-(15, 'Hình nào có diện tích lớn nhất với cùng chu vi: hình vuông, hình tròn, hình tam giác đều?', '', 1, 'diff', 1);
+(4, 'tester', '', 1, 'Dễ', 1);
 
 -- --------------------------------------------------------
 
@@ -269,17 +209,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userID`, `userName`, `userEmail`, `userPassword`, `userFullName`, `isAdmin`, `trangThai`) VALUES
-(1, 'admin', 'asd@gmail.com', '123456', 'Administrator', 1, 1),
-(2, 'user1', 'user1@example.com', '11111111', 'User One', 0, 0),
-(3, 'user2', 'user2@example.com', '11111111', 'assdasd', 0, 0),
+(1, 'admin', 'admin@gmail.com', '123456', 'Administrator', 1, 1),
+(2, 'user1', 'user1@example.com', '11111111', 'User One', 0, 1),
+(3, 'user2', 'user2@example.com', '11111111', 'assdasd', 0, 1),
 (101, 'Nguyen Van A', 'a@example.com', '123123', 'aaaa', 0, 1),
 (102, 'Tran Thi B', 'b@example.com', '123123', 'bbbb', 0, 1),
-(103, 'Le Van C', 'c@example.com', '123123', 'cccc', 0, 1),
-(104, 'hello1', 'a1@gmail.com', '123456', 'đây là 1', 0, 1),
-(105, 'hello2', 'a2@gmail.com', '123457', '', 0, 1),
-(106, '123', 'a3@gmail.com', '123458', 'đây là 3', 0, 1),
-(107, 'hello4', 'a4@gmail.com', '123459', 'đây là 4', 0, 1),
-(108, 'hello7', 'a9@gmail.com', '123457', 'đây là 7', 0, 1);
+(103, 'Le Van C', 'c@example.com', '123123', 'cccc', 0, 1);
 
 --
 -- Indexes for dumped tables
@@ -351,7 +286,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `answers`
 --
 ALTER TABLE `answers`
-  MODIFY `awID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `awID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `logs`
@@ -363,13 +298,13 @@ ALTER TABLE `logs`
 -- AUTO_INCREMENT for table `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `qID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `qID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `test`
 --
 ALTER TABLE `test`
-  MODIFY `testID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `testID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `topics`
@@ -381,7 +316,7 @@ ALTER TABLE `topics`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
 
 --
 -- Constraints for dumped tables
