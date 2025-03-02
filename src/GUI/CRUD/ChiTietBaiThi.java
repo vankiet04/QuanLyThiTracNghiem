@@ -8,6 +8,7 @@ import DTO.DTO_Exam;
 import DTO.DTO_Test;
 import DTO.DTO_Topic;
 import GUI.Component.LamBaiThi;
+import GUI.Component.MenuTaskBar;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -24,9 +25,11 @@ public class ChiTietBaiThi extends javax.swing.JFrame {
     private DTO_Test baiThi;
     private ArrayList<DTO_Exam> listDeThi;
     private DefaultTableModel modelDeThi;
+    private MenuTaskBar menuTask;
 
-    public ChiTietBaiThi(GUI.GUI_MainFrm main, String testCode) {
+    public ChiTietBaiThi(GUI.GUI_MainFrm main, MenuTaskBar menuTask, String testCode) {
         this.baiThi= testBUS.selectById(testCode);
+        this.menuTask = menuTask;
         this.listDeThi = examBUS.getAllWithTestCode(testCode);
         this.main = main;
         initComponents();
@@ -235,7 +238,7 @@ public class ChiTietBaiThi extends javax.swing.JFrame {
         int selectedRow = tblDeThi.getSelectedRow();
         if (selectedRow != -1) {
             String exCode = tblDeThi.getValueAt(selectedRow, 2).toString();
-            LamBaiThi lambai = new LamBaiThi(this.main, exCode);
+            LamBaiThi lambai = new LamBaiThi(this.main, this.menuTask, exCode);
             this.dispose();
             main.changePages(lambai);
         } else 

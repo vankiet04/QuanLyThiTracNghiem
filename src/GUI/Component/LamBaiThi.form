@@ -64,7 +64,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-                  <Component id="BtnQuayLai" min="-2" pref="94" max="-2" attributes="0"/>
+                  <Component id="btnQuayLai" min="-2" pref="94" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel2" pref="1119" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -88,7 +88,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel2" alignment="3" pref="88" max="32767" attributes="0"/>
                           <Component id="jButton2" alignment="3" max="32767" attributes="0"/>
-                          <Component id="BtnQuayLai" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnQuayLai" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -97,7 +97,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="BtnQuayLai">
+        <Component class="javax.swing.JButton" name="btnQuayLai">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="aa" green="48" red="2a" type="rgb"/>
@@ -111,7 +111,7 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="BtnQuayLaiMousePressed"/>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnQuayLaiMousePressed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblTime">

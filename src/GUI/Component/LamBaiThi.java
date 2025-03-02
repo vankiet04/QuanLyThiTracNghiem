@@ -9,36 +9,42 @@ import DTO.DTO_Exam;
 import DTO.DTO_Answer;
 import DTO.DTO_Questions;
 import GUI.Component.CauHoiThi;
+import GUI.GUI_Login;
+import GUI.GUI_MainFrm;
+import GUI.Menu.QuanLyCacBaiThi;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 public class LamBaiThi extends javax.swing.JPanel {
-
-    //test data
     private ArrayList<CauHoiThi> danhSachCauHoi = new ArrayList<>();
     private ArrayList<DTO_Questions> listCauHoi = new ArrayList<>();
     private JScrollPane scrollPane;
     private HashMap<Integer, ArrayList<DTO_Answer>> myMap = new HashMap<>();
     
-    
+    private MenuTaskBar menuTask;
+    private GUI_MainFrm mainFrm;
     private BUS_Exam examBUS =  new BUS_Exam();
     private BUS_Questions questBUS = new BUS_Questions();
     private BUS_Answers answerBUS =  new BUS_Answers();
     private DTO_Exam examCur;
     
 
-    public LamBaiThi(GUI.GUI_MainFrm main, String exCode) {
+    public LamBaiThi(GUI.GUI_MainFrm main,MenuTaskBar menuTask , String exCode) {
+        mainFrm = main;
+        this.menuTask = menuTask;
         initComponents();
         this.removeAll();
         this.setLayout(new BorderLayout());
@@ -51,7 +57,7 @@ public class LamBaiThi extends javax.swing.JPanel {
         hienThiTatCaCauHoi();
         taoNutCauHoi();
         
-        
+        disableMenuTaskButtons();
         // code liên quan đến giao diện
         pnlListCauHoi.setLayout(new BoxLayout(pnlListCauHoi, BoxLayout.Y_AXIS));
         pnlListCauHoi.setPreferredSize(null);
@@ -66,6 +72,11 @@ public class LamBaiThi extends javax.swing.JPanel {
         this.repaint();
     }
     
+    private void disableMenuTaskButtons() {
+        for(int i =0; i < menuTask.listitem.length; i++)
+            menuTask.listitem[i].setEnabled(false);
+    }
+
     public void XuLyDuLieu(){
         for(DTO_Questions ques : listCauHoi){
                 ArrayList<DTO_Answer> list = answerBUS.getAllData(ques.getqID());
@@ -119,8 +130,8 @@ public class LamBaiThi extends javax.swing.JPanel {
     private void initComponents() {
 
         pnlTieuDe = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        btnQuayLai = new javax.swing.JButton();
+        lblTime = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         pnlListCauHoi = new javax.swing.JPanel();
@@ -132,14 +143,19 @@ public class LamBaiThi extends javax.swing.JPanel {
         pnlTieuDe.setBackground(new java.awt.Color(255, 255, 255));
         pnlTieuDe.setPreferredSize(new java.awt.Dimension(1500, 100));
 
-        jButton1.setBackground(new java.awt.Color(42, 72, 170));
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Quay lại");
-        jButton1.setPreferredSize(new java.awt.Dimension(100, 40));
+        btnQuayLai.setBackground(new java.awt.Color(42, 72, 170));
+        btnQuayLai.setForeground(new java.awt.Color(255, 255, 255));
+        btnQuayLai.setText("Quay lại");
+        btnQuayLai.setPreferredSize(new java.awt.Dimension(100, 40));
+        btnQuayLai.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnQuayLaiMousePressed(evt);
+            }
+        });
 
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("Thời gian: tik tak");
-        jLabel1.setPreferredSize(new java.awt.Dimension(100, 50));
+        lblTime.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        lblTime.setForeground(new java.awt.Color(0, 0, 0));
+        lblTime.setPreferredSize(new java.awt.Dimension(100, 50));
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Thí sinh:");
@@ -160,11 +176,11 @@ public class LamBaiThi extends javax.swing.JPanel {
             pnlTieuDeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTieuDeLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnQuayLai, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1119, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(41, 41, 41)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
@@ -173,11 +189,15 @@ public class LamBaiThi extends javax.swing.JPanel {
             pnlTieuDeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTieuDeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlTieuDeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(pnlTieuDeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlTieuDeLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(lblTime, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(pnlTieuDeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnQuayLai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -216,12 +236,23 @@ public class LamBaiThi extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void btnQuayLaiMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnQuayLaiMousePressed
+        int input = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn thoát bài thi ?", "Quay lại",
+                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        // có khi sẽ phải set lại trong log
+        if (input == 0) {
+            QuanLyCacBaiThi pnl = new QuanLyCacBaiThi(mainFrm, menuTask);
+            this.mainFrm.changePages(pnl);
+        }
+
+    }//GEN-LAST:event_btnQuayLaiMousePressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnQuayLai;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel lblTime;
     private javax.swing.JPanel pnlListCauHoi;
     private javax.swing.JPanel pnlTableCauHoi;
     private javax.swing.JPanel pnlTieuDe;

@@ -29,7 +29,7 @@ public class GUI_MainFrm extends JFrame{
         loadUI();
         initComponent();
         // Hiển thị màn hình chính ngay khi load giao diện
-        QuanLyCacBaiThi qlcbt = new QuanLyCacBaiThi(this);
+        QuanLyCacBaiThi qlcbt = new QuanLyCacBaiThi(this, menuTaskBar);
         changePages(qlcbt);
     }
     

@@ -4,6 +4,7 @@ import BUS.BUS_Test;
 import ConnectDB.JDBCUtil;
 import DTO.DTO_Test;
 import GUI.CRUD.ChiTietBaiThi;
+import GUI.Component.MenuTaskBar;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
@@ -28,8 +29,11 @@ public class QuanLyCacBaiThi extends JPanel {
     private GUI.GUI_MainFrm main;
     private javax.swing.JPanel pnlContent;
     private BUS.BUS_Test testBUS =  new BUS_Test();
+    private MenuTaskBar menuTask;
+   
     
-    public QuanLyCacBaiThi(GUI.GUI_MainFrm main) {
+    public QuanLyCacBaiThi(GUI.GUI_MainFrm main, MenuTaskBar menuTask) {
+        this.menuTask = menuTask; // fixed assignment
         this.main = main;
         initComponents();
         LoadBaiThi();
@@ -79,7 +83,7 @@ public class QuanLyCacBaiThi extends JPanel {
     }
 
     private void ChayBaiThi(String testCode){
-        ChiTietBaiThi ctbt = new ChiTietBaiThi(this.main, testCode);
+        ChiTietBaiThi ctbt = new ChiTietBaiThi(this.main, this.menuTask, testCode);
         ctbt.setVisible(true);
     }
 
