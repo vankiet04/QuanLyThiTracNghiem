@@ -230,6 +230,7 @@ public class ThemDeThi extends javax.swing.JDialog {
         System.out.println("listQuestion: " + listQuestion.size());
         // lay tat ca cau hoi co ma chu de
         ArrayList<DTO_Questions> listQuestionByTopic = new ArrayList<>();
+        System.out.println("Mã chủ đề có  dc:" + test.getTpID());
         for (DTO_Questions question : listQuestion) {
             if (question.getqTopicID() == test.getTpID()) {
                 listQuestionByTopic.add(question);
@@ -256,13 +257,13 @@ public class ThemDeThi extends javax.swing.JDialog {
             int cntKho = 0;
             ArrayList<DTO_Questions> listQuestionMucDo = new ArrayList<>();
             for (DTO_Questions question : listQuestionByTopic) {
-                if (question.getqLevel().equals("easy") && cntDe <= soLuongCauHoiDe) {
+                if (question.getqLevel().equals("Dễ") && cntDe <= soLuongCauHoiDe) {
                     cntDe++;
                     listQuestionMucDo.add(question);
-                } else if (question.getqLevel().equals("medium") && cntTrungBinh <= soLuongCauHoiTrungBinh) {
+                } else if (question.getqLevel().equals("Vừa") && cntTrungBinh <= soLuongCauHoiTrungBinh) {
                     cntTrungBinh++;
                     listQuestionMucDo.add(question);
-                } else if (question.getqLevel().equals("difficult") && cntKho <= soLuongCauHoiKho) {
+                } else if (question.getqLevel().equals("Khó") && cntKho <= soLuongCauHoiKho) {
                     cntKho++;
                     listQuestionMucDo.add(question);
                 }
@@ -274,7 +275,7 @@ public class ThemDeThi extends javax.swing.JDialog {
 
             String listQuestionCode = "";
             for (DTO_Questions question : listQuestionMucDo) {
-                listQuestionCode += "q" + question.getqID() + ",";
+                listQuestionCode += question.getqID() + ",";
             }
             if (listQuestionCode.length() > 0) {
                 listQuestionCode = listQuestionCode.substring(0, listQuestionCode.length() - 1);
