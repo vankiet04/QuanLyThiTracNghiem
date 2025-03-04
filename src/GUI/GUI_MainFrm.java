@@ -28,6 +28,10 @@ public class GUI_MainFrm extends JFrame{
         this.user = user;
         loadUI();
         initComponent();
+        // Khởi tạo menuTaskBar trước khi truyền vào QuanLyCacBaiThi
+        menuTaskBar = new MenuTaskBar(this, user);
+        menuTaskBar.setPreferredSize(new Dimension(250, 1400));
+        this.add(menuTaskBar, BorderLayout.WEST);
         // Hiển thị màn hình chính ngay khi load giao diện
         QuanLyCacBaiThi qlcbt = new QuanLyCacBaiThi(this, menuTaskBar);
         changePages(qlcbt);
@@ -44,9 +48,6 @@ public class GUI_MainFrm extends JFrame{
         this.setLayout(new BorderLayout(0, 0));
         this.setTitle("HỆ THỐNG QUẢN LÝ THI TRẮC NGHIỆM");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        menuTaskBar = new MenuTaskBar(this, user);
-        menuTaskBar.setPreferredSize(new Dimension(250, 1400));
-        this.add(menuTaskBar, BorderLayout.WEST);
         mainContent = new JPanel();
         mainContent.setBackground(Color.WHITE);
         mainContent.setLayout(new BorderLayout(0, 0));
@@ -59,6 +60,13 @@ public class GUI_MainFrm extends JFrame{
         mainContent.add(pn);
         mainContent.repaint();
         mainContent.validate();
+    }
+    
+    public void disableMenuTaskBarItems() {
+        menuTaskBar.UnableAllMenu();
+    }
+    public void enableMenuTaskBarItems() {
+        menuTaskBar.EnableAllMenu();
     }
     
     private void loadUI(){
@@ -91,5 +99,4 @@ public class GUI_MainFrm extends JFrame{
         UIManager.put("ComboBox.buttonSeparatorColor", new Color(135,206,235));
         UIManager.put("Label.background", new Color(255,0,0));  
     }
-    
 }

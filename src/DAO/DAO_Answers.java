@@ -58,6 +58,7 @@ public class DAO_Answers implements DAOInterface<DTO_Answer> {
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 DTO_Answer answer = new DTO_Answer();
+                answer.setAwID(rs.getInt("awID"));
                 answer.setQuestionId(rs.getInt("qID"));
                 answer.setContent(rs.getString("awContent"));
                 answer.setImage(rs.getString("awPictures"));
@@ -82,6 +83,7 @@ public class DAO_Answers implements DAOInterface<DTO_Answer> {
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 DTO_Answer answer = new DTO_Answer();
+                answer.setAwID(rs.getInt("awID"));
                 answer.setQuestionId(rs.getInt("qID"));
                 answer.setContent(rs.getString("awContent"));
                 answer.setImage(rs.getString("awPictures"));

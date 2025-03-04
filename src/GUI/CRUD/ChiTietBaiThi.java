@@ -238,7 +238,7 @@ public class ChiTietBaiThi extends javax.swing.JFrame {
         int selectedRow = tblDeThi.getSelectedRow();
         if (selectedRow != -1) {
             String exCode = tblDeThi.getValueAt(selectedRow, 2).toString();
-            LamBaiThi lambai = new LamBaiThi(this.main, this.menuTask, exCode);
+            LamBaiThi lambai = new LamBaiThi(this.main, this.menuTask, exCode, baiThi);
             this.dispose();
             main.changePages(lambai);
         } else 

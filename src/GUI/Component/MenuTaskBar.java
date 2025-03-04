@@ -1,4 +1,3 @@
-
 package GUI.Component;
 
 import GUI.GUI_Login;
@@ -8,7 +7,6 @@ import GUI.Menu.QuanLyDeThi;
 import GUI.Menu.QuanLyBaiThi;
 import GUI.Menu.QuanLyTaiKhoan;
 import GUI.Menu.QuanLyChuDe;
-import GUI.Menu.QuanLyThongTinCaNhan;
 import GUI.Menu.QuanLyThongTinCaNhan;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -26,6 +24,7 @@ public class MenuTaskBar extends JPanel {
     private Color DefaultColor = Color.decode("#2a48aa");
     private JScrollPane scrollPane;
     public itemTaskbar[] listitem;
+    private boolean isMenuEnabled = true; // Thêm biến boolean để kiểm tra trạng thái vô hiệu hóa
 
     String[][] listComponent = {
             { "Màn hình chính", "home.svg", "home" },
@@ -43,7 +42,6 @@ public class MenuTaskBar extends JPanel {
         this.main = main;
         this.user = user;
         KhoiTaoMenu();
-
     }
 
     public void KhoiTaoMenu() {
@@ -97,7 +95,9 @@ public class MenuTaskBar extends JPanel {
             listitem[i].addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent evt) {
-                    AddHover(evt);
+                    if (isMenuEnabled) { // Kiểm tra trạng thái isMenuEnabled trước khi xử lý sự kiện
+                        AddHover(evt);
+                    }
                 }
             });
         }
@@ -105,8 +105,10 @@ public class MenuTaskBar extends JPanel {
         listitem[0].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                QuanLyCacBaiThi qlcbt = new QuanLyCacBaiThi(main, MenuTaskBar.this);
-                main.changePages(qlcbt);
+                if (isMenuEnabled) { // Kiểm tra trạng thái isMenuEnabled trước khi xử lý sự kiện
+                    QuanLyCacBaiThi qlcbt = new QuanLyCacBaiThi(main, MenuTaskBar.this);
+                    main.changePages(qlcbt);
+                }
             }
         });
 
@@ -114,32 +116,40 @@ public class MenuTaskBar extends JPanel {
         listitem[1].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                QuanLyCauHoi ch = new QuanLyCauHoi(main);
-                main.changePages(ch);
+                if (isMenuEnabled) { // Kiểm tra trạng thái isMenuEnabled trước khi xử lý sự kiện
+                    QuanLyCauHoi ch = new QuanLyCauHoi(main);
+                    main.changePages(ch);
+                }
             }
         });
         // chủ đề / môn học
         listitem[2].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                QuanLyChuDe qlcd = new QuanLyChuDe();
-                main.changePages(qlcd);
+                if (isMenuEnabled) { // Kiểm tra trạng thái isMenuEnabled trước khi xử lý sự kiện
+                    QuanLyChuDe qlcd = new QuanLyChuDe();
+                    main.changePages(qlcd);
+                }
             }
         });
         // đề thi
         listitem[3].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                QuanLyDeThi ch = new QuanLyDeThi(main);
-                main.changePages(ch);
+                if (isMenuEnabled) { // Kiểm tra trạng thái isMenuEnabled trước khi xử lý sự kiện
+                    QuanLyDeThi ch = new QuanLyDeThi(main);
+                    main.changePages(ch);
+                }
             }
         });
         // bài thi
         listitem[4].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                QuanLyBaiThi ch = new QuanLyBaiThi(main);
-                main.changePages(ch);
+                if (isMenuEnabled) { // Kiểm tra trạng thái isMenuEnabled trước khi xử lý sự kiện
+                    QuanLyBaiThi ch = new QuanLyBaiThi(main);
+                    main.changePages(ch);
+                }
             }
         });
 
@@ -147,23 +157,29 @@ public class MenuTaskBar extends JPanel {
         listitem[5].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                QuanLyTaiKhoan qltk = new QuanLyTaiKhoan();
-                main.changePages(qltk);
+                if (isMenuEnabled) { // Kiểm tra trạng thái isMenuEnabled trước khi xử lý sự kiện
+                    QuanLyTaiKhoan qltk = new QuanLyTaiKhoan();
+                    main.changePages(qltk);
+                }
             }
         });
         // thông tin cá nhân
         listitem[6].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                 QuanLyThongTinCaNhan qlttcn = new QuanLyThongTinCaNhan(user);
-                 main.changePages(qlttcn);
+                if (isMenuEnabled) { // Kiểm tra trạng thái isMenuEnabled trước khi xử lý sự kiện
+                    QuanLyThongTinCaNhan qlttcn = new QuanLyThongTinCaNhan(user);
+                    main.changePages(qlttcn);
+                }
             }
         });
         // thống kê
         listitem[7].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                
+                if (isMenuEnabled) { // Kiểm tra trạng thái isMenuEnabled trước khi xử lý sự kiện
+                    // Xử lý sự kiện cho thống kê
+                }
             }
         });
 
@@ -171,18 +187,18 @@ public class MenuTaskBar extends JPanel {
         listitem[listitem.length - 1].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                int input = JOptionPane.showConfirmDialog(null,
-                        "Bạn có chắc chắn muốn đăng xuất?", "Đăng xuất",
-                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-                if (input == 0) {
-                    GUI.GUI_Login login = new GUI_Login();
-                    login.setVisible(true);
-                    main.dispose();
-
+                if (isMenuEnabled) { // Kiểm tra trạng thái isMenuEnabled trước khi xử lý sự kiện
+                    int input = JOptionPane.showConfirmDialog(null,
+                            "Bạn có chắc chắn muốn đăng xuất?", "Đăng xuất",
+                            JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    if (input == 0) {
+                        GUI.GUI_Login login = new GUI_Login();
+                        login.setVisible(true);
+                        main.dispose();
+                    }
                 }
             }
         });
-
     }
 
     public void AddHover(MouseEvent evt) {
@@ -195,5 +211,19 @@ public class MenuTaskBar extends JPanel {
                 listitem[i].setBackground(new Color(255, 255, 255));
             }
         }
+    }
+
+    public void UnableAllMenu() {
+        isMenuEnabled = false; // Cập nhật trạng thái isMenuEnabled
+        for (itemTaskbar iBtn : listitem) 
+            iBtn.setEnabled(false);
+        
+    }
+
+    public void EnableAllMenu() {
+        isMenuEnabled = true; // Cập nhật trạng thái isMenuEnabled
+        for (itemTaskbar iBtn : listitem)
+            iBtn.setEnabled(true);
+        
     }
 }

@@ -40,6 +40,7 @@ public class GUI_Login extends JFrame{
         this.setTitle("HỆ THỐNG QUẢN LÝ THI TRẮC NGHIỆM");
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
     }
     
     private void InitComponent(){

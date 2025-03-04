@@ -132,6 +132,10 @@ public class DTO_Test {
         this.testStatus = testStatus;
     }
 
+    
+    public int getNumQuest(){
+        return this.numEasy + this.numDiff + this.numMedium;
+    }
     //system out
     @Override
     public String toString() {
