@@ -44,8 +44,7 @@ public class DAO_Answers implements DAOInterface<DTO_Answer> {
 
     @Override
     public DTO_Answer selectById(String idStr) {
-        throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
-                                                                       // Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -118,7 +117,8 @@ public class DAO_Answers implements DAOInterface<DTO_Answer> {
     public int getAutoIncrement() {
         try {
             Connection con = JDBCUtil.getConnectDB();
-            String sql = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'answers'";
+            String sql = "SELECT AUTO_INCREMENT FROM information_schema.TABLES"
+                    + " WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'answers'";
             PreparedStatement pst = con.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {

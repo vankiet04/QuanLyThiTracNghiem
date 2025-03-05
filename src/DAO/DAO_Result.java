@@ -15,9 +15,7 @@ import java.util.List;
 public class DAO_Result implements DAOInterface<DTO.DTO_Result>{
 
     @Override
-public int insert(DTO_Result kq) {
-    System.out.println("DEBUG rs_anwsers: " + kq.getRsAnswer());
-
+    public int insert(DTO_Result kq) {
     try {
         Connection con = JDBCUtil.getConnectDB();
         String sql = "INSERT INTO result (userID, exCode, rs_anwsers, rs_mark, rs_date) VALUES (?, ?, ?, ?, ?)";
@@ -119,7 +117,8 @@ public int insert(DTO_Result kq) {
         try {
             Connection con = JDBCUtil.getConnectDB();
                 String sql = "SELECT COUNT(*) FROM result WHERE userID = ?"
-                        + " AND result.exCode IN (SELECT e.exCode FROM exams e WHERE e.testCode = ?)";
+                        + " AND result.exCode"
+                        + " IN (SELECT e.exCode FROM exams e WHERE e.testCode = ?)";
     
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1, userID);

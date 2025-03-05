@@ -37,6 +37,7 @@ import DTO.DTO_Log;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class LamBaiThi extends javax.swing.JPanel {
@@ -120,9 +121,6 @@ public class LamBaiThi extends javax.swing.JPanel {
                 timeConLai = (int) Duration.between(curDateTime, timeKetThucBaiThi).toSeconds();
                     LayThongTinTuLog(timeLine.get(timeLine.size() - 1).getLogContent());
                     UpdateGiaoDien();
-                } else {
-                    // Nếu hết thời gian => Bắt đầu bài thi mới
-                    timeConLai = this.baithi.getTestTime() * 60;
                 }
             } else {
                 // chưa làm bài nào
@@ -150,9 +148,8 @@ public class LamBaiThi extends javax.swing.JPanel {
             int qID = danhSachCauHoi.get(i).getQuestionID();
 
             // Nếu câu hỏi đã có đáp án được chọn, đổi màu nút câu hỏi
-            if (answerMap.containsKey(qID)) {
+            if (answerMap.containsKey(qID))
                 listBtn.get(i).setBackground(Color.decode("#d2d9ef"));
-            }
         }
 
         // Làm mới giao diện
@@ -411,7 +408,18 @@ public class LamBaiThi extends javax.swing.JPanel {
 
             resBUS.insert(res, this.baithi.getNumQuest());
             
-            // nộp bài xong
+            // hiển thị điểm
+            double diem = res.getRsMask();
+            int soCauDung = (int)Math.round(diem / 10.0 * baithi.getNumQuest());
+           
+            DecimalFormat df = new DecimalFormat("0.00");
+            String formattedScore = df.format(diem);
+
+            JOptionPane.showMessageDialog(this,
+                "Điểm của bạn: " + formattedScore + "\nSố câu đúng: " + soCauDung,
+                "Kết quả bài thi", JOptionPane.INFORMATION_MESSAGE);
+            
+            // nộp bài xong, chuyển về giao diện QuanLyCacBaiThi.
             QuanLyCacBaiThi pnl = new QuanLyCacBaiThi(mainFrm, menuTask);
             this.mainFrm.changePages(pnl);
             this.mainFrm.enableMenuTaskBarItems();

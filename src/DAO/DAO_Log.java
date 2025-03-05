@@ -59,8 +59,9 @@ public class DAO_Log implements DAOInterface<DTO.DTO_Log>{
             Connection con = JDBCUtil.getConnectDB();
             
             // Query for the earliest log in the exam period
-            String sqlFirst = "SELECT * FROM logs WHERE logUserID = ? AND logExCode = ? " +
-                              "AND logDate >= (NOW() - INTERVAL ? MINUTE) ORDER BY logDate ASC LIMIT 1";
+            String sqlFirst = "SELECT * FROM logs WHERE logUserID = ? AND logExCode = ? "
+                            +  "AND logDate >= (NOW() - INTERVAL ? MINUTE)"
+                            + " ORDER BY logDate ASC LIMIT 1";
             PreparedStatement pstFirst = con.prepareStatement(sqlFirst);
             pstFirst.setInt(1, userID);
             pstFirst.setString(2, exCode);
@@ -79,8 +80,9 @@ public class DAO_Log implements DAOInterface<DTO.DTO_Log>{
             pstFirst.close();
             
             // Query for the latest log in the exam period
-            String sqlLast = "SELECT * FROM logs WHERE logUserID = ? AND logExCode = ? " +
-                             "AND logDate >= (NOW() - INTERVAL ? MINUTE) ORDER BY logDate DESC LIMIT 1";
+            String sqlLast = "SELECT * FROM logs WHERE logUserID = ? AND logExCode = ? "
+                            +  "AND logDate >= (NOW() - INTERVAL ? MINUTE)"
+                            + " ORDER BY logDate DESC LIMIT 1";
             PreparedStatement pstLast = con.prepareStatement(sqlLast);
             pstLast.setInt(1, userID);
             pstLast.setString(2, exCode);
