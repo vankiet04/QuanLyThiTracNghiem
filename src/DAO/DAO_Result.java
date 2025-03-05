@@ -155,6 +155,33 @@ public class DAO_Result implements DAOInterface<DTO.DTO_Result>{
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    public ArrayList<DTO_Result> getAllData(String testCode) {
+        ArrayList<DTO_Result> list= new ArrayList<>();
+        try {
+            Connection con = JDBCUtil.getConnectDB();
+            String sql = "SELECT * FROM result r"
+                    + " JOIN exams e ON r.exCode = e.exCode"
+                    + " WHERE e.testCode =? ";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, testCode);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                DTO_Result res = new DTO_Result();
+                res.setRsNum(rs.getInt("rs_num"));
+                res.setUserID(rs.getInt("userID"));
+                res.setExCode(rs.getString("exCode"));
+                res.setRsAnswer(rs.getString("rs_anwsers"));
+                res.setRsMask(rs.getDouble("rs_mark"));
+                res.setRsDate(rs.getString("rs_date"));
+                list.add(res);
+            }
+            JDBCUtil.close(con);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
     public ArrayList<DTO_Result> getAllData(int userID, String testCode) {
         ArrayList<DTO_Result> list= new ArrayList<>();
         try {

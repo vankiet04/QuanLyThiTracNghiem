@@ -42,6 +42,11 @@ public class BUS_Result {
         return listRes; 
    }
     
+    public ArrayList<DTO_Result> getAllData(String testCode){
+        listRes = resDAO.getAllData(testCode);
+        return listRes; 
+   }
+    
     public int CountResult(String testCode) {
         return resDAO.CountResult(testCode);
     }
