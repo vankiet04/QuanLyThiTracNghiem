@@ -2,15 +2,16 @@
 package BUS;
 
 import DAO.DAO_Result;
+import DTO.DTO_Result;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class BUS_Result {
-       public DAO_Result resDAO = new DAO_Result();
+    public DAO_Result resDAO = new DAO_Result();
+    private ArrayList<DTO_Result> listRes= new ArrayList<>();
 
     public BUS_Result() {
-        
     }
        
     public int insert(DTO.DTO_Result kq, int numQuest){
@@ -34,5 +35,17 @@ public class BUS_Result {
         kq.setRsMask(((double) count / numQuest) * 10);
         return resDAO.insert(kq);
         
+    }
+
+    public ArrayList<DTO_Result> getAllData(int UserID, String testCode){
+        listRes = resDAO.getAllData(UserID, testCode);
+        return listRes; 
+   }
+    
+    public int CountResult(String testCode) {
+        return resDAO.CountResult(testCode);
+    }
+    public int CountResult(String testCode, int userID) {
+        return resDAO.CountResult(testCode, userID);
     }
 }

@@ -31,6 +31,14 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+
+import ConnectDB.JDBCUtil;
+import DTO.DTO_Log;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
 public class LamBaiThi extends javax.swing.JPanel {
     // support database
     private BUS_Questions questBUS = new BUS_Questions();
@@ -75,9 +83,8 @@ public class LamBaiThi extends javax.swing.JPanel {
         hienThiTatCaCauHoi();
         taoNutCauHoi();
         
-        // chưa làm, đang làm, đã làm xong
-        // ktra thời gian log của người thi
-        XuLyLogNguoiDung();
+        // đang làm, đã làm xong
+        XuLyLogNguoiDung(exCode);
         
         
         // Code liên quan đến giao diện
@@ -94,37 +101,38 @@ public class LamBaiThi extends javax.swing.JPanel {
         this.repaint();
     }
     
-    private  void XuLyLogNguoiDung(){
-        ArrayList<DTO_Log> timeLine = logBUS.LayLogCuaNguoiThi(mainFrm.user.getUserID(), examCur.getExCode(), this.baithi.getTestTime());
-        
-        if (timeLine.isEmpty()) { // tức chưa làm bao giờ
-            timeConLai = this.baithi.getTestTime() * 60; // Chuyển đổi từ phút sang giây
-            updateLblTime();
-            CountTiming();
-        } else {
-            // thời gian hiện tại theo hệ thống
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            LocalDateTime curDateTime = LocalDateTime.now();
-            LocalDateTime timeLanDauVaoThi = LocalDateTime.parse(timeLine.get(0).getLogDate(), format);
-            LocalDateTime timeKetThucBaiThi = timeLanDauVaoThi.plusMinutes(this.baithi.getTestTime());
+    private  void XuLyLogNguoiDung(String exCode){
+            boolean isConfirm = logBUS.isLatestLogConfirm(mainFrm.user.getUserID(), exCode);
+            ArrayList<DTO_Log> timeLine = logBUS.LayLogCuaNguoiThi(mainFrm.user.getUserID(), exCode, this.baithi.getTestTime());
             
-            if (curDateTime.isAfter(timeKetThucBaiThi)) { 
+            if (isConfirm) {
+                // log cuối là confirm => Bắt đầu bài thi mới
                 timeConLai = this.baithi.getTestTime() * 60;
-            } else {
-                // Tiếp tục bài thi cũ
+            } else if (!timeLine.isEmpty()) {
+                // Nếu chưa nộp bài hoặc còn log sau confirm => Tiếp tục bài thi
+                DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime curDateTime = LocalDateTime.now();
+                LocalDateTime timeLanDauVaoThi = LocalDateTime.parse(timeLine.get(0).getLogDate(), format);
+                LocalDateTime timeKetThucBaiThi = timeLanDauVaoThi.plusMinutes(this.baithi.getTestTime());
+
+                if (curDateTime.isBefore(timeKetThucBaiThi)) { 
+                // Load log mới nhất để tiếp tục
                 timeConLai = (int) Duration.between(curDateTime, timeKetThucBaiThi).toSeconds();
-                // Dùng log thứ 2 nếu có; nếu không, dùng log đầu tiên
-                if (timeLine.size() > 1)
-                    LayThongTinTuLog(timeLine.get(1).getLogContent());
-                else
-                    LayThongTinTuLog(timeLine.get(0).getLogContent());
-                UpdateGiaoDien();
+                    LayThongTinTuLog(timeLine.get(timeLine.size() - 1).getLogContent());
+                    UpdateGiaoDien();
+                } else {
+                    // Nếu hết thời gian => Bắt đầu bài thi mới
+                    timeConLai = this.baithi.getTestTime() * 60;
+                }
+            } else {
+                // chưa làm bài nào
+                timeConLai = this.baithi.getTestTime() * 60;
             }
             updateLblTime();
             CountTiming();
-        }
+
     }
-    
+
     private void UpdateGiaoDien() {
         // Cập nhật các câu hỏi đã chọn trước đó
         for (Map.Entry<Integer, Integer> entry : answerMap.entrySet()) {
@@ -410,6 +418,7 @@ public class LamBaiThi extends javax.swing.JPanel {
             if (timer != null) {
                 timer.stop();
             }
+            logBUS.updateLogToConfirm(this.mainFrm.user.getUserID(), examCur.getExCode());
     }
     
     private void btnNopBaiMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNopBaiMousePressed

@@ -38,7 +38,13 @@ public class BUS_Log {
         }
         return res;
     }
-
+    public void updateLogToConfirm(int userID, String exCode){
+        logDAO.updateLogToConfirm(userID, exCode);
+    }
+    
+    public boolean isLatestLogConfirm(int userID, String exCode){
+        return logDAO.isLatestLogConfirm(userID, exCode);
+    }
    
     private String updateLogContent(String lastContent, String curContent) {
         if (lastContent == null || lastContent.isEmpty())
@@ -62,5 +68,9 @@ public class BUS_Log {
                      .collect(Collectors.joining(", "));
     }
 
+    public DTO_Log layLogMoiNhat(int userID, String exCode){
+        return logDAO.layLogMoiNhat(userID, exCode);
+    }
+    
     
 }

@@ -52,61 +52,7 @@ public class DAO_Log implements DAOInterface<DTO.DTO_Log>{
         return res;
     }
 
-public ArrayList<DTO_Log> LayLogCuaNguoiThi(int userID, String exCode) {
-        ArrayList<DTO_Log> res = new ArrayList<>();
 
-        String truyVanBatDau = "SELECT MIN(logDate) FROM logs WHERE logUserID = ? AND logExCode = ? " +
-                                "AND logDate >= (SELECT MAX(logDate) FROM logs WHERE logUserID = ? " +
-                                "AND logExCode = ? AND logDate < NOW() - INTERVAL 60 MINUTE)";
-
-        String truyVanMoiNhat = "SELECT * FROM logs WHERE logUserID = ? AND logExCode = ? " +
-                                 "AND logDate >= ? ORDER BY logID DESC LIMIT 1";
-
-        try {
-            Connection con = JDBCUtil.getConnectDB();
-
-            PreparedStatement pst1 = con.prepareStatement(truyVanBatDau);
-            pst1.setInt(1, userID);
-            pst1.setString(2, exCode);
-            pst1.setInt(3, userID);
-            pst1.setString(4, exCode);
-
-            ResultSet rs1 = pst1.executeQuery();
-            String startTime = null;
-            if (rs1.next()) {
-                startTime = rs1.getString(1);
-            }
-            rs1.close();
-            pst1.close();
-
-            if (startTime == null) return res;
-
-            PreparedStatement pst2 = con.prepareStatement(truyVanMoiNhat);
-            pst2.setInt(1, userID);
-            pst2.setString(2, exCode);
-            pst2.setString(3, startTime);
-
-            ResultSet rs2 = pst2.executeQuery();
-            if (rs2.next()) {
-                DTO_Log logMoiNhat = new DTO_Log();
-                logMoiNhat.setLogID(rs2.getInt("logID"));
-                logMoiNhat.setLogUserID(rs2.getInt("logUserID"));
-                logMoiNhat.setLogExCode(rs2.getString("logExCode"));
-                logMoiNhat.setLogDate(rs2.getString("logDate"));
-                logMoiNhat.setLogContent(rs2.getString("logContent"));
-                res.add(logMoiNhat);
-            }
-
-            rs2.close();
-            pst2.close();
-            con.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return res;
-    }
-    
     public ArrayList<DTO_Log> LayLogCuaNguoiThiTheoThoiGian(int userID, String exCode, int examDurationMinutes) {
         ArrayList<DTO_Log> res = new ArrayList<>();
         try {
@@ -161,6 +107,95 @@ public ArrayList<DTO_Log> LayLogCuaNguoiThi(int userID, String exCode) {
         return res;
     }
     
+        public void updateLogToConfirm(int userID, String exCode) {
+            try {
+                Connection con = JDBCUtil.getConnectDB();
+                String sql = "UPDATE logs SET logContent = 'confirm' WHERE logUserID = ? AND logExCode = ? ORDER BY logID DESC LIMIT 1";
+                PreparedStatement pst = con.prepareStatement(sql);
+                pst.setInt(1, userID);
+                pst.setString(2, exCode);
+                pst.executeUpdate();
+                pst.close();
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        public boolean isLatestLogConfirm(int userID, String exCode) {
+        try {
+            Connection con = JDBCUtil.getConnectDB();
+            String sql = "SELECT logContent FROM logs WHERE logUserID = ? AND logExCode = ? ORDER BY logID DESC LIMIT 1";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1, userID);
+            pst.setString(2, exCode);
+            ResultSet rs = pst.executeQuery();
+            boolean isConfirm = false;
+            if (rs.next()) {
+                isConfirm = "confirm".equals(rs.getString("logContent"));
+            }
+            rs.close();
+            pst.close();
+            con.close();
+            return isConfirm;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+        
+
+    public boolean hasSubmitted(int userID, String exCode) {
+        try {
+            Connection con = JDBCUtil.getConnectDB();
+            String sql = "SELECT COUNT(*) FROM result WHERE userID = ? AND exCode = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1, userID);
+            pst.setString(2, exCode);
+            ResultSet rs = pst.executeQuery();
+            boolean exists = false;
+            if (rs.next()) {
+                exists = rs.getInt(1) > 0; // Nếu có ít nhất 1 bản ghi trong result
+            }
+            rs.close();
+            pst.close();
+            con.close();
+            return exists;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    
+    
+        public DTO_Log layLogMoiNhat(int userID, String exCode) {
+            DTO_Log logMoiNhat = null;
+            try {
+                Connection con = JDBCUtil.getConnectDB();
+                String sql = "SELECT * FROM logs WHERE logUserID = ? AND logExCode = ? ORDER BY logID DESC LIMIT 1";
+                PreparedStatement pst = con.prepareStatement(sql);
+                pst.setInt(1, userID);
+                pst.setString(2, exCode);
+
+                ResultSet rs = pst.executeQuery();
+                if (rs.next()) {
+                    logMoiNhat = new DTO_Log();
+                    logMoiNhat.setLogID(rs.getInt("logID"));
+                    logMoiNhat.setLogUserID(rs.getInt("logUserID"));
+                    logMoiNhat.setLogExCode(rs.getString("logExCode"));
+                    logMoiNhat.setLogDate(rs.getString("logDate"));
+                    logMoiNhat.setLogContent(rs.getString("logContent"));
+                }
+
+                rs.close();
+                pst.close();
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return logMoiNhat;
+        }
     @Override
     public int update(DTO_Log t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

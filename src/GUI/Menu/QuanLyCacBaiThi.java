@@ -1,24 +1,18 @@
 package GUI.Menu;
 
+import BUS.BUS_Exam;
+import BUS.BUS_Result;
 import BUS.BUS_Test;
 import ConnectDB.JDBCUtil;
+import DTO.DTO_Exam;
 import DTO.DTO_Test;
 import GUI.CRUD.ChiTietBaiThi;
 import GUI.Component.MenuTaskBar;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Connection;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import GUI.Component.pnlBaiThi;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import javax.swing.JOptionPane;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.KeyAdapter;
@@ -29,11 +23,13 @@ public class QuanLyCacBaiThi extends JPanel {
     private GUI.GUI_MainFrm main;
     private javax.swing.JPanel pnlContent;
     private BUS.BUS_Test testBUS =  new BUS_Test();
+    private BUS_Exam examBUS = new BUS_Exam();
+    private BUS_Result resBUS = new BUS_Result();
     private MenuTaskBar menuTask;
    
     
     public QuanLyCacBaiThi(GUI.GUI_MainFrm main, MenuTaskBar menuTask) {
-        this.menuTask = menuTask; // fixed assignment
+        this.menuTask = menuTask;
         this.main = main;
         initComponents();
         LoadBaiThi();
@@ -50,9 +46,11 @@ public class QuanLyCacBaiThi extends JPanel {
     
     private void LoadUIBaiThi(ArrayList<DTO_Test> list){
         for(DTO_Test item : list){
-            pnlBaiThi pnl = new pnlBaiThi(item.getTestCode(), item.getTestTitle(), item.getTestLimit(), item.getTestDate().toString());
+            int count = resBUS.CountResult(item.getTestCode());
+            pnlBaiThi pnl = new pnlBaiThi(item.getTestCode(), item.getTestTitle(), count, item.getTestDate().toString());
             pnl.setPreferredSize(new java.awt.Dimension(250, 150));
             listPnl.add(pnl);
+            
             pnlContent.add(pnl);
             
             pnl.addMouseListener(new MouseAdapter(){
@@ -83,6 +81,7 @@ public class QuanLyCacBaiThi extends JPanel {
     }
 
     private void ChayBaiThi(String testCode){
+        
         ChiTietBaiThi ctbt = new ChiTietBaiThi(this.main, this.menuTask, testCode);
         ctbt.setVisible(true);
     }
