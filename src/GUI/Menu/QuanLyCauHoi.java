@@ -7,14 +7,21 @@ package GUI.Menu;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
+import BUS.BUS_Answers;
 import BUS.BUS_Questions;
+import DTO.DTO_Answer;
 import DTO.DTO_Questions;
+import DTO.DTO_Topic;
 
 //import static com.microsoft.schemas.office.excel.STObjectType.Enum.table;
 import java.awt.Color;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -30,10 +37,38 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import GUI.CRUD.SuaCauHoi;
 // import themcauhoir
+import java.awt.Color;
+import java.io.File;
+import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import BUS.BUS_Answers;
+import BUS.BUS_Questions;
+import DTO.DTO_Answer;
+import DTO.DTO_Questions;
+import DTO.DTO_Topic;
+
 import GUI.CRUD.ThemCauHoi;
 
 /**
@@ -84,6 +119,7 @@ public final class QuanLyCauHoi extends javax.swing.JPanel {
                 jPanel2 = new javax.swing.JPanel();
                 txtSearch = new com.raven.suportSwing.TextField();
                 myButton2 = new com.raven.suportSwing.MyButton();
+                myButtonImportExcel = new com.raven.suportSwing.MyButton(); // New Import Excel button
                 lblSearch = new javax.swing.JLabel();
                 jPanel7 = new javax.swing.JPanel();
                 jLabel2 = new javax.swing.JLabel();
@@ -130,8 +166,18 @@ public final class QuanLyCauHoi extends javax.swing.JPanel {
                         }
                 });
 
+                // Initialize the Import Excel button
+                myButtonImportExcel.setBackground(new java.awt.Color(204, 255, 204));
+                myButtonImportExcel.setText("Import Excel");
+                myButtonImportExcel.setBorderColor(new java.awt.Color(153, 255, 153));
+                myButtonImportExcel.setRadius(20);
+                myButtonImportExcel.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                myButtonImportExcelActionPerformed(evt);
+                        }
+                });
+
                 lblSearch.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
-                lblSearch.setForeground(new java.awt.Color(255, 51, 0));
 
                 jPanel7.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -347,6 +393,11 @@ public final class QuanLyCauHoi extends javax.swing.JPanel {
                                                                                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED,
                                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                                 Short.MAX_VALUE)
+                                                                                                .addComponent(myButtonImportExcel,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                .addGap(10, 10, 10)
                                                                                                 .addComponent(myButton2,
                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
@@ -397,6 +448,10 @@ public final class QuanLyCauHoi extends javax.swing.JPanel {
                                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                                 .addComponent(lblDifficulty)
                                                                                                                 .addComponent(cboDifficulty,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                .addComponent(myButtonImportExcel,
                                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -764,6 +819,427 @@ public final class QuanLyCauHoi extends javax.swing.JPanel {
                 }
         }
 
+        // Add the action handler method for the Import Excel button
+        private void myButtonImportExcelActionPerformed(java.awt.event.ActionEvent evt) {
+                try {
+                    // Hiển thị hướng dẫn định dạng Excel
+                    JOptionPane.showMessageDialog(this,
+                        "Định dạng file Excel cần đúng định dạng sau:\n\n" +
+                        "Mỗi dòng trong file Excel chứa thông tin một câu hỏi:\n" +
+                        "- Cột 1: Nội dung câu hỏi\n" +
+                        "- Cột 2: Đường dẫn hình ảnh câu hỏi (để trống nếu không có)\n" +
+                        "- Cột 3: Độ khó (Dễ, Vừa, Khó)\n" +
+                        "- Cột 4: Tên chủ đề (phải tồn tại trong hệ thống)\n" +
+                        "- Cột 5: Đáp án A\n" +
+                        "- Cột 6: Đường dẫn hình ảnh đáp án A (để trống nếu không có)\n" +
+                        "- Cột 7: Đáp án B\n" +
+                        "- Cột 8: Đường dẫn hình ảnh đáp án B (để trống nếu không có)\n" +
+                        "- Cột 9: Đáp án C\n" +
+                        "- Cột 10: Đường dẫn hình ảnh đáp án C (để trống nếu không có)\n" +
+                        "- Cột 11: Đáp án D\n" +
+                        "- Cột 12: Đường dẫn hình ảnh đáp án D (để trống nếu không có)\n" +
+                        "- Cột 13: Câu đúng (A, B, C hoặc D)\n\n" +
+                        "Ví dụ: '2 + 2 = ?' <trống> 'Dễ' 'Toán học' '3' <trống> '4' <trống> '5' <trống> '6' <trống> 'B'",
+                        "Định dạng file Excel",
+                        JOptionPane.INFORMATION_MESSAGE);
+                        
+                    // Hiển thị hộp thoại chọn file
+                    JFileChooser fileChooser = new JFileChooser();
+                    fileChooser.setDialogTitle("Chọn file Excel");
+                    fileChooser.setFileFilter(new FileNameExtensionFilter("Excel Files", "xlsx", "xls"));
+                    
+                    int result = fileChooser.showOpenDialog(this);
+                    if (result == JFileChooser.APPROVE_OPTION) {
+                        File selectedFile = fileChooser.getSelectedFile();
+                        importExcel(selectedFile);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, 
+                        "Lỗi: " + e.getMessage(), 
+                        "Lỗi", 
+                        JOptionPane.ERROR_MESSAGE);
+                }
+        }
+        private void importExcel(File file) {
+                FileInputStream fis = null;
+                Workbook workbook = null;
+                try {
+                    // Hiển thị thông báo đang xử lý
+                    JOptionPane.showMessageDialog(this, 
+                        "Đang xử lý file Excel. Vui lòng đợi...", 
+                        "Đang xử lý", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                    
+                    // Sử dụng luồng riêng để tránh làm đơ giao diện
+                    new Thread(() -> {
+                        FileInputStream threadFis = null;
+                        Workbook threadWorkbook = null;
+                        
+                        try {
+                            // Đọc file Excel
+                            threadFis = new FileInputStream(file);
+                            threadWorkbook = new XSSFWorkbook(threadFis);
+                            XSSFSheet sheet = (XSSFSheet) threadWorkbook.getSheetAt(0);
+                            
+                            int successCount = 0;
+                            int errorCount = 0;
+                            StringBuilder errorMessages = new StringBuilder();
+                            
+                            // Bỏ qua dòng tiêu đề nếu có
+                            int startRow = sheet.getFirstRowNum();
+                            int lastRow = sheet.getLastRowNum();
+                            
+                            System.out.println("Bắt đầu xử lý " + (lastRow - startRow + 1) + " dòng...");
+                            
+                            // Duyệt qua từng dòng để đọc dữ liệu câu hỏi
+                            for (int i = startRow; i <= lastRow; i++) {
+                                Row row = sheet.getRow(i);
+                                if (row == null) {
+                                    System.out.println("Dòng " + (i+1) + " trống.");
+                                    continue;
+                                }
+                                
+                                try {
+                                    System.out.println("Đang xử lý dòng " + (i+1));
+                                    
+                                    // Đọc dữ liệu từ các ô trong dòng
+                                    String content = getCellValueAsString(row.getCell(0)); // Nội dung câu hỏi
+                                    String questionImg = getCellValueAsString(row.getCell(1)); // Hình câu hỏi
+                                    String difficulty = getCellValueAsString(row.getCell(2)); // Độ khó
+                                    String topicName = getCellValueAsString(row.getCell(3)); // Tên chủ đề
+                                    
+                                    String answerA = getCellValueAsString(row.getCell(4)); // Đáp án A
+                                    String answerAImg = getCellValueAsString(row.getCell(5)); // Hình đáp án A
+                                    String answerB = getCellValueAsString(row.getCell(6)); // Đáp án B
+                                    String answerBImg = getCellValueAsString(row.getCell(7)); // Hình đáp án B
+                                    String answerC = getCellValueAsString(row.getCell(8)); // Đáp án C
+                                    String answerCImg = getCellValueAsString(row.getCell(9)); // Hình đáp án C
+                                    String answerD = getCellValueAsString(row.getCell(10)); // Đáp án D
+                                    String answerDImg = getCellValueAsString(row.getCell(11)); // Hình đáp án D
+                                    String correctAnswer = getCellValueAsString(row.getCell(12)); // Câu đúng
+                                    
+                                    System.out.println("Dữ liệu dòng " + (i+1) + ": " + content + ", " + difficulty + ", " + 
+                                                       topicName + ", ĐA: " + answerA + ", " + answerB + ", " + answerC + ", " + 
+                                                       answerD + ", Đúng: " + correctAnswer);
+                                    
+                                    // Kiểm tra dữ liệu
+                                    if (content.isEmpty()) {
+                                        throw new Exception("Nội dung câu hỏi không được để trống!");
+                                    }
+                                    
+                                    // Kiểm tra độ khó
+                                    if (!isValidDifficulty(difficulty)) {
+                                        throw new Exception("Độ khó không hợp lệ. Phải là 'Dễ', 'Vừa' hoặc 'Khó'!");
+                                    }
+                                    
+                                    // Kiểm tra và lấy ID chủ đề
+                                    int topicId = getTopicIdByName(topicName);
+                                    if (topicId == -1) {
+                                        throw new Exception("Chủ đề '" + topicName + "' không tồn tại trong hệ thống!");
+                                    }
+                                    
+                                    // Kiểm tra đáp án
+                                    if (answerA.isEmpty() || answerB.isEmpty()) {
+                                        throw new Exception("Phải có ít nhất 2 đáp án A và B!");
+                                    }
+                                    
+                                    // Kiểm tra câu trả lời đúng
+                                    if (!isValidCorrectAnswer(correctAnswer)) {
+                                        throw new Exception("Đáp án đúng phải là A, B, C hoặc D!");
+                                    }
+                                    
+                                    // Nếu đáp án đúng là C nhưng không có đáp án C
+                                    if (correctAnswer.equalsIgnoreCase("C") && answerC.isEmpty()) {
+                                        throw new Exception("Đáp án đúng là C nhưng không có nội dung đáp án C!");
+                                    }
+                                    
+                                    // Nếu đáp án đúng là D nhưng không có đáp án D
+                                    if (correctAnswer.equalsIgnoreCase("D") && answerD.isEmpty()) {
+                                        throw new Exception("Đáp án đúng là D nhưng không có nội dung đáp án D!");
+                                    }
+                                    
+                                    // Xử lý đường dẫn hình ảnh nếu có
+                                    String processedQuestionImg = "";
+                                    if (!questionImg.isEmpty()) {
+                                        processedQuestionImg = processImage(questionImg);
+                                        if (processedQuestionImg.isEmpty()) {
+                                            throw new Exception("Không thể xử lý hình ảnh câu hỏi. Đường dẫn: " + questionImg);
+                                        }
+                                    }
+                                    
+                                    String processedAnswerAImg = "";
+                                    if (!answerAImg.isEmpty()) {
+                                        processedAnswerAImg = processImage(answerAImg);
+                                        if (processedAnswerAImg.isEmpty()) {
+                                            throw new Exception("Không thể xử lý hình ảnh đáp án A. Đường dẫn: " + answerAImg);
+                                        }
+                                    }
+                                    
+                                    String processedAnswerBImg = "";
+                                    if (!answerBImg.isEmpty()) {
+                                        processedAnswerBImg = processImage(answerBImg);
+                                        if (processedAnswerBImg.isEmpty()) {
+                                            throw new Exception("Không thể xử lý hình ảnh đáp án B. Đường dẫn: " + answerBImg);
+                                        }
+                                    }
+                                    
+                                    String processedAnswerCImg = "";
+                                    if (!answerCImg.isEmpty()) {
+                                        processedAnswerCImg = processImage(answerCImg);
+                                        if (processedAnswerCImg.isEmpty()) {
+                                            throw new Exception("Không thể xử lý hình ảnh đáp án C. Đường dẫn: " + answerCImg);
+                                        }
+                                    }
+                                    
+                                    String processedAnswerDImg = "";
+                                    if (!answerDImg.isEmpty()) {
+                                        processedAnswerDImg = processImage(answerDImg);
+                                        if (processedAnswerDImg.isEmpty()) {
+                                            throw new Exception("Không thể xử lý hình ảnh đáp án D. Đường dẫn: " + answerDImg);
+                                        }
+                                    }
+                                    
+                                    // Tạo đối tượng câu hỏi
+                                    DTO_Questions question = new DTO_Questions();
+                                    question.setqContent(content);
+                                    question.setqPictures(processedQuestionImg);
+                                    question.setqTopicID(topicId);
+                                    question.setqLevel(difficulty);
+                                    
+                                    // Thêm câu hỏi vào cơ sở dữ liệu
+                                    BUS_Questions busQuestion = new BUS_Questions();
+                                    int questionId = busQuestion.insert(question);
+                                    
+                                    if (questionId > 0) {
+                                        // Lấy ID mới nhất vừa thêm vào
+                                        questionId = busQuestion.getLargestID();
+                                        
+                                        // Tạo danh sách câu trả lời
+                                        ArrayList<DTO_Answer> answers = new ArrayList<>();
+                                        
+                                        // Thêm câu trả lời A
+                                        DTO_Answer answer = new DTO_Answer();
+                                        answer.setQuestionId(questionId);
+                                        answer.setContent(answerA);
+                                        answer.setImage(processedAnswerAImg);
+                                        answer.setRight(correctAnswer.equalsIgnoreCase("A") ? 1 : 0);
+                                        answer.setStatus(1);
+                                        answers.add(answer);
+                                        
+                                        // Thêm câu trả lời B
+                                        answer = new DTO_Answer();
+                                        answer.setQuestionId(questionId);
+                                        answer.setContent(answerB);
+                                        answer.setImage(processedAnswerBImg);
+                                        answer.setRight(correctAnswer.equalsIgnoreCase("B") ? 1 : 0);
+                                        answer.setStatus(1);
+                                        answers.add(answer);
+                                        
+                                        // Thêm câu trả lời C nếu có
+                                        if (!answerC.isEmpty()) {
+                                            answer = new DTO_Answer();
+                                            answer.setQuestionId(questionId);
+                                            answer.setContent(answerC);
+                                            answer.setImage(processedAnswerCImg);
+                                            answer.setRight(correctAnswer.equalsIgnoreCase("C") ? 1 : 0);
+                                            answer.setStatus(1);
+                                            answers.add(answer);
+                                        }
+                                        
+                                        // Thêm câu trả lời D nếu có
+                                        if (!answerD.isEmpty()) {
+                                            answer = new DTO_Answer();
+                                            answer.setQuestionId(questionId);
+                                            answer.setContent(answerD);
+                                            answer.setImage(processedAnswerDImg);
+                                            answer.setRight(correctAnswer.equalsIgnoreCase("D") ? 1 : 0);
+                                            answer.setStatus(1);
+                                            answers.add(answer);
+                                        }
+                                        
+                                        // Thêm các câu trả lời vào cơ sở dữ liệu
+                                        BUS_Answers busAnswer = new BUS_Answers();
+                                        for (DTO_Answer ans : answers) {
+                                            busAnswer.insert(ans);
+                                        }
+                                        
+                                        successCount++;
+                                        System.out.println("Đã thêm câu hỏi thành công: " + content);
+                                    } else {
+                                        throw new Exception("Không thể thêm câu hỏi vào cơ sở dữ liệu");
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    errorCount++;
+                                    String errorMsg = "Lỗi dòng " + (i+1) + ": " + e.getMessage();
+                                    System.out.println(errorMsg);
+                                    errorMessages.append(errorMsg).append("\n");
+                                }
+                            }
+                            
+                            // Hiển thị kết quả trên EDT
+                            final int finalSuccessCount = successCount;
+                            final int finalErrorCount = errorCount;
+                            final String finalErrorMessages = errorMessages.toString();
+                            
+                            System.out.println("Xử lý hoàn tất. Thành công: " + finalSuccessCount + ", Lỗi: " + finalErrorCount);
+                            
+                            SwingUtilities.invokeLater(() -> {
+                                // Hiển thị thông báo thành công
+                                JOptionPane.showMessageDialog(this,
+                                    "Import thành công " + finalSuccessCount + " câu hỏi." +
+                                    (finalErrorCount > 0 ? "\nCó " + finalErrorCount + " lỗi." : ""),
+                                    "Kết quả import",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                                
+                                // Nếu có lỗi, hiển thị chi tiết lỗi trong JTextArea có scroll
+                                if (finalErrorCount > 0) {
+                                    javax.swing.JTextArea textArea = new javax.swing.JTextArea(finalErrorMessages);
+                                    textArea.setEditable(false);
+                                    textArea.setWrapStyleWord(true);
+                                    textArea.setLineWrap(true);
+                                    
+                                    javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane(textArea);
+                                    scrollPane.setPreferredSize(new java.awt.Dimension(500, 300));
+                                    
+                                    JOptionPane.showMessageDialog(this,
+                                        scrollPane,
+                                        "Chi tiết " + finalErrorCount + " lỗi",
+                                        JOptionPane.ERROR_MESSAGE);
+                                }
+                                
+                                // Làm mới bảng câu hỏi
+                                loadQuestionsTable();
+                            });
+                            
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            final String errorMessage = e.getMessage();
+                            
+                            SwingUtilities.invokeLater(() -> {
+                                JOptionPane.showMessageDialog(this,
+                                    "Lỗi xử lý file Excel: " + errorMessage,
+                                    "Lỗi",
+                                    JOptionPane.ERROR_MESSAGE);
+                            });
+                        } finally {
+                            // Đóng workbook và fis
+                            try {
+                                if (threadWorkbook != null) threadWorkbook.close();
+                                if (threadFis != null) threadFis.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+                    
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this,
+                        "Lỗi: " + e.getMessage(),
+                        "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            
+            // Hàm lấy giá trị từ cell Excel
+            private String getCellValueAsString(Cell cell) {
+                if (cell == null) {
+                    return "";
+                }
+                
+                switch (cell.getCellType()) {
+                    case STRING:
+                        return cell.getStringCellValue();
+                    case NUMERIC:
+                        if (org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted(cell)) {
+                            return new SimpleDateFormat("dd/MM/yyyy").format(cell.getDateCellValue());
+                        } else {
+                            // Đảm bảo không có dấu thập phân nếu là số nguyên
+                            double value = cell.getNumericCellValue();
+                            if (value == Math.floor(value)) {
+                                return String.valueOf((int) value);
+                            } else {
+                                return String.valueOf(value);
+                            }
+                        }
+                    case BOOLEAN:
+                        return String.valueOf(cell.getBooleanCellValue());
+                    case FORMULA:
+                        try {
+                            return String.valueOf(cell.getStringCellValue());
+                        } catch (Exception e) {
+                            try {
+                                return String.valueOf(cell.getNumericCellValue());
+                            } catch (Exception ex) {
+                                return "";
+                            }
+                        }
+                    default:
+                        return "";
+                }
+            }
+            
+            // Hàm kiểm tra độ khó hợp lệ
+            private boolean isValidDifficulty(String difficulty) {
+                return "Dễ".equals(difficulty) || "Vừa".equals(difficulty) || "Khó".equals(difficulty);
+            }
+            
+            // Hàm kiểm tra đáp án đúng hợp lệ
+            private boolean isValidCorrectAnswer(String answer) {
+                return "A".equalsIgnoreCase(answer) || "B".equalsIgnoreCase(answer) || 
+                       "C".equalsIgnoreCase(answer) || "D".equalsIgnoreCase(answer);
+            }
+            
+            // Hàm tìm ID chủ đề từ tên
+            private int getTopicIdByName(String topicName) {
+                if (topics != null) {
+                    for (DTO_Topic topic : topics) {
+                        if (topic.getTpTitle().equalsIgnoreCase(topicName)) {
+                            return topic.getTpID();
+                        }
+                    }
+                }
+                return -1; // Không tìm thấy
+            }
+            
+            // Hàm xử lý và lưu hình ảnh
+            private String processImage(String imagePath) {
+                try {
+                    if (imagePath == null || imagePath.trim().isEmpty()) {
+                        return "";
+                    }
+            
+                    File sourceFile = new File(imagePath);
+                    if (!sourceFile.exists() || !sourceFile.isFile()) {
+                        return "";
+                    }
+            
+                    // Tạo thư mục đích nếu chưa tồn tại
+                    File destDir = new File("src/img");
+                    if (!destDir.exists()) {
+                        destDir.mkdirs();
+                    }
+            
+                    // Tạo tên file duy nhất
+                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                    String fileExtension = imagePath.substring(imagePath.lastIndexOf("."));
+                    String newFileName = "img_" + timeStamp + "_" + System.nanoTime() + fileExtension;
+                    File destFile = new File(destDir, newFileName);
+            
+                    // Sao chép file
+                    Files.copy(sourceFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            
+                    // Trả về đường dẫn tương đối để lưu vào cơ sở dữ liệu
+                    return "src/img/" + newFileName;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return "";
+                }
+            }
+
+
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private javax.swing.ButtonGroup buttonGroup1;
         private javax.swing.JLabel jLabel1;
@@ -781,6 +1257,7 @@ public final class QuanLyCauHoi extends javax.swing.JPanel {
         private javax.swing.JTable jTable1;
         private javax.swing.JLabel lblSearch;
         private com.raven.suportSwing.MyButton myButton2;
+        private com.raven.suportSwing.MyButton myButtonImportExcel; // Add this declaration
         private com.raven.suportSwing.ScrollBarCustom scrollBarCustom1;
         private com.raven.suportSwing.TextField txtSearch;
         // End of variables declaration//GEN-END:variables
