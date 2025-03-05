@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 04, 2025 at 12:20 PM
+-- Generation Time: Mar 05, 2025 at 10:44 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -165,7 +165,19 @@ INSERT INTO `answers` (`awID`, `qID`, `awContent`, `awPictures`, `isRight`, `awS
 (236, 35, 'Linux', '', 1, 1),
 (237, 35, 'Windows', '', 0, 1),
 (238, 35, 'MacOS', '', 0, 1),
-(239, 35, 'FreeBSD', '', 0, 1);
+(239, 35, 'FreeBSD', '', 0, 1),
+(240, 40, '3', '', 0, 1),
+(241, 40, '4', '', 1, 1),
+(242, 40, '5', '', 0, 1),
+(243, 40, '6', '', 0, 1),
+(244, 41, '3', '', 0, 1),
+(245, 41, '4', '', 1, 1),
+(246, 41, '5', '', 0, 1),
+(247, 41, '6', '', 0, 1),
+(248, 42, '3', '', 0, 1),
+(249, 42, '4', '', 1, 1),
+(250, 42, '5', '', 0, 1),
+(251, 42, '6', '', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -186,6 +198,11 @@ CREATE TABLE `exams` (
 
 INSERT INTO `exams` (`testCode`, `exOrder`, `exCode`, `ex_quesIDs`) VALUES
 ('tes1', '1', 'tes1_1', '4,5,6'),
+('tes1', '2', 'tes1_2', '4,5,6'),
+('tes1', '3', 'tes1_3', '4,5,6'),
+('tes1', '4', 'tes1_4', '4,5,6'),
+('tes1', '5', 'tes1_5', '4,5,6'),
+('tes1', '6', 'tes1_6', '4,5,6'),
 ('TESTCNTT', '1', 'TESTCNTT_1', '8,9,10,11,12,13,14,15,16,17,18,19,20,21'),
 ('TESTCNTT', '2', 'TESTCNTT_2', '8,9,10,11,12,13,14,15,16,17,18,19,20,21'),
 ('TESTCNTT', '3', 'TESTCNTT_3', '8,9,10,11,12,13,14,15,16,17,18,19,20,21'),
@@ -212,6 +229,46 @@ CREATE TABLE `logs` (
   `logExCode` varchar(20) NOT NULL,
   `logDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `logs`
+--
+
+INSERT INTO `logs` (`logID`, `logContent`, `logUserID`, `logExCode`, `logDate`) VALUES
+(233, '8:39', 1, 'TESTCNTT_1', '2025-03-05 10:02:25'),
+(234, '8:39, 9:197', 1, 'TESTCNTT_1', '2025-03-05 10:02:26'),
+(235, '8:39, 9:197, 10:193', 1, 'TESTCNTT_1', '2025-03-05 10:02:26'),
+(236, '8:39, 9:197, 10:192', 1, 'TESTCNTT_1', '2025-03-05 10:02:27'),
+(237, '8:39, 9:197, 10:192', 1, 'TESTCNTT_1', '2025-03-05 10:02:27'),
+(238, '8:37', 2, 'TESTCNTT_1', '2025-03-05 10:02:39'),
+(239, '8:37, 9:197', 2, 'TESTCNTT_1', '2025-03-05 10:02:40'),
+(240, '8:37, 9:197, 11:191', 2, 'TESTCNTT_1', '2025-03-05 10:02:41'),
+(241, '8:37, 9:197, 11:191, 12:185', 2, 'TESTCNTT_1', '2025-03-05 10:02:42'),
+(242, '8:37, 9:197, 11:191, 12:185, 13:181', 2, 'TESTCNTT_1', '2025-03-05 10:02:42'),
+(243, '8:37, 9:197, 11:191, 12:185, 13:181, 15:173', 2, 'TESTCNTT_1', '2025-03-05 10:02:44'),
+(244, '8:37, 9:197, 11:191, 12:185, 13:181, 15:173, 16:169', 2, 'TESTCNTT_1', '2025-03-05 10:02:44'),
+(245, '8:37, 9:197, 11:191, 12:185, 13:181, 15:173, 16:169, 17:165', 2, 'TESTCNTT_1', '2025-03-05 10:02:45'),
+(246, '8:37, 9:197, 11:191, 12:185, 13:181, 15:173, 16:169, 17:165, 20:153', 2, 'TESTCNTT_1', '2025-03-05 10:02:46'),
+(247, '8:37, 9:197, 11:191, 12:185, 13:181, 15:173, 16:169, 17:165, 20:153, 21:109', 2, 'TESTCNTT_1', '2025-03-05 10:02:47'),
+(248, '8:37, 9:197, 11:191, 12:185, 13:181, 15:173, 16:169, 17:165, 20:153, 21:109, 19:157', 2, 'TESTCNTT_1', '2025-03-05 10:02:48'),
+(249, '8:37, 9:197, 11:191, 12:185, 13:181, 15:173, 16:169, 17:165, 20:153, 21:109, 19:157, 14:177', 2, 'TESTCNTT_1', '2025-03-05 10:02:51'),
+(250, '8:37, 9:197, 11:191, 12:185, 13:181, 15:173, 16:169, 17:165, 20:153, 21:109, 19:157, 14:177, 10:193', 2, 'TESTCNTT_1', '2025-03-05 10:02:52'),
+(251, 'confirm', 2, 'TESTCNTT_1', '2025-03-05 10:02:54'),
+(252, '4:9', 2, 'tes1_1', '2025-03-05 10:03:01'),
+(253, '4:9, 5:19', 2, 'tes1_1', '2025-03-05 10:03:01'),
+(254, 'confirm', 2, 'tes1_1', '2025-03-05 10:03:02'),
+(255, '8:39, 9:197, 10:192, 17:165', 1, 'TESTCNTT_1', '2025-03-05 10:03:20'),
+(256, 'confirm', 1, 'TESTCNTT_1', '2025-03-05 10:03:21'),
+(257, '4:9', 1, 'tes1_1', '2025-03-05 10:09:21'),
+(258, 'confirm', 1, 'tes1_1', '2025-03-05 10:09:21'),
+(259, '8:36', 1, 'TESTCNTT_1', '2025-03-05 10:31:50'),
+(260, '8:36, 9:197', 1, 'TESTCNTT_1', '2025-03-05 10:31:52'),
+(261, '8:36, 9:197, 10:193', 1, 'TESTCNTT_1', '2025-03-05 10:31:53'),
+(262, '8:36, 9:197, 10:193, 11:189', 1, 'TESTCNTT_1', '2025-03-05 10:31:59'),
+(263, '8:36, 9:197, 10:193, 11:189, 12:185', 1, 'TESTCNTT_1', '2025-03-05 10:32:01'),
+(264, 'confirm', 1, 'TESTCNTT_1', '2025-03-05 10:32:04'),
+(265, '4:11', 1, 'TESTTOAN_1', '2025-03-05 16:42:44'),
+(266, 'confirm', 1, 'TESTTOAN_1', '2025-03-05 16:42:46');
 
 -- --------------------------------------------------------
 
@@ -271,7 +328,10 @@ INSERT INTO `questions` (`qID`, `qContent`, `qPictures`, `qTopicID`, `qLevel`, `
 (36, 'Trong lập trình hướng đối tượng, tính chất nào cho phép một lớp kế thừa từ lớp khác?', '', 5, 'Vừa', 1),
 (37, 'Cấu trúc dữ liệu nào phù hợp để thực hiện LIFO?', '', 5, 'Vừa', 1),
 (38, 'Giải thuật nào có độ phức tạp tốt nhất là O(n log n)?', '', 5, 'Khó', 1),
-(39, 'Hệ điều hành nào được sử dụng phổ biến nhất trên máy chủ?', '', 5, 'Khó', 1);
+(39, 'Hệ điều hành nào được sử dụng phổ biến nhất trên máy chủ?', '', 5, 'Khó', 1),
+(40, '232323232 + 3332 = ?', '', 1, 'Dễ', 1),
+(41, '2 + 3332 = ?', '', 1, 'Dễ', 1),
+(42, '99 + 90', '', 1, 'Khó', 1);
 
 -- --------------------------------------------------------
 
@@ -287,6 +347,18 @@ CREATE TABLE `result` (
   `rs_mark` decimal(10,2) DEFAULT NULL,
   `rs_date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `result`
+--
+
+INSERT INTO `result` (`rs_num`, `userID`, `exCode`, `rs_anwsers`, `rs_mark`, `rs_date`) VALUES
+(28, 2, 'TESTCNTT_1', '8:37, 9:197, 11:191, 12:185, 13:181, 15:173, 16:169, 17:165, 20:153, 21:109, 19:157, 14:177, 10:193, 18:161', 0.00, '2025-03-05 10:02:56'),
+(29, 2, 'tes1_1', '4:9, 5:19, 6:23', 3.33, '2025-03-05 10:03:04'),
+(30, 1, 'TESTCNTT_1', '8:39, 9:197, 10:192, 17:165, 18:161', 0.50, '2025-03-05 10:28:45'),
+(31, 1, 'TESTCNTT_1', '8:36, 9:197, 10:193, 11:189, 12:185, 13:181', 0.00, '2025-03-05 10:32:19'),
+(32, 1, 'tes1_1', '4:9, 5:19', 3.33, '2025-03-05 11:09:03'),
+(33, 1, 'TESTTOAN_1', '4:11, 5:18', 0.00, '2025-03-05 16:42:53');
 
 -- --------------------------------------------------------
 
@@ -441,25 +513,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `answers`
 --
 ALTER TABLE `answers`
-  MODIFY `awID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=240;
+  MODIFY `awID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=252;
 
 --
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `logID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `logID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=267;
 
 --
 -- AUTO_INCREMENT for table `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `qID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `qID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `result`
 --
 ALTER TABLE `result`
-  MODIFY `rs_num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `rs_num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `test`
