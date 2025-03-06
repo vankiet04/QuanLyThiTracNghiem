@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 28, 2025 at 11:24 AM
+-- Generation Time: Mar 05, 2025 at 10:44 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -45,62 +45,139 @@ INSERT INTO `answers` (`awID`, `qID`, `awContent`, `awPictures`, `isRight`, `awS
 (5, 2, '150,000,000 m/s', '', 0, 1),
 (6, 3, 'NaOH + H2', '', 1, 1),
 (7, 3, 'NaCl', '', 0, 1),
-(8, 4, '4', '', 1, 1),
-(9, 4, '5', '', 0, 1),
-(10, 4, '6', '', 0, 1),
-(11, 5, '3.14159', '', 1, 1),
-(12, 5, '3.5', '', 0, 1),
-(13, 5, '2.718', '', 0, 1),
-(14, 6, '7', '', 1, 1),
-(15, 6, '6', '', 0, 1),
-(16, 6, '8', '', 0, 1),
-(17, 7, '180 độ', '', 1, 1),
-(18, 7, '90 độ', '', 0, 1),
-(19, 7, '360 độ', '', 0, 1),
-(20, 8, '120', '', 1, 1),
-(21, 8, '60', '', 0, 1),
-(22, 8, '24', '', 0, 1),
-(23, 9, '19', '', 1, 1),
-(24, 9, '17', '', 0, 1),
-(25, 9, '15', '', 0, 1),
-(26, 10, '27', '', 1, 1),
-(27, 10, '9', '', 0, 1),
-(28, 10, '18', '', 0, 1),
-(29, 11, '2πr', '', 1, 1),
-(30, 11, 'πr^2', '', 0, 1),
-(31, 11, 'd^2', '', 0, 1),
-(32, 12, '0', '', 1, 1),
-(33, 12, '1', '', 0, 1),
-(34, 12, 'Vô hạn', '', 0, 1),
-(35, 13, '55', '', 1, 1),
-(36, 13, '34', '', 0, 1),
-(37, 13, '89', '', 0, 1),
-(38, 14, 'x = 2 hoặc x = 3', '', 1, 1),
-(39, 14, 'x = 1 hoặc x = 6', '', 0, 1),
-(40, 14, 'x = 3 hoặc x = 4', '', 0, 1),
-(41, 15, 'Hình tròn', '', 1, 1),
-(42, 15, 'Hình vuông', '', 0, 1),
-(43, 15, 'Hình tam giác đều', '', 0, 1),
-(44, 1, '2', '', 1, 1),
-(45, 1, '1', '', 0, 1),
-(46, 1, '3', '', 0, 1),
-(47, 1, '4', '', 0, 1),
-(48, 2, '299,792 km/s', '', 0, 1),
-(49, 2, '300,000 km/s', '', 0, 1),
-(50, 3, 'H2O', '', 0, 1),
-(51, 3, 'NaOH', '', 0, 1),
-(52, 4, '3', '', 0, 1),
-(53, 5, '4.14', '', 0, 1),
-(54, 6, '9', '', 0, 1),
-(55, 7, '270 độ', '', 0, 1),
-(56, 8, '720', '', 0, 1),
-(57, 9, '13', '', 0, 1),
-(58, 10, '36', '', 0, 1),
-(59, 11, 'πd', '', 0, 1),
-(60, 12, 'Không xác định', '', 0, 1),
-(61, 13, '21', '', 0, 1),
-(62, 14, 'x = 1 hoặc x = 2', '', 0, 1),
-(63, 15, 'Hình chữ nhật', '', 0, 1);
+(8, 4, '12', '', 0, 1),
+(9, 4, '13', '', 1, 1),
+(10, 4, '33', '', 0, 1),
+(11, 4, '43', '', 0, 1),
+(15, 1, '1', '', 0, 1),
+(16, 1, '2', '', 1, 1),
+(17, 1, '3', '', 0, 1),
+(18, 5, 'a', '', 0, 1),
+(19, 5, 'b', '', 1, 1),
+(20, 5, 'c', '', 0, 1),
+(21, 5, 'd', '', 0, 1),
+(22, 6, 'a', '', 1, 1),
+(23, 6, 'a', '', 0, 1),
+(24, 6, 'a', '', 0, 1),
+(25, 7, 'a', '', 1, 1),
+(26, 7, '2', '', 0, 1),
+(27, 7, '1', '', 0, 1),
+(36, 8, 'Python', '', 0, 1),
+(37, 8, 'C++', '', 0, 1),
+(38, 8, 'Java', '', 0, 1),
+(39, 8, 'HTML', '', 1, 1),
+(100, 22, 'Array', '', 1, 1),
+(101, 22, 'VARCHAR', '', 0, 1),
+(102, 22, 'INT', '', 0, 1),
+(103, 22, 'DATE', '', 0, 1),
+(104, 23, 'FOREIGN KEY', '', 1, 1),
+(105, 23, 'PRIMARY KEY', '', 0, 1),
+(106, 23, 'UNIQUE', '', 0, 1),
+(107, 23, 'INDEX', '', 0, 1),
+(108, 21, 'Tìm kiếm nhị phân', '', 1, 1),
+(109, 21, 'Tìm kiếm tuyến tính', '', 0, 1),
+(110, 21, 'Tìm kiếm đệ quy', '', 0, 1),
+(111, 21, 'Tìm kiếm tham lam', '', 0, 1),
+(152, 20, 'SMTP', '', 1, 1),
+(153, 20, 'HTTP', '', 0, 1),
+(154, 20, 'DNS', '', 0, 1),
+(155, 20, 'FTP', '', 0, 1),
+(156, 19, 'Windows', '', 1, 1),
+(157, 19, 'Linux', '', 0, 1),
+(158, 19, 'macOS', '', 0, 1),
+(159, 19, 'Ubuntu', '', 0, 1),
+(160, 18, 'Lưu trữ tạm thời dữ liệu', '', 1, 1),
+(161, 18, 'Lưu trữ vĩnh viễn dữ liệu', '', 0, 1),
+(162, 18, 'Xử lý đồ họa', '', 0, 1),
+(163, 18, 'Kết nối internet', '', 0, 1),
+(164, 17, 'Chuyển đổi tên miền thành địa chỉ IP', '', 1, 1),
+(165, 17, 'Lưu trữ dữ liệu trên máy chủ', '', 0, 1),
+(166, 17, 'Quản lý người dùng trên hệ thống', '', 0, 1),
+(167, 17, 'Mã hóa dữ liệu khi truyền tải', '', 0, 1),
+(168, 16, 'SELECT', '', 1, 1),
+(169, 16, 'UPDATE', '', 0, 1),
+(170, 16, 'DELETE', '', 0, 1),
+(171, 16, 'INSERT', '', 0, 1),
+(172, 15, 'Structured Query Language', '', 1, 1),
+(173, 15, 'Simple Query Language', '', 0, 1),
+(174, 15, 'Standard Query Language', '', 0, 1),
+(175, 15, 'System Query Logic', '', 0, 1),
+(176, 14, 'HTTP', '', 1, 1),
+(177, 14, 'FTP', '', 0, 1),
+(178, 14, 'SMTP', '', 0, 1),
+(179, 14, 'POP3', '', 0, 1),
+(180, 13, 'Xác định duy nhất một bản ghi', '', 1, 1),
+(181, 13, 'Chứa dữ liệu trùng lặp', '', 0, 1),
+(182, 13, 'Tăng tốc độ xử lý', '', 0, 1),
+(183, 13, 'Liên kết giữa các bảng', '', 0, 1),
+(184, 12, 'Linux', '', 1, 1),
+(185, 12, 'Windows', '', 0, 1),
+(186, 12, 'macOS', '', 0, 1),
+(187, 12, 'Android', '', 0, 1),
+(188, 11, 'Xác định duy nhất một bản ghi', '', 1, 1),
+(189, 11, 'Tầng Vật lý', '', 0, 1),
+(190, 11, 'Tầng Giao vận', '', 0, 1),
+(191, 11, 'Tầng Liên kết dữ liệu', '', 0, 1),
+(192, 10, 'c++', '', 0, 1),
+(193, 10, 'python', '', 0, 1),
+(194, 10, 'html', '', 1, 1),
+(195, 10, 'java', '', 0, 1),
+(196, 9, 'Tầng Mạng', '', 1, 1),
+(197, 9, 'Tầng Vật lý', '', 0, 1),
+(198, 9, 'Tầng Giao vận', '', 0, 1),
+(199, 9, 'Tầng Liên kết dữ liệu', '', 0, 1),
+(200, 26, 'Central Processing Unit', '', 1, 1),
+(201, 26, 'Computer Personal Unit', '', 0, 1),
+(202, 26, 'Control Processing Unit', '', 0, 1),
+(203, 26, 'Core Processor Utility', '', 0, 1),
+(204, 27, 'Ổ cứng (HDD/SSD)', '', 1, 1),
+(205, 27, 'RAM', '', 0, 1),
+(206, 27, 'CPU', '', 0, 1),
+(207, 27, 'PSU', '', 0, 1),
+(208, 28, 'USB', '', 1, 1),
+(209, 28, 'HDMI', '', 0, 1),
+(210, 28, 'VGA', '', 0, 1),
+(211, 28, 'LAN', '', 0, 1),
+(212, 29, 'Android và iOS', '', 1, 1),
+(213, 29, 'Windows', '', 0, 1),
+(214, 29, 'Linux', '', 0, 1),
+(215, 29, 'MacOS', '', 0, 1),
+(216, 30, 'int', '', 1, 1),
+(217, 30, 'float', '', 0, 1),
+(218, 30, 'char', '', 0, 1),
+(219, 30, 'double', '', 0, 1),
+(220, 31, 'SMTP', '', 1, 1),
+(221, 31, 'HTTP', '', 0, 1),
+(222, 31, 'DNS', '', 0, 1),
+(223, 31, 'FTP', '', 0, 1),
+(224, 32, 'Kế thừa (Inheritance)', '', 1, 1),
+(225, 32, 'Đóng gói (Encapsulation)', '', 0, 1),
+(226, 32, 'Đa hình (Polymorphism)', '', 0, 1),
+(227, 32, 'Trừu tượng (Abstraction)', '', 0, 1),
+(228, 33, 'Stack', '', 1, 1),
+(229, 33, 'Queue', '', 0, 1),
+(230, 33, 'Linked List', '', 0, 1),
+(231, 33, 'Array', '', 0, 1),
+(232, 34, 'Merge Sort', '', 1, 1),
+(233, 34, 'Bubble Sort', '', 0, 1),
+(234, 34, 'Insertion Sort', '', 0, 1),
+(235, 34, 'Selection Sort', '', 0, 1),
+(236, 35, 'Linux', '', 1, 1),
+(237, 35, 'Windows', '', 0, 1),
+(238, 35, 'MacOS', '', 0, 1),
+(239, 35, 'FreeBSD', '', 0, 1),
+(240, 40, '3', '', 0, 1),
+(241, 40, '4', '', 1, 1),
+(242, 40, '5', '', 0, 1),
+(243, 40, '6', '', 0, 1),
+(244, 41, '3', '', 0, 1),
+(245, 41, '4', '', 1, 1),
+(246, 41, '5', '', 0, 1),
+(247, 41, '6', '', 0, 1),
+(248, 42, '3', '', 0, 1),
+(249, 42, '4', '', 1, 1),
+(250, 42, '5', '', 0, 1),
+(251, 42, '6', '', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -120,9 +197,24 @@ CREATE TABLE `exams` (
 --
 
 INSERT INTO `exams` (`testCode`, `exOrder`, `exCode`, `ex_quesIDs`) VALUES
-('TST001', 'A', 'TST001A', '[1,2,3,4,5,6,7,8,9,10]'),
-('TST001', 'B', 'TST001B', '[11,12,13,14,15,16,17,18,19,20]'),
-('TST002', 'A', 'TST002A', '[21,22,23,24,25,26,27,28,29,30]');
+('tes1', '1', 'tes1_1', '4,5,6'),
+('tes1', '2', 'tes1_2', '4,5,6'),
+('tes1', '3', 'tes1_3', '4,5,6'),
+('tes1', '4', 'tes1_4', '4,5,6'),
+('tes1', '5', 'tes1_5', '4,5,6'),
+('tes1', '6', 'tes1_6', '4,5,6'),
+('TESTCNTT', '1', 'TESTCNTT_1', '8,9,10,11,12,13,14,15,16,17,18,19,20,21'),
+('TESTCNTT', '2', 'TESTCNTT_2', '8,9,10,11,12,13,14,15,16,17,18,19,20,21'),
+('TESTCNTT', '3', 'TESTCNTT_3', '8,9,10,11,12,13,14,15,16,17,18,19,20,21'),
+('TESTTOAN', '1', 'TESTTOAN_1', '4,5,6,7'),
+('TESTTOAN', '2', 'TESTTOAN_2', '4,5,6,7'),
+('TESTTOAN', '3', 'TESTTOAN_3', '4,5,6,7'),
+('TESTTOAN', '4', 'TESTTOAN_4', '4,5,6,7'),
+('TESTTOAN', '5', 'TESTTOAN_5', '4,5,6,7'),
+('TESTTOAN', '6', 'TESTTOAN_6', '4,5,6,7'),
+('TESTTOAN', '7', 'TESTTOAN_7', '4,5,6,7'),
+('TESTTOAN', '8', 'TESTTOAN_8', '4,5,6,7'),
+('TESTTOAN', '9', 'TESTTOAN_9', '4,5,6,7');
 
 -- --------------------------------------------------------
 
@@ -137,6 +229,46 @@ CREATE TABLE `logs` (
   `logExCode` varchar(20) NOT NULL,
   `logDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `logs`
+--
+
+INSERT INTO `logs` (`logID`, `logContent`, `logUserID`, `logExCode`, `logDate`) VALUES
+(233, '8:39', 1, 'TESTCNTT_1', '2025-03-05 10:02:25'),
+(234, '8:39, 9:197', 1, 'TESTCNTT_1', '2025-03-05 10:02:26'),
+(235, '8:39, 9:197, 10:193', 1, 'TESTCNTT_1', '2025-03-05 10:02:26'),
+(236, '8:39, 9:197, 10:192', 1, 'TESTCNTT_1', '2025-03-05 10:02:27'),
+(237, '8:39, 9:197, 10:192', 1, 'TESTCNTT_1', '2025-03-05 10:02:27'),
+(238, '8:37', 2, 'TESTCNTT_1', '2025-03-05 10:02:39'),
+(239, '8:37, 9:197', 2, 'TESTCNTT_1', '2025-03-05 10:02:40'),
+(240, '8:37, 9:197, 11:191', 2, 'TESTCNTT_1', '2025-03-05 10:02:41'),
+(241, '8:37, 9:197, 11:191, 12:185', 2, 'TESTCNTT_1', '2025-03-05 10:02:42'),
+(242, '8:37, 9:197, 11:191, 12:185, 13:181', 2, 'TESTCNTT_1', '2025-03-05 10:02:42'),
+(243, '8:37, 9:197, 11:191, 12:185, 13:181, 15:173', 2, 'TESTCNTT_1', '2025-03-05 10:02:44'),
+(244, '8:37, 9:197, 11:191, 12:185, 13:181, 15:173, 16:169', 2, 'TESTCNTT_1', '2025-03-05 10:02:44'),
+(245, '8:37, 9:197, 11:191, 12:185, 13:181, 15:173, 16:169, 17:165', 2, 'TESTCNTT_1', '2025-03-05 10:02:45'),
+(246, '8:37, 9:197, 11:191, 12:185, 13:181, 15:173, 16:169, 17:165, 20:153', 2, 'TESTCNTT_1', '2025-03-05 10:02:46'),
+(247, '8:37, 9:197, 11:191, 12:185, 13:181, 15:173, 16:169, 17:165, 20:153, 21:109', 2, 'TESTCNTT_1', '2025-03-05 10:02:47'),
+(248, '8:37, 9:197, 11:191, 12:185, 13:181, 15:173, 16:169, 17:165, 20:153, 21:109, 19:157', 2, 'TESTCNTT_1', '2025-03-05 10:02:48'),
+(249, '8:37, 9:197, 11:191, 12:185, 13:181, 15:173, 16:169, 17:165, 20:153, 21:109, 19:157, 14:177', 2, 'TESTCNTT_1', '2025-03-05 10:02:51'),
+(250, '8:37, 9:197, 11:191, 12:185, 13:181, 15:173, 16:169, 17:165, 20:153, 21:109, 19:157, 14:177, 10:193', 2, 'TESTCNTT_1', '2025-03-05 10:02:52'),
+(251, 'confirm', 2, 'TESTCNTT_1', '2025-03-05 10:02:54'),
+(252, '4:9', 2, 'tes1_1', '2025-03-05 10:03:01'),
+(253, '4:9, 5:19', 2, 'tes1_1', '2025-03-05 10:03:01'),
+(254, 'confirm', 2, 'tes1_1', '2025-03-05 10:03:02'),
+(255, '8:39, 9:197, 10:192, 17:165', 1, 'TESTCNTT_1', '2025-03-05 10:03:20'),
+(256, 'confirm', 1, 'TESTCNTT_1', '2025-03-05 10:03:21'),
+(257, '4:9', 1, 'tes1_1', '2025-03-05 10:09:21'),
+(258, 'confirm', 1, 'tes1_1', '2025-03-05 10:09:21'),
+(259, '8:36', 1, 'TESTCNTT_1', '2025-03-05 10:31:50'),
+(260, '8:36, 9:197', 1, 'TESTCNTT_1', '2025-03-05 10:31:52'),
+(261, '8:36, 9:197, 10:193', 1, 'TESTCNTT_1', '2025-03-05 10:31:53'),
+(262, '8:36, 9:197, 10:193, 11:189', 1, 'TESTCNTT_1', '2025-03-05 10:31:59'),
+(263, '8:36, 9:197, 10:193, 11:189, 12:185', 1, 'TESTCNTT_1', '2025-03-05 10:32:01'),
+(264, 'confirm', 1, 'TESTCNTT_1', '2025-03-05 10:32:04'),
+(265, '4:11', 1, 'TESTTOAN_1', '2025-03-05 16:42:44'),
+(266, 'confirm', 1, 'TESTTOAN_1', '2025-03-05 16:42:46');
 
 -- --------------------------------------------------------
 
@@ -189,6 +321,7 @@ INSERT INTO `questions` (`qID`, `qContent`, `qPictures`, `qTopicID`, `qLevel`, `
 (29, 'Cường độ dòng điện trong mạch RLC có công thức tổng quát như thế nào?', '', 2, 'diff', 1),
 (30, 'Nguyên lý hoạt động của máy biến áp?', '', 2, 'diff', 1);
 
+
 -- --------------------------------------------------------
 
 --
@@ -196,11 +329,11 @@ INSERT INTO `questions` (`qID`, `qContent`, `qPictures`, `qTopicID`, `qLevel`, `
 --
 
 CREATE TABLE `result` (
-  `rs_num` tinyint(11) NOT NULL,
+  `rs_num` int(11) NOT NULL,
   `userID` int(11) NOT NULL,
   `exCode` varchar(20) NOT NULL,
-  `rs_anwsers` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'các đáp án đã chọn' CHECK (json_valid(`rs_anwsers`)),
-  `rs_mark` decimal(10,0) NOT NULL,
+  `rs_anwsers` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'các đáp án đã chọn',
+  `rs_mark` decimal(10,2) DEFAULT NULL,
   `rs_date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -209,9 +342,12 @@ CREATE TABLE `result` (
 --
 
 INSERT INTO `result` (`rs_num`, `userID`, `exCode`, `rs_anwsers`, `rs_mark`, `rs_date`) VALUES
-(1, 101, 'TST001A', '[1,0,1,1,0,1,1,1,0,1]', 8, '2025-02-13 10:30:00'),
-(2, 102, 'TST001B', '[1,1,1,1,1,0,0,1,1,0]', 7, '2025-02-13 11:00:00'),
-(3, 103, 'TST002A', '[0,1,1,1,1,1,0,1,0,1]', 9, '2025-02-14 09:00:00');
+(28, 2, 'TESTCNTT_1', '8:37, 9:197, 11:191, 12:185, 13:181, 15:173, 16:169, 17:165, 20:153, 21:109, 19:157, 14:177, 10:193, 18:161', 0.00, '2025-03-05 10:02:56'),
+(29, 2, 'tes1_1', '4:9, 5:19, 6:23', 3.33, '2025-03-05 10:03:04'),
+(30, 1, 'TESTCNTT_1', '8:39, 9:197, 10:192, 17:165, 18:161', 0.50, '2025-03-05 10:28:45'),
+(31, 1, 'TESTCNTT_1', '8:36, 9:197, 10:193, 11:189, 12:185, 13:181', 0.00, '2025-03-05 10:32:19'),
+(32, 1, 'tes1_1', '4:9, 5:19', 3.33, '2025-03-05 11:09:03'),
+(33, 1, 'TESTTOAN_1', '4:11, 5:18', 0.00, '2025-03-05 16:42:53');
 
 -- --------------------------------------------------------
 
@@ -238,8 +374,9 @@ CREATE TABLE `test` (
 --
 
 INSERT INTO `test` (`testID`, `testCode`, `testTitle`, `testTime`, `tpID`, `num_easy`, `num_medium`, `num_diff`, `testLimit`, `testDate`, `testStatus`) VALUES
-(1, 'TST001', 'Bài kiểm tra Toán', 60, 1, 5, 3, 2, 3, '2025-02-13', 1),
-(2, 'TST002', 'Bài kiểm tra Lý', 45, 2, 4, 4, 2, 2, '2025-02-14', 1);
+(8, 'TESTCNTT', 'bài thi công nghệ thông tin', 60, 4, 15, 5, 0, 2, '2025-03-02', 1),
+(9, 'TESTTOAN', 'bài thi môn toán', 90, 1, 5, 4, 2, 5, '2025-03-02', 1),
+(10, 'tes1', 'asd', 3, 1, 2, 2, 2, 1, '2025-03-03', 1);
 
 -- --------------------------------------------------------
 
@@ -261,7 +398,12 @@ CREATE TABLE `topics` (
 INSERT INTO `topics` (`tpID`, `tpTitle`, `tpParent`, `tpStatus`) VALUES
 (1, 'Toán', 0, 1),
 (2, 'Lý', 0, 1),
-(3, 'Hóa', 0, 1);
+(3, 'Hóa', 0, 0),
+(4, 'CNTT', 0, 1),
+(5, 'Kỹ thuật', 4, 1),
+(6, 'Giải thuật', 4, 1),
+(7, 'a', 0, 1),
+(8, 'b', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -284,17 +426,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userID`, `userName`, `userEmail`, `userPassword`, `userFullName`, `isAdmin`, `trangThai`) VALUES
-(1, 'admin', 'asd@gmail.com', '123456', 'Administrator', 1, 1),
-(2, 'user1', 'user1@example.com', '11111111', 'User One', 0, 0),
-(3, 'user2', 'user2@example.com', '11111111', 'assdasd', 0, 0),
+(1, 'admin', 'admin@gmail.com', '123456', 'Administrator', 1, 1),
+(2, 'user1', 'user1@example.com', '11111111', 'User One', 0, 1),
+(3, 'user2', 'user2@example.com', '11111111', 'assdasd', 0, 1),
 (101, 'Nguyen Van A', 'a@example.com', '123123', 'aaaa', 0, 1),
 (102, 'Tran Thi B', 'b@example.com', '123123', 'bbbb', 0, 1),
-(103, 'Le Van C', 'c@example.com', '123123', 'cccc', 0, 1),
-(104, 'hello1', 'a1@gmail.com', '123456', 'đây là 1', 0, 1),
-(105, 'hello2', 'a2@gmail.com', '123457', '', 0, 1),
-(106, '123', 'a3@gmail.com', '123458', 'đây là 3', 0, 1),
-(107, 'hello4', 'a4@gmail.com', '123459', 'đây là 4', 0, 1),
-(108, 'hello7', 'a9@gmail.com', '123457', 'đây là 7', 0, 1);
+(103, 'Le Van C', 'c@example.com', '123123', 'cccc', 0, 1);
 
 --
 -- Indexes for dumped tables
@@ -311,7 +448,7 @@ ALTER TABLE `answers`
 -- Indexes for table `exams`
 --
 ALTER TABLE `exams`
-  ADD PRIMARY KEY (`testCode`,`exOrder`),
+  ADD PRIMARY KEY (`exCode`) USING BTREE,
   ADD KEY `testCode` (`testCode`),
   ADD KEY `exCode` (`exCode`);
 
@@ -333,7 +470,7 @@ ALTER TABLE `questions`
 -- Indexes for table `result`
 --
 ALTER TABLE `result`
-  ADD PRIMARY KEY (`rs_num`,`userID`,`exCode`),
+  ADD PRIMARY KEY (`rs_num`) USING BTREE,
   ADD KEY `userID` (`userID`),
   ADD KEY `exID` (`exCode`),
   ADD KEY `exCode` (`exCode`);
@@ -342,9 +479,8 @@ ALTER TABLE `result`
 -- Indexes for table `test`
 --
 ALTER TABLE `test`
-  ADD PRIMARY KEY (`testID`,`tpID`) USING BTREE,
-  ADD KEY `tpID` (`tpID`),
-  ADD KEY `testCode` (`testCode`);
+  ADD PRIMARY KEY (`testID`,`tpID`,`testCode`) USING BTREE,
+  ADD KEY `tpID` (`tpID`);
 
 --
 -- Indexes for table `topics`
@@ -366,37 +502,43 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `answers`
 --
 ALTER TABLE `answers`
-  MODIFY `awID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `awID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=252;
 
 --
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `logID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `logID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=267;
 
 --
 -- AUTO_INCREMENT for table `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `qID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `qID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+
+--
+-- AUTO_INCREMENT for table `result`
+--
+ALTER TABLE `result`
+  MODIFY `rs_num` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `test`
 --
 ALTER TABLE `test`
-  MODIFY `testID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `testID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `topics`
 --
 ALTER TABLE `topics`
-  MODIFY `tpID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `tpID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
 
 --
 -- Constraints for dumped tables
@@ -407,12 +549,6 @@ ALTER TABLE `users`
 --
 ALTER TABLE `answers`
   ADD CONSTRAINT `answers_ibfk_1` FOREIGN KEY (`qID`) REFERENCES `questions` (`qID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `exams`
---
-ALTER TABLE `exams`
-  ADD CONSTRAINT `exams_ibfk_1` FOREIGN KEY (`exCode`) REFERENCES `result` (`exCode`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `logs`
@@ -436,8 +572,7 @@ ALTER TABLE `result`
 -- Constraints for table `test`
 --
 ALTER TABLE `test`
-  ADD CONSTRAINT `test_ibfk_1` FOREIGN KEY (`tpID`) REFERENCES `topics` (`tpID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `test_ibfk_2` FOREIGN KEY (`testCode`) REFERENCES `exams` (`testCode`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `test_ibfk_1` FOREIGN KEY (`tpID`) REFERENCES `topics` (`tpID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

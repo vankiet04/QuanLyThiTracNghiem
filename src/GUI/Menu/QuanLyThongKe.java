@@ -7,6 +7,7 @@ import ConnectDB.JDBCUtil;
 import DTO.DTO_Exam;
 import DTO.DTO_Test;
 import GUI.CRUD.ChiTietBaiThi;
+import GUI.CRUD.ChiTietThongKe;
 import GUI.Component.MenuTaskBar;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -18,7 +19,7 @@ import java.awt.FlowLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class QuanLyCacBaiThi extends JPanel {
+public class QuanLyThongKe extends JPanel {
     private ArrayList<pnlBaiThi> listPnl = new ArrayList<>();
     private GUI.GUI_MainFrm main;
     private javax.swing.JPanel pnlContent;
@@ -28,7 +29,7 @@ public class QuanLyCacBaiThi extends JPanel {
     private MenuTaskBar menuTask;
    
     
-    public QuanLyCacBaiThi(GUI.GUI_MainFrm main, MenuTaskBar menuTask) {
+    public QuanLyThongKe(GUI.GUI_MainFrm main, MenuTaskBar menuTask) {
         this.menuTask = menuTask;
         this.main = main;
         initComponents();
@@ -56,7 +57,7 @@ public class QuanLyCacBaiThi extends JPanel {
             pnl.addMouseListener(new MouseAdapter(){
                 @Override
                 public void mouseClicked(MouseEvent e){
-                    ChayBaiThi(item.getTestCode());
+                    ThongKeBaiThi(item.getTestCode());
                 }
             });     
         }
@@ -80,10 +81,9 @@ public class QuanLyCacBaiThi extends JPanel {
         LoadUIBaiThi(listTest);
     }
 
-    private void ChayBaiThi(String testCode){
-        
-        ChiTietBaiThi ctbt = new ChiTietBaiThi(this.main, this.menuTask, testCode);
-        ctbt.setVisible(true);
+    private void ThongKeBaiThi(String testCode){
+        ChiTietThongKe thongke = new ChiTietThongKe(this.main, this.menuTask, testCode);
+        this.main.changePages(thongke);
     }
 
     @SuppressWarnings("unchecked")

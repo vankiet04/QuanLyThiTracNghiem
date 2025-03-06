@@ -57,6 +57,7 @@ public class SuaCauHoi extends javax.swing.JDialog {
     BUS.BUS_Questions questionBUS = new BUS_Questions();
     BUS.BUS_Answers answerBUS = new BUS_Answers();
     private int currentQuestionId;
+    private ArrayList<DTO.DTO_Topic> topics;
 
     public SuaCauHoi(java.awt.Frame parent, boolean modal, int idCauhoi) {
         initComponents();
@@ -67,19 +68,42 @@ public class SuaCauHoi extends javax.swing.JDialog {
         // Create the delete button
         createDeleteButton();
 
-        // Add update button
-        addUpdateButton();
+        // Load topics
+        loadTopics();
 
         DTO.DTO_Questions question = questionBUS.selectById(String.valueOf(idCauhoi));
         if (question != null) {
+            // Set the content from the loaded question
             jTextField1.setText(question.getqContent());
-
-            jLabel2.setText(question.getqPictures()
-                    .substring(question.getqPictures().lastIndexOf("/") + 1));
+            
+            // Store the full image path in imgQuestion variable
+            imgQuestion = question.getqPictures();
+            
+            // Just display the filename in the label if there's an image path
+            if (imgQuestion != null && !imgQuestion.isEmpty()) {
+                jLabel2.setText(question.getqPictures().substring(question.getqPictures().lastIndexOf("/") + 1));
+                jLabel9.setText("Xóa");
+            } else {
+                jLabel2.setText("");
+                jLabel9.setText("");
+            }
+            
+            // Set the difficulty level
             jComboBox2.setSelectedItem(question.getqLevel());
+            
+            // Set selected topic
+            setSelectedTopic(question.getqTopicID());
 
+            // Load answers for this question
             listAnswer = answerBUS.getAnswersByQuestionId(idCauhoi);
             loadListAnswer();
+            
+            // Add debug info
+            System.out.println("Loaded question ID: " + idCauhoi);
+            System.out.println("Content: " + question.getqContent());
+            System.out.println("Pictures: " + imgQuestion);
+            System.out.println("TopicID: " + question.getqTopicID());
+            System.out.println("Level: " + question.getqLevel());
         } else {
             JOptionPane.showMessageDialog(this, "Không tìm thấy câu hỏi!");
         }
@@ -284,62 +308,76 @@ public class SuaCauHoi extends javax.swing.JDialog {
     }
 
     // Add a button to update all answers via the BUS updateAns method
-    private void addUpdateButton() {
-        JButton updateAnswersBtn = new javax.swing.JButton("Cập nhật câu trả lời");
-        updateAnswersBtn.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
-        updateAnswersBtn.setBounds(jScrollPane1.getX() + jScrollPane1.getWidth() - 180,
-                jScrollPane1.getY() + jScrollPane1.getHeight() + 10, 180, 30);
-
-        updateAnswersBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updateAnswers();
+    private boolean validateAnswers() {
+        // Check if there are any answers
+        if (listAnswer.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Không có câu trả lời để cập nhật.\nVui lòng thêm ít nhất một câu trả lời.",
+                    "Lỗi Cập Nhật", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        
+        // Check if any answer is selected as correct
+        boolean hasCorrectAnswer = false;
+        for (DTO_Answer answer : listAnswer) {
+            if (answer.isRight() == 1) {
+                hasCorrectAnswer = true;
+                break;
             }
-        });
-
-        jPanel1.add(updateAnswersBtn);
+        }
+        
+        // Show error if no answer is selected as correct
+        if (!hasCorrectAnswer) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn ít nhất một câu trả lời làm đáp án đúng.",
+                    "Lỗi Cập Nhật", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        
+        return true;
     }
 
-    // Method to call updateAns in BUS_Answers
-    private void updateAnswers() {
+    // Add method to load topics from database to JComboBox
+    private void loadTopics() {
         try {
-            // Check if there are any answers
-            if (listAnswer.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Không có câu trả lời để cập nhật.\nVui lòng thêm ít nhất một câu trả lời.",
-                        "Lỗi Cập Nhật", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
+            BUS.BUS_Topics topicsBUS = new BUS.BUS_Topics();
+            topics = topicsBUS.getAllTopics();
             
-            // Check if any answer is selected as correct
-            boolean hasCorrectAnswer = false;
-            for (DTO_Answer answer : listAnswer) {
-                if (answer.isRight() == 1) {
-                    hasCorrectAnswer = true;
-                    break;
-                }
-            }
+            // Clear default model
+            jComboBox1.removeAllItems();
             
-            // Show error if no answer is selected as correct
-            if (!hasCorrectAnswer) {
-                JOptionPane.showMessageDialog(this, "Vui lòng chọn ít nhất một câu trả lời làm đáp án đúng.",
-                        "Lỗi Cập Nhật", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            // Continue with update if validation passes
-            if (currentQuestionId > 0) {
-                int result = answerBUS.updateAns(listAnswer, currentQuestionId);
-                if (result > 0) {
-                    JOptionPane.showMessageDialog(this, "Cập nhật câu trả lời thành công");
-                } else {
-                    JOptionPane.showMessageDialog(this, "Cập nhật câu trả lời thất bại");
+            // Add topics to combo box
+            if (topics != null && !topics.isEmpty()) {
+                for (DTO.DTO_Topic topic : topics) {
+                    jComboBox1.addItem(topic.getTpTitle());
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Không có ID câu hỏi để cập nhật");
+                // Add default item if no topics found
+                jComboBox1.addItem("Không có chủ đề");
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Lỗi: " + ex.getMessage(), "Lỗi Cập Nhật", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, 
+                "Lỗi khi tải danh sách chủ đề: " + e.getMessage(),
+                "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    // Set selected topic in combobox based on topic ID
+    private void setSelectedTopic(int topicId) {
+        for (int i = 0; i < topics.size(); i++) {
+            if (topics.get(i).getTpID() == topicId) {
+                jComboBox1.setSelectedIndex(i);
+                break;
+            }
+        }
+    }
+    
+    // Get selected topic ID
+    private int getSelectedTopicId() {
+        int selectedIndex = jComboBox1.getSelectedIndex();
+        if (selectedIndex >= 0 && selectedIndex < topics.size()) {
+            return topics.get(selectedIndex).getTpID();
+        }
+        return 1; // Default if no selection or error
     }
 
     /**
@@ -439,7 +477,7 @@ public class SuaCauHoi extends javax.swing.JDialog {
 
         jLabel5.setText(" ");
 
-        jButton1.setText("Thêm câu hỏi");
+        jButton1.setText("Cập nhật câu hỏi");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -725,32 +763,57 @@ public class SuaCauHoi extends javax.swing.JDialog {
     }// GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        if (listAnswer.size() < 2 || listAnswer.size() > 6) {
-            JOptionPane.showMessageDialog(this, "Số lượng câu trả lời phải từ 2 đến 6");
-            return;
-        }
+    // Validate answers and question
+    if (listAnswer.size() < 2 || listAnswer.size() > 6) {
+        JOptionPane.showMessageDialog(this, "Số lượng câu trả lời phải từ 2 đến 6", "Lỗi", 
+                JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    
+    if (!validateAnswers()) {
+        return;
+    }
+    
+    try {
+        // Create a question object with the updated data
         DTO_Questions question = new DTO_Questions();
-        question.setqContent(jTextField1.getText().toString());
+        question.setqContent(jTextField1.getText().trim());
         question.setqPictures(imgQuestion);
         String level = jComboBox2.getSelectedItem().toString();
         question.setqLevel(level);
-        question.setqTopicID(1);
-        if (questionBUS.insert(question) > 0) {
-            JOptionPane.showMessageDialog(this, "Thêm câu hỏi thành công");
-            int largestID = questionBUS.getLargestID();
-            // add to ansswer
-            for (int i = 0; i < listAnswer.size(); i++) {
-                DTO_Answer answer = listAnswer.get(i);
-                answer.setQuestionId(largestID);
-                answerBUS.insert(answer);
-            }
+        
+        // Use selected topic ID
+        int topicId = getSelectedTopicId();
+        question.setqTopicID(topicId);
+        
+        // Debug information before update
+        System.out.println("Updating question with ID: " + currentQuestionId);
+        System.out.println("New content: " + question.getqContent());
+        System.out.println("New pictures: " + imgQuestion);
+        System.out.println("New topicID: " + topicId);
+        System.out.println("New level: " + level);
+        
+        // First update the question
+        int questionResult = questionBUS.update(question, currentQuestionId);
+        
+        // Then update the answers
+        int answerResult = answerBUS.updateAns(listAnswer, currentQuestionId);
+        
+        if (questionResult > 0 && answerResult > 0) {
+            JOptionPane.showMessageDialog(this, "Cập nhật câu hỏi và câu trả lời thành công!");
             this.dispose();
+        } else if (questionResult > 0) {
+            JOptionPane.showMessageDialog(this, "Cập nhật câu hỏi thành công nhưng có lỗi khi cập nhật câu trả lời");
+        } else if (answerResult > 0) {
+            JOptionPane.showMessageDialog(this, "Cập nhật câu trả lời thành công nhưng có lỗi khi cập nhật câu hỏi");
         } else {
-            JOptionPane.showMessageDialog(this, "Thêm câu hỏi thất bại");
+            JOptionPane.showMessageDialog(this, "Cập nhật thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
-
-    }// GEN-LAST:event_jButton1ActionPerformed
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage(), "Lỗi cập nhật", JOptionPane.ERROR_MESSAGE);
+    }
+}// GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3MousePressed(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButton3MousePressed
         // TODO add your handling code here: them hinh cau hoi
@@ -821,16 +884,13 @@ public class SuaCauHoi extends javax.swing.JDialog {
 
                 String relativePath = "src/img/" + newFileName;
 
-                // Set image path and update jLabel5
                 imgAnswer = relativePath;
                 jLabel5.setText(newFileName);
 
-                // Replace jLabel11 with a JButton for better visibility
                 if (deleteBtn == null) {
                     createDeleteButton();
                 }
 
-                // Show the delete button
                 deleteBtn.setVisible(true);
             }
         } catch (Exception ex) {

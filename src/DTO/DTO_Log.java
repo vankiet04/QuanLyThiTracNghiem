@@ -1,6 +1,7 @@
 
 package DTO;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -8,22 +9,14 @@ import java.util.List;
 public class DTO_Log {
     private int logID;
     private int logUserID;
-    private int logExCode;
-    private Date logDate;
-    private List<String> logContent;
-
-    public void setLogContent(List<String> logContent) {
-        this.logContent = logContent;
-    }
-
-    public List<String> getLogContent() {
-        return logContent;
-    }
+    private String logExCode;
+    private String logDate;
+    private String logContent;
 
     public DTO_Log() {
     }
 
-    public DTO_Log(int logID, int logUserID, int logExCode, Date logDate, List<String> logContent) {
+    public DTO_Log(int logID, int logUserID, String logExCode, String logDate, String logContent) {
         this.logID = logID;
         this.logUserID = logUserID;
         this.logExCode = logExCode;
@@ -31,11 +24,11 @@ public class DTO_Log {
         this.logContent = logContent;
     }
 
-    public DTO_Log(int logID, int logUserID, int logExId, Date logDate) {
-        this.logID = logID;
+    public DTO_Log(int logUserID, String logExCode, String logDate, String logContent) {
         this.logUserID = logUserID;
-        this.logExCode = logExId;
+        this.logExCode = logExCode;
         this.logDate = logDate;
+        this.logContent = logContent;
     }
 
     public int getLogID() {
@@ -46,12 +39,16 @@ public class DTO_Log {
         return logUserID;
     }
 
-    public int getLogExCode() {
+    public String getLogExCode() {
         return logExCode;
     }
 
-    public Date getLogDate() {
+    public String getLogDate() {
         return logDate;
+    }
+
+    public String getLogContent() {
+        return logContent;
     }
 
     public void setLogID(int logID) {
@@ -62,13 +59,19 @@ public class DTO_Log {
         this.logUserID = logUserID;
     }
 
-    public void setLogExCode(int logExId) {
-        this.logExCode = logExId;
+    public void setLogExCode(String logExCode) {
+        this.logExCode = logExCode;
     }
 
-    public void setLogDate(Date logDate) {
+    public void setLogDate(String logDate) {
         this.logDate = logDate;
     }
+
+    public void setLogContent(String logContent) {
+        this.logContent = logContent;
+    }
+
+
     
     
 }

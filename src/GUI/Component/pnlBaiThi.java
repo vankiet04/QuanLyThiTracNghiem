@@ -10,7 +10,7 @@ public class pnlBaiThi extends JLayeredPane {
         initComponents();
         lblMaBaiThi.setText("Mã bài thi: " + maBaiThi);
         lblBaiThi.setText(tenBaiThi);
-        lblLuotLam.setText("Số lượt làm: " + soLuotLam);
+        lblLuotLam.setText("Lượt làm đề: " + soLuotLam);
         lblDiem.setText("Ngày thi: " + ngayThi);
         testpnl1.setBorder(new RoundedBorder(10, new Color(42, 74, 170))); // Thay đổi màu viền và bo tròn góc
     }
@@ -59,7 +59,7 @@ public class pnlBaiThi extends JLayeredPane {
 
         lblLuotLam.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblLuotLam.setForeground(new java.awt.Color(0, 0, 0));
-        lblLuotLam.setText("Số lượt làm: ");
+        lblLuotLam.setText("Lượt làm đề:");
 
         javax.swing.GroupLayout testpnl1Layout = new javax.swing.GroupLayout(testpnl1);
         testpnl1.setLayout(testpnl1Layout);

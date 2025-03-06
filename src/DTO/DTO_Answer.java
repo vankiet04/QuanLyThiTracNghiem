@@ -1,6 +1,7 @@
 package DTO;
 
 public class DTO_Answer {
+    private int awID;
     private int questionId;
     private String content;
     private String image;
@@ -8,6 +9,16 @@ public class DTO_Answer {
     private int status = 1;
 
     // get and set
+
+    public int getAwID() {
+        return awID;
+    }
+
+    public void setAwID(int awID) {
+        this.awID = awID;
+    }
+    
+    
     public String getContent() {
         return content;
     }

@@ -7,9 +7,14 @@ import javax.swing.ButtonGroup;
 import java.awt.Font;
 
 public class CauHoiThi extends javax.swing.JPanel {
+    private int questionID;
+    private ArrayList<JRadioButton> radioButtons = new ArrayList<>();
+    private ArrayList<DTO_Answer> listAnswer;
 
-    public CauHoiThi(String title, String cauHoi, ArrayList<DTO_Answer> listAnswer) {
+    public CauHoiThi(int questionID, String title, String cauHoi, ArrayList<DTO_Answer> listAnswer) {
         initComponents();
+        this.questionID = questionID; // Lưu ID của câu hỏi
+        this.listAnswer = listAnswer;
         txtTitle.setText(title);
         txtCauHoi.setText(cauHoi);
         taoRadioButton(listAnswer);
@@ -18,7 +23,7 @@ public class CauHoiThi extends javax.swing.JPanel {
     public CauHoiThi() {
         initComponents();
     }
-
+        
     private void taoRadioButton(ArrayList<DTO_Answer> listAnswer) {
         ButtonGroup group = new ButtonGroup();
         pnlAnswer.setLayout(new java.awt.GridLayout(0, 2)); // Sử dụng GridLayout với 2 cột
@@ -27,11 +32,39 @@ public class CauHoiThi extends javax.swing.JPanel {
             radioButton.setFont(new Font("Segoe UI", Font.PLAIN, 14)); // Đặt kích thước phông chữ lên 14
             group.add(radioButton);
             pnlAnswer.add(radioButton);
+            radioButtons.add(radioButton); // Thêm JRadioButton vào danh sách
         }
         pnlAnswer.revalidate();
         pnlAnswer.repaint();
     }
 
+    // Phương thức trả về danh sách các JRadioButton
+    public ArrayList<JRadioButton> getRadioButtons() {
+        return radioButtons;
+    }
+
+    public int getAnswerID(JRadioButton radioButton) {
+        int index = radioButtons.indexOf(radioButton);
+        if (index != -1) {
+            return listAnswer.get(index).getAwID();
+        }
+        return -1; // Trả về -1 nếu không tìm thấy
+    }
+
+    
+    // hỗ trợ cho việc load lại dữ liệu
+    public int getQuestionID() {
+        return questionID;
+    }
+
+    public void setAnswerID(int awID) {
+        for (JRadioButton radioButton : radioButtons) {
+            if (getAnswerID(radioButton) == awID) {
+                radioButton.setSelected(true);
+                break; // Tìm thấy đáp án thì dừng lại
+            }
+        }
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
