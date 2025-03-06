@@ -33,14 +33,15 @@ public class SuaDeThi extends javax.swing.JDialog {
     private ArrayList<Integer> selectedEasyQuestions = new ArrayList<>();
     private ArrayList<Integer> selectedMediumQuestions = new ArrayList<>();
     private ArrayList<Integer> selectedHardQuestions = new ArrayList<>();
-
+     GUI.Menu.QuanLyDeThi parentPanel;
     /**
      * Creates new form SuaDeThi
      */
-    public SuaDeThi(java.awt.Frame parent, boolean modal, String exCode) {
+    public SuaDeThi(java.awt.Frame parent, boolean modal, String exCode, GUI.Menu.QuanLyDeThi parentPanel) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
+        this.parentPanel = parentPanel;
 
         // Load exam data
         loadExamData(exCode);
@@ -421,13 +422,17 @@ private String getTopicName(int topicId) {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 668, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton8)
-                            .addComponent(jButton10)
-                            .addComponent(jButton9))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(45, 45, 45)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton9)
+                                    .addComponent(jButton8))
+                                .addGap(15, 15, 15)
+                                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(36, 36, 36)
+                                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -529,10 +534,11 @@ private String getTopicName(int topicId) {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(27, 27, 27)
+                                .addGap(34, 34, 34)
                                 .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(29, 29, 29)
-                                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(35, 35, 35)
+                                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
                 .addGap(18, 18, 18)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -616,6 +622,9 @@ private String getTopicName(int topicId) {
                 JOptionPane.showMessageDialog(this,
                         "Cập nhật đề thi thành công!",
                         "Thành công", JOptionPane.INFORMATION_MESSAGE);
+                ArrayList<DTO_Exam> listExam = busExam.getAllData();
+                parentPanel.loadData2(listExam);
+                
                 this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this,
@@ -866,7 +875,7 @@ private String getTopicName(int topicId) {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                SuaDeThi dialog = new SuaDeThi(new javax.swing.JFrame(), true, "DT001");
+                SuaDeThi dialog = new SuaDeThi(new javax.swing.JFrame(), true, "DT001", null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

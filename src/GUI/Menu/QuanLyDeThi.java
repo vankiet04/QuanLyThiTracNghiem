@@ -34,6 +34,10 @@ public class QuanLyDeThi extends javax.swing.JPanel {
     private DefaultTableModel model;
     private BUS_Test busTest;
     private ArrayList<DTO_Test> listTest;
+    private ArrayList<DTO_Exam> listExam;
+  
+
+
     private int curSelect = -1;  // 
     
     /**
@@ -47,11 +51,11 @@ public class QuanLyDeThi extends javax.swing.JPanel {
         this.main = main;
         initComponents();
         busExam = new BUS_Exam();
-        busTest = new BUS_Test();  // Initialize busTest
-        listTest = busTest.getAllData();  // Initialize listTest
+        busTest = new BUS_Test(); // Initialize busTest
+        listTest = busTest.getAllData(); // Initialize listTest
         model = (DefaultTableModel) jTable1.getModel();
         loadData();
-// Set up table selection listener
+        // Set up table selection listener
         jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -60,7 +64,7 @@ public class QuanLyDeThi extends javax.swing.JPanel {
                     if (selectedRow != -1) {
                         String exCode = jTable1.getValueAt(selectedRow, 2).toString();
                         String testCode = jTable1.getValueAt(selectedRow, 0).toString();
-                        
+
                         // Find the test by testCode
                         for (DTO_Test test : listTest) {
                             if (test.getTestCode().equals(testCode)) {
@@ -74,15 +78,16 @@ public class QuanLyDeThi extends javax.swing.JPanel {
         });
         // can giua 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-     centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-     jTable1.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-     jTable1.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-     jTable1.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        jTable1.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        jTable1.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        jTable1.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
         jTable1.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
-        
 
     }
-     public void loadData() {
+    
+
+    public void loadData() {
         ArrayList<DTO_Exam> listExam = busExam.getAllData();
         model.setRowCount(0); // Clear existing data
         for (DTO_Exam exam : listExam) {
@@ -94,6 +99,7 @@ public class QuanLyDeThi extends javax.swing.JPanel {
             });
         }
     }
+    
     public void loadData2( ArrayList<DTO_Exam> listExam) {
         model.setRowCount(0); // Clear existing data
         for (DTO_Exam exam : listExam) {
@@ -419,7 +425,8 @@ public class QuanLyDeThi extends javax.swing.JPanel {
         // TODO add your handling code here:
         txtSearch.setText("");
         lblSearch.setText("");
-        loadData();
+        ArrayList<DTO_Exam> listExam = busExam.getAllData();
+        loadData2(listExam);
         //reset
     }//GEN-LAST:event_myButton2ActionPerformed
 
@@ -427,19 +434,9 @@ public class QuanLyDeThi extends javax.swing.JPanel {
         int selectedRow = jTable1.getSelectedRow();
         if (selectedRow != -1) {
             String exCode = jTable1.getValueAt(selectedRow, 2).toString();
-            
+
             // Open the SuaDeThi dialog with selected exCode
-            SuaDeThi suaDeThiDialog = new SuaDeThi(main, true, exCode) {
-                // Override the dispose method to reload data when dialog closes
-                @Override
-                public void dispose() {
-                    super.dispose();
-                    // Reload the data after dialog closes
-                    SwingUtilities.invokeLater(() -> {
-                        loadData();
-                    });
-                }
-            };
+            GUI.CRUD.SuaDeThi suaDeThiDialog = new GUI.CRUD.SuaDeThi(main, true, exCode, this);
             
             suaDeThiDialog.setLocationRelativeTo(null);
             suaDeThiDialog.setVisible(true);
@@ -529,18 +526,19 @@ public class QuanLyDeThi extends javax.swing.JPanel {
                 
             if (confirm == JOptionPane.YES_OPTION) {
                 try {
-                    // Use deleteByCode directly instead of trying to parse as integer first
+                    // Use deleteByCode directly
                     int result = busExam.deleteByCode(exCode);
                     
                     if (result > 0) {
+                        ArrayList<DTO_Exam> listExam2 = busExam.getAllData();
+                        this.loadData2(listExam2);
+                        //reload tôi muốn load lại bảng
+                    
                         JOptionPane.showMessageDialog(
                             this,
                             "Xóa đề thi thành công",
                             "Thông báo",
                             JOptionPane.INFORMATION_MESSAGE);
-                            
-                        // Reload the data
-                        loadData();
                     } else {
                         JOptionPane.showMessageDialog(
                             this,
@@ -564,22 +562,13 @@ public class QuanLyDeThi extends javax.swing.JPanel {
                 "Thông báo",
                 JOptionPane.INFORMATION_MESSAGE);
         }
-    }//GEN-LAST:event_jLabel4MousePressed
-
+    }
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {
 
-        GUI.CRUD.ThemDeThi themDeThi = new GUI.CRUD.ThemDeThi(main, true) {
-            // Override the dispose method to reload data when dialog closes
-            @Override
-            public void dispose() {
-                super.dispose();
-                // Reload the data after dialog closes
-                SwingUtilities.invokeLater(() -> {
-                    loadData();
-                });
-            }
-        };
+        GUI.CRUD.ThemDeThi themDeThi = new GUI.CRUD.ThemDeThi(main, true, this);
+        themDeThi.setLocationRelativeTo(null);
         themDeThi.setVisible(true);
+      
     }//GEN-LAST:event_jLabel2MousePressed
     private void jLabel7MousePressed(java.awt.event.MouseEvent evt) {
        int selectedRow = jTable1.getSelectedRow();

@@ -608,12 +608,12 @@ public class QuanLyBaiThi extends javax.swing.JPanel {
 
         if (selectedTest != null) {
             // Open the SuaDeThi dialog
-            SuaDeThi suaDeThiDialog = new SuaDeThi(main, true, selectedTest.getTestCode());
-            suaDeThiDialog.setLocationRelativeTo(null);
-            suaDeThiDialog.setVisible(true);
-            
-            // Reload data after dialog closes
-            loadData(busTest.getAllData());
+            GUI.CRUD.SuaBaiThi suaBaiThi = new GUI.CRUD.SuaBaiThi(main, true, selectedTest);
+                                suaBaiThi.setLocationRelativeTo(null); // Center on screen
+                                suaBaiThi.setVisible(true);
+
+                                // Reload data after dialog closes to reflect any changes
+                                loadData(busTest.getAllData());
         } else {
             JOptionPane.showMessageDialog(this,
                 "Không tìm thấy thông tin bài thi",
