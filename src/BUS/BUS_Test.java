@@ -36,16 +36,55 @@ public class BUS_Test implements DAOInterface<DTO_Test> {
 
     @Override
     public int update(DTO_Test t) {
+        //code upadte
+        int result = daoTest.update(t);
+        if (result > 0) {
+            // Update the test in the local list
+            for (int i = 0; i < listTest.size(); i++) {
+                if (listTest.get(i).getTestID() == t.getTestID()) {
+                    listTest.set(i, t);
+                    break;
+                }
+            }
+        }
+        return result;
+
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+       
     }
 
     @Override
-    public int delete(int t) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+    public int delete(int testID) {
+        // Retrieve the test to update its status
+        DTO_Test testToDelete = null;
+        for (DTO_Test test : listTest) {
+            if (test.getTestID() == testID) {
+                testToDelete = test;
+                break;
+            }
+        }
+        
+        if (testToDelete != null) {
+            // Set status to 0 (inactive)
+            testToDelete.setTestStatus(0);
+            
+            // Update in database
+            int result = daoTest.update(testToDelete);
+            
+            if (result > 0) {
+                // Remove from active list or update status
+                for (int i = 0; i < listTest.size(); i++) {
+                    if (listTest.get(i).getTestID() == testID) {
+                        listTest.remove(i);
+                        break;
+                    }
+                }
+            }
+            return result;
+        }
+        
+        return 0; // Test not found
     }
-
     @Override
     public ArrayList<DTO_Test> getAllData() {
         // TODO Auto-generated method stub

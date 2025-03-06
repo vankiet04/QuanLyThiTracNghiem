@@ -27,22 +27,29 @@ public class ThemDeThi extends javax.swing.JDialog {
     ArrayList<DTO_Questions> listQuestion = new ArrayList<>();
     BUS_Exam examBUS = new BUS_Exam();
     ArrayList<DTO_Exam> listExam = new ArrayList<>();
+    GUI.Menu.QuanLyDeThi curUI;
 
     /** Creates new form ThemDeThi */
+    /** Creates new form ThemDeThi */
+    
+    /** Constructor for use with JFrame */
     public ThemDeThi(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         // căn giữa màn hình
         this.setLocationRelativeTo(null);
         // load data vào combobox
-        jComboBox1.removeAllItems();
-        listTest = testBUS.getAllData();
-        for (DTO_Test test : listTest) {
-            jComboBox1.addItem(test.getTestCode());
+        try {
+            jComboBox1.removeAllItems();
+            listTest = testBUS.getAllData();
+            for (DTO_Test test : listTest) {
+                jComboBox1.addItem(test.getTestCode());
+            }
+            listQuestion = questionBUS.getAllData();
+            listExam = examBUS.getAllData();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        listQuestion = questionBUS.getAllData();
-        listExam = examBUS.getAllData();
-
     }
 
     /**
@@ -53,7 +60,7 @@ public class ThemDeThi extends javax.swing.JDialog {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
@@ -71,7 +78,7 @@ public class ThemDeThi extends javax.swing.JDialog {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 204, 255));
+        jLabel7.setForeground(new java.awt.Color(42, 72, 170));
         jLabel7.setText("TẠO ĐỀ THI");
 
         jLabel1.setBackground(new java.awt.Color(102, 102, 255));
@@ -80,7 +87,6 @@ public class ThemDeThi extends javax.swing.JDialog {
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
             }
         });
 
@@ -88,6 +94,9 @@ public class ThemDeThi extends javax.swing.JDialog {
 
         jLabel5.setText(" ");
 
+        jButton1.setBackground(new java.awt.Color(42, 72, 170));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("XÁC NHẬN");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -99,210 +108,248 @@ public class ThemDeThi extends javax.swing.JDialog {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel6.setText("Nhập số lượng:");
 
-        jComboBox1.setModel(
-                new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(60, 60, 60)
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGroup(jPanel1Layout
-                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                                .addGroup(jPanel1Layout.createParallelGroup(
-                                                                        javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(jLabel2,
-                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                320,
-                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(jComboBox1,
-                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                313,
-                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                                                .addGap(73, 73, 73)
-                                                                                .addComponent(jLabel7)))
-                                                                .addPreferredGap(
-                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                        Short.MAX_VALUE)
-                                                                .addComponent(jLabel5,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE, 320,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(0, 0, Short.MAX_VALUE)))
-                                                .addContainerGap())
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGroup(jPanel1Layout
-                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                313, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jTextField1,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE, 309,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(0, 0, Short.MAX_VALUE)))));
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(151, 151, 151)
+                .addComponent(jLabel7)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
         jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 52,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel2)
-                                        .addComponent(jLabel5))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 42,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(24, 24, 24)
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 38,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(90, 90, 90)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 61, Short.MAX_VALUE)));
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(90, 90, 90)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 61, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 437,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)));
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
+        );
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)));
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        // nếu số lượng <=0 và >10 thì thông bao
-        if (Integer.parseInt(jTextField1.getText()) <= 0 || Integer.parseInt(jTextField1.getText()) > 10) {
-            JOptionPane.showMessageDialog(null, "Số lượng câu hỏi lơn hơn 0 và nhỏ hơn bằng 10");
-            return;
-        }
-        String testCode = jComboBox1.getSelectedItem().toString();
-        int soLuongDeThi = Integer.parseInt(jTextField1.getText());
-        boolean check = true;
-        int soluongdethicoma = 0;
-        for (DTO_Exam exam : listExam) {
-            if (exam.getTestCode().equals(testCode)) {
-                soluongdethicoma++;
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+        try {
+            // Validate input
+            if (jTextField1.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập số lượng đề thi", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-        }
-        if (soluongdethicoma >= 10) {
-            JOptionPane.showMessageDialog(null, "Số lượng đề thi đã đạt tối đa");
-            return;
-        }
-        if (soLuongDeThi + soluongdethicoma > 10) {
-            JOptionPane.showMessageDialog(null, "Bạn chỉ có thể tạo thêm + " + (10 - soluongdethicoma) + " đề thi");
-            return;
-        }
 
-        DTO_Test test = new DTO_Test();
-        for (DTO_Test t : listTest) {
-            if (t.getTestCode().equals(testCode)) {
-                test = t;
-                break;
+            int soLuongDeThi = Integer.parseInt(jTextField1.getText().trim());
+            if (soLuongDeThi <= 0 || soLuongDeThi > 10) {
+                JOptionPane.showMessageDialog(this, "Số lượng đề thi phải lớn hơn 0 và nhỏ hơn hoặc bằng 10",
+                        "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-        }
-        int soLuongCauHoiDe = test.getNumEasy();
-        int soLuongCauHoiTrungBinh = test.getNumMedium();
-        int soLuongCauHoiKho = test.getNumDiff();
-        System.out.println("listQuestion: " + listQuestion.size());
-        // lay tat ca cau hoi co ma chu de
-        ArrayList<DTO_Questions> listQuestionByTopic = new ArrayList<>();
-        for (DTO_Questions question : listQuestion) {
-            if (question.getqTopicID() == test.getTpID()) {
-                listQuestionByTopic.add(question);
-            }
-        }
-        System.out.println("listQuestionByTopic: " + listQuestionByTopic.size());
-        for (DTO_Questions question : listQuestionByTopic) {
-            System.out.println(question);
-        }
-        int maxExOrderByTestCode = 0;
-        for (DTO_Exam exam : listExam) {
-            System.out.println(exam);
-            if (exam.getTestCode().equals(testCode)) {
-                int exOrder = Integer.parseInt(exam.getExOrder());
-                if (exOrder > maxExOrderByTestCode) {
-                    maxExOrderByTestCode = exOrder;
+
+            String testCode = jComboBox1.getSelectedItem().toString();
+
+            int soluongdethicoma = 0;
+            char maxExOrderChar = 'A' - 1;
+
+            for (DTO_Exam exam : listExam) {
+                if (exam.getTestCode().equals(testCode)) {
+                    soluongdethicoma++;
+                    String exOrder = exam.getExOrder();
+                    if (exOrder.length() == 1 && exOrder.charAt(0) > maxExOrderChar) {
+                        maxExOrderChar = exOrder.charAt(0);
+                    }
                 }
             }
-        }
-        JOptionPane.showMessageDialog(null, "maxExOrderByTestCode: " + maxExOrderByTestCode);
-        while (soLuongDeThi > 0) {
-            int cntDe = 0;
-            int cntTrungBinh = 0;
-            int cntKho = 0;
-            ArrayList<DTO_Questions> listQuestionMucDo = new ArrayList<>();
-            for (DTO_Questions question : listQuestionByTopic) {
-                if (question.getqLevel().equals("easy") && cntDe <= soLuongCauHoiDe) {
-                    cntDe++;
-                    listQuestionMucDo.add(question);
-                } else if (question.getqLevel().equals("medium") && cntTrungBinh <= soLuongCauHoiTrungBinh) {
-                    cntTrungBinh++;
-                    listQuestionMucDo.add(question);
-                } else if (question.getqLevel().equals("difficult") && cntKho <= soLuongCauHoiKho) {
-                    cntKho++;
-                    listQuestionMucDo.add(question);
-                }
-                if (cntDe == soLuongCauHoiDe && cntTrungBinh == soLuongCauHoiTrungBinh && cntKho == soLuongCauHoiKho) {
+
+            if (soluongdethicoma >= 10) {
+                JOptionPane.showMessageDialog(this, "Số lượng đề thi đã đạt tối đa (10 đề)",
+                        "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            if (soLuongDeThi + soluongdethicoma > 10) {
+                JOptionPane.showMessageDialog(this, "Chỉ có thể tạo thêm " + (10 - soluongdethicoma) + " đề thi nữa",
+                        "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                soLuongDeThi = 10 - soluongdethicoma; // Giới hạn số lượng tạo thêm
+            }
+
+            DTO_Test test = null;
+            for (DTO_Test t : listTest) {
+                if (t.getTestCode().equals(testCode)) {
+                    test = t;
                     break;
                 }
             }
-            System.out.println("listQuestionMucDo: " + listQuestionMucDo.size());
 
-            String listQuestionCode = "";
-            for (DTO_Questions question : listQuestionMucDo) {
-                listQuestionCode += "q" + question.getqID() + ",";
-            }
-            if (listQuestionCode.length() > 0) {
-                listQuestionCode = listQuestionCode.substring(0, listQuestionCode.length() - 1);
+            if (test == null) {
+                JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin bài thi",
+                        "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
-            System.out.println(listQuestionCode);
-            // tạo đề thi
-            DTO_Exam exam = new DTO_Exam();
-            exam.setTestCode(testCode);
-            maxExOrderByTestCode++;
-            String maxExOrder = String.valueOf(maxExOrderByTestCode);
-            exam.setExOrder(maxExOrder);
-            exam.setExCode(testCode + "_" + maxExOrder);
-            exam.setEx_quesIDs(listQuestionCode);
-            int result = examBUS.insert(exam);
-            if (result != 0) {
-                JOptionPane.showMessageDialog(null, "Tạo đề thi thành công");
+            int soLuongCauHoiDe = test.getNumEasy();
+            int soLuongCauHoiTrungBinh = test.getNumMedium();
+            int soLuongCauHoiKho = test.getNumDiff();
+            int topicId = test.getTpID();
+
+            // Lọc câu hỏi theo chủ đề
+            ArrayList<DTO_Questions> easyQuestionsPool = new ArrayList<>();
+            ArrayList<DTO_Questions> mediumQuestionsPool = new ArrayList<>();
+            ArrayList<DTO_Questions> difficultQuestionsPool = new ArrayList<>();
+
+            for (DTO_Questions question : listQuestion) {
+                if (question.getqTopicID() == topicId) {
+                    String level = question.getqLevel().toLowerCase();
+                    if (level.equals("easy") || level.equals("dễ")) {
+                        easyQuestionsPool.add(question);
+                    } else if (level.equals("medium") || level.equals("vừa")) {
+                        mediumQuestionsPool.add(question);
+                    } else if (level.equals("difficult") || level.equals("khó")) {
+                        difficultQuestionsPool.add(question);
+                    }
+                }
+            }
+
+            if (easyQuestionsPool.size() < soLuongCauHoiDe ||
+                    mediumQuestionsPool.size() < soLuongCauHoiTrungBinh ||
+                    difficultQuestionsPool.size() < soLuongCauHoiKho) {
+
+                JOptionPane.showMessageDialog(this,
+                        "Không đủ câu hỏi để tạo đề thi!\n" +
+                                "Cần: " + soLuongCauHoiDe + " câu dễ, " + soLuongCauHoiTrungBinh + " câu trung bình, "
+                                + soLuongCauHoiKho + " câu khó\n" +
+                                "Hiện có: " + easyQuestionsPool.size() + " câu dễ, " + mediumQuestionsPool.size()
+                                + " câu trung bình, " + difficultQuestionsPool.size() + " câu khó",
+                        "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            int successCount = 0;
+            for (int i = 0; i < soLuongDeThi; i++) {
+                java.util.Collections.shuffle(easyQuestionsPool);
+                java.util.Collections.shuffle(mediumQuestionsPool);
+                java.util.Collections.shuffle(difficultQuestionsPool);
+
+                ArrayList<Integer> selectedQuestionIds = new ArrayList<>();
+
+                for (int j = 0; j < soLuongCauHoiDe; j++) {
+                    if (j < easyQuestionsPool.size()) {
+                        selectedQuestionIds.add(easyQuestionsPool.get(j).getqID());
+                    }
+                }
+
+                for (int j = 0; j < soLuongCauHoiTrungBinh; j++) {
+                    if (j < mediumQuestionsPool.size()) {
+                        selectedQuestionIds.add(mediumQuestionsPool.get(j).getqID());
+                    }
+                }
+
+                for (int j = 0; j < soLuongCauHoiKho; j++) {
+                    if (j < difficultQuestionsPool.size()) {
+                        selectedQuestionIds.add(difficultQuestionsPool.get(j).getqID());
+                    }
+                }
+
+                StringBuilder listQuestionCode = new StringBuilder("[");
+                for (int j = 0; j < selectedQuestionIds.size(); j++) {
+                    listQuestionCode.append(selectedQuestionIds.get(j));
+                    if (j < selectedQuestionIds.size() - 1) {
+                        listQuestionCode.append(",");
+                    }
+                }
+                listQuestionCode.append("]");
+
+                maxExOrderChar++;
+                String exOrder = String.valueOf(maxExOrderChar);
+
+                DTO_Exam exam = new DTO_Exam();
+                exam.setTestCode(testCode);
+                exam.setExOrder(exOrder);
+                exam.setExCode(testCode + exOrder);
+                exam.setEx_quesIDs(listQuestionCode.toString());
+
+                int result = examBUS.insert(exam);
+                if (result > 0) {
+                    successCount++;
+                } else {
+                    JOptionPane.showMessageDialog(this, "Lỗi khi tạo đề thi " + exam.getExCode(),
+                            "Lỗi", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+            if (successCount > 0) {
+                JOptionPane.showMessageDialog(this,
+                        "Đã tạo thành công " + successCount + " đề thi",
+                        "Thành công", JOptionPane.INFORMATION_MESSAGE);
+
+                // Refresh the parent UI before closing
+                if (curUI != null) {
+                    curUI.loadData(); // Use loadData() instead of loadData2()
+                }
+                this.dispose();
             } else {
-                JOptionPane.showMessageDialog(null, "Tạo đề thi thất bại");
+                JOptionPane.showMessageDialog(this, "Không tạo được đề thi nào",
+                        "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
-            soLuongDeThi--;
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập số lượng hợp lệ",
+                    "Lỗi", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage(),
+                    "Lỗi", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
-
-    }// GEN-LAST:event_jButton1ActionPerformed
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_jTextField1ActionPerformed
+    }
 
     /**
      * @param args the command line arguments
@@ -336,9 +383,11 @@ public class ThemDeThi extends javax.swing.JDialog {
         // </editor-fold>
 
         /* Create and display the dialog */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ThemDeThi dialog = new ThemDeThi(new javax.swing.JFrame(), true);
+                // For testing only, pass null as the UI parameter
+                ThemDeThi dialog = new ThemDeThi(null, true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

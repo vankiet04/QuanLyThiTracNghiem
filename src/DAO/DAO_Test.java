@@ -52,13 +52,47 @@ public int insert(DTO_Test t) {
     @Override
     public int update(DTO_Test t) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        try {
+            Connection con = JDBCUtil.getConnectDB();
+            String sql = "UPDATE test SET testCode=?, testTitle=?, tpID=?, testTime=?, num_easy=?, num_medium=?, num_diff=?, testLimit=?, testDate=?, testStatus=? WHERE testID=?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, t.getTestCode());
+            pst.setString(2, t.getTestTitle());
+            pst.setInt(3, t.getTpID());
+            pst.setInt(4, t.getTestTime());
+            pst.setInt(5, t.getNumEasy());
+            pst.setInt(6, t.getNumMedium());
+            pst.setInt(7, t.getNumDiff());
+            pst.setInt(8, t.getTestLimit());
+            pst.setTimestamp(9, java.sql.Timestamp.valueOf(t.getTestDate()));
+            pst.setInt(10, t.getTestStatus());
+            pst.setInt(11, t.getTestID());
+            
+            int result = pst.executeUpdate();
+            JDBCUtil.close(con);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     @Override
-    public int delete(int t) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+    public int delete(int testID) {
+        try {
+            Connection con = JDBCUtil.getConnectDB();
+            // Instead of deleting, update the status to 0
+            String sql = "UPDATE test SET testStatus = 0 WHERE testID = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1, testID);
+            
+            int result = pst.executeUpdate();
+            JDBCUtil.close(con);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     

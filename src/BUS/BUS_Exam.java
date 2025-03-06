@@ -62,6 +62,11 @@ public class BUS_Exam implements DAOInterface<DTO_Exam> {
     public int getAutoIncrement() {
         return daoExam.getAutoIncrement();
     }
+    public     ArrayList<DTO_Exam> searchData(String key){
+        return daoExam.searchData(key);
+    }
 
-    
+    public int deleteByCode(String exCode) {
+        return daoExam.deleteByCode(exCode);
+    }
 }

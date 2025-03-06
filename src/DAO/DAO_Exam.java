@@ -47,12 +47,11 @@ public class DAO_Exam implements DAOInterface<DTO_Exam> {
         }
         return 0;
     }
-
     @Override
     public int delete(int exCode) {
         try {
             Connection con = JDBCUtil.getConnectDB();
-            String sql = "DELETE FROM exams WHERE exCode = ?";
+            String sql = "UPDATE exams SET status = 0 WHERE exCode = ?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1, exCode);
             int result = pst.executeUpdate();
@@ -147,6 +146,44 @@ public class DAO_Exam implements DAOInterface<DTO_Exam> {
                 JDBCUtil.close(con);
                 return autoIncrement;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    // lấy  tất cả bài thi theo mã bài testCode
+    public ArrayList<DTO_Exam> searchData(String key) {
+        ArrayList<DTO_Exam> list = new ArrayList<>();
+        try {
+            Connection con = JDBCUtil.getConnectDB();
+            String sql = "SELECT * FROM exams WHERE exCode LIKE ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, "%" + key + "%");
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                String testCode = rs.getString("testCode");
+                String exOrder = rs.getString("exOrder");
+                String exCode = rs.getString("exCode");
+                String ex_quesIDs = rs.getString("ex_quesIDs");
+                DTO_Exam exam = new DTO_Exam(testCode, exOrder, exCode, ex_quesIDs);
+                list.add(exam);
+            }
+            JDBCUtil.close(con);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    public int deleteByCode(String exCode) {
+        try {
+            Connection con = JDBCUtil.getConnectDB();
+            // Change from UPDATE to DELETE statement
+            String sql = "DELETE FROM exams WHERE exCode = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, exCode);
+            int result = pst.executeUpdate();
+            JDBCUtil.close(con);
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
         }

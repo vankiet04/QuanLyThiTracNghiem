@@ -103,7 +103,6 @@ public class ChiTietBaiThi extends javax.swing.JFrame {
             }
         });
 
-        tblDeThi.setBackground(new java.awt.Color(255, 255, 255));
         tblDeThi.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tblDeThi.setForeground(new java.awt.Color(0, 0, 0));
         tblDeThi.setModel(new javax.swing.table.DefaultTableModel(
