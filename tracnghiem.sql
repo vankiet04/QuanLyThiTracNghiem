@@ -159,8 +159,8 @@ CREATE TABLE `questions` (
 
 INSERT INTO `questions` (`qID`, `qContent`, `qPictures`, `qTopicID`, `qLevel`, `qStatus`) VALUES
 (1, '1 + 1 bằng bao nhiêu?', '', 1, 'easy', 1),
-(2, 'Tốc độ ánh sáng là bao nhiêu?', '', 2, 'medium', 1),
-(3, 'Phản ứng hóa học giữa Na và H2O tạo ra chất gì?', '', 3, 'diff', 1),
+(2, 'Tốc độ ánh sáng là bao nhiêu?', '', 1, 'medium', 1),
+(3, 'Phản ứng hóa học giữa Na và H2O tạo ra chất gì?', '', 1, 'diff', 1),
 (4, '2 + 2 bằng bao nhiêu?', '', 1, 'easy', 1),
 (5, 'Giá trị của π (pi) xấp xỉ bằng bao nhiêu?', '', 1, 'easy', 1),
 (6, 'Căn bậc hai của 49 là bao nhiêu?', '', 1, 'easy', 1),
@@ -172,7 +172,22 @@ INSERT INTO `questions` (`qID`, `qContent`, `qPictures`, `qTopicID`, `qLevel`, `
 (12, 'Tích vô hướng của hai vectơ vuông góc bằng bao nhiêu?', '', 1, 'diff', 1),
 (13, 'Số Fibonacci thứ 10 là số nào?', '', 1, 'diff', 1),
 (14, 'Giải phương trình x^2 - 5x + 6 = 0', '', 1, 'diff', 1),
-(15, 'Hình nào có diện tích lớn nhất với cùng chu vi: hình vuông, hình tròn, hình tam giác đều?', '', 1, 'diff', 1);
+(15, 'Hình nào có diện tích lớn nhất với cùng chu vi: hình vuông, hình tròn, hình tam giác đều?', '', 1, 'diff', 1),
+(16, 'Định luật I Newton phát biểu như thế nào?', '', 2, 'easy', 1),
+(17, 'Công thức tính vận tốc là gì?', '', 2, 'easy', 1),
+(18, 'Một vật rơi tự do thì gia tốc của nó bằng bao nhiêu?', '', 2, 'easy', 1),
+(19, 'Đơn vị của lực trong hệ SI là gì?', '', 2, 'easy', 1),
+(20, 'Công thức tính thế năng trọng trường?', '', 2, 'medium', 1),
+(21, 'Định luật bảo toàn động lượng phát biểu như thế nào?', '', 2, 'medium', 1),
+(22, 'Suất điện động của nguồn điện được xác định bằng công thức nào?', '', 2, 'medium', 1),
+(23, 'Một vật có khối lượng 2kg đang chuyển động với vận tốc 3m/s. Động năng của nó là bao nhiêu?', '', 2, 'medium', 1),
+(24, 'Tia nào có bước sóng ngắn nhất trong các loại tia: tia X, tia hồng ngoại, tia gamma?', '', 2, 'medium', 1),
+(25, 'Công thức liên hệ giữa chu kỳ và tần số của dao động điều hòa?', '', 2, 'medium', 1),
+(26, 'Hiện tượng giao thoa ánh sáng chứng minh điều gì?', '', 2, 'diff', 1),
+(27, 'Sóng điện từ lan truyền được trong môi trường nào?', '', 2, 'diff', 1),
+(28, 'Hiệu điện thế giữa hai điểm trong mạch điện được tính bằng công thức nào?', '', 2, 'diff', 1),
+(29, 'Cường độ dòng điện trong mạch RLC có công thức tổng quát như thế nào?', '', 2, 'diff', 1),
+(30, 'Nguyên lý hoạt động của máy biến áp?', '', 2, 'diff', 1);
 
 -- --------------------------------------------------------
 
