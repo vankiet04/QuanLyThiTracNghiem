@@ -4,31 +4,10 @@
  */
 package GUI.CRUD;
 
-import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.time.LocalDateTime;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.util.Calendar;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import java.awt.FlowLayout;
-import java.awt.BorderLayout;
 
-import BUS.BUS_Test;
-import DTO.DTO_Test;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerDateModel;
-
-import BUS.BUS_Test;
 import BUS.BUS_Topic;
 import DTO.DTO_Test;
 import DTO.DTO_Topic;
@@ -37,50 +16,89 @@ import DTO.DTO_Topic;
  *
  * @author KIET
  */
-public class ThemBaiThi extends javax.swing.JDialog {
+public class XemBaiThi extends javax.swing.JDialog {
 
-    /**
-     * Creates new form ThemBaiThi
-     */
-    BUS_Topic busTopic = new BUS_Topic();
-    ArrayList<DTO_Topic> listTopic = busTopic.getAllData();
-    BUS_Test busTest = new BUS_Test();
-    ArrayList<DTO_Test> listTest = busTest.getAllData();
+        private DTO_Test test;
+    private ArrayList<DTO_Topic> listTopic;
+    private BUS_Topic topicBUS = new BUS_Topic();
     
-    public ThemBaiThi(java.awt.Frame parent, boolean modal) {
+    public XemBaiThi(java.awt.Frame parent, boolean modal, DTO_Test test) {
         super(parent, modal);
+        this.test = test;
         initComponents();
-        
-        // Tạo model thời gian
-        SpinnerDateModel model = new SpinnerDateModel();
-        JSpinner timeSpinner = new JSpinner(model);
-        jTextField1.setText("09:00:00");
-        // Định dạng HH:mm:ss
-        JSpinner.DateEditor editor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
-        timeSpinner.setEditor(editor);
+        loadTestData();
+        disableAllFields(); // Make all fields non-editable
 
-        // Thêm vào frame
-       
+        // Center the dialog on screen
+        setLocationRelativeTo(null);
+
+        // Change window title to indicate view-only mode
+        setTitle("Xem Thông Tin Bài Thi");
+    }
+      
+    private void loadTestData() {
+        // Set form fields with the test data
+        jTextField5.setText(test.getTestCode());
+        jTextField6.setText(test.getTestTitle());
+        
+        // Load topics into combo box
+        listTopic = topicBUS.getAllData();
         jComboBox1.removeAllItems();
         for (DTO_Topic topic : listTopic) {
             jComboBox1.addItem(topic.getTpID() + " - " + topic.getTpTitle());
         }
-        jComboBox1.setSelectedIndex(0);
-
         
-        // custom ô jDateChooser1 với dịnh dạng 2025-02-18
-        jDateChooser1.setDateFormatString("yyyy-MM-dd");
-        jDateChooser1.setDate(Calendar.getInstance().getTime());
-        jDateChooser1.setMinSelectableDate(Calendar.getInstance().getTime());
-        jDateChooser1.setMaxSelectableDate(null);
-
-        //custom ô jSpinField1 với 08:00:00
-     
+        // Set selected topic
+        for (int i = 0; i < jComboBox1.getItemCount(); i++) {
+            String item = jComboBox1.getItemAt(i);
+            int topicId = Integer.parseInt(item.split(" - ")[0]);
+            if (topicId == test.getTpID()) {
+                jComboBox1.setSelectedIndex(i);
+                break;
+            }
+        }
         
+        // Set numeric fields
+        jTextField7.setText(String.valueOf(test.getNumEasy()));
+        jTextField8.setText(String.valueOf(test.getNumMedium()));
+        jTextField9.setText(String.valueOf(test.getNumDiff()));
+        jTextField3.setText(String.valueOf(test.getTestTime()));
+        jTextField2.setText(String.valueOf(test.getTestLimit()));
         
-  
+        // Set date and time
+        if (test.getTestDate() != null) {
+            // Convert LocalDateTime to Date
+            java.util.Date testDate = java.util.Date.from(test.getTestDate().atZone(ZoneId.systemDefault()).toInstant());
+            jDateChooser1.setDate(testDate);
+            
+            // Extract time part (HH:mm:ss)
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            String timeString = test.getTestDate().format(formatter);
+            jTextField1.setText(timeString);
+        }
     }
-
+    
+    private void disableAllFields() {
+        // Disable all text fields
+        jTextField1.setEditable(false);
+        jTextField2.setEditable(false);
+        jTextField3.setEditable(false);
+        jTextField5.setEditable(false);
+        jTextField6.setEditable(false);
+        jTextField7.setEditable(false);
+        jTextField8.setEditable(false);
+        jTextField9.setEditable(false);
+        
+        // Disable combobox and date chooser
+        jComboBox1.setEnabled(false);
+        jDateChooser1.setEnabled(false);
+        
+        // Hide or disable buttons other than Close
+        jButton2.setVisible(false); // Hide the time picker button
+        
+        // Change the title of the OK button to "Close"
+        jButton1.setText("ĐÓNG");
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -90,7 +108,6 @@ public class ThemBaiThi extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jSpinField2 = new com.toedter.components.JSpinField();
         jPanel1 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -125,7 +142,7 @@ public class ThemBaiThi extends javax.swing.JDialog {
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(42, 72, 170));
-        jLabel7.setText("THÊM BÀI THI");
+        jLabel7.setText("XEM BÀI THI");
 
         jLabel1.setBackground(new java.awt.Color(102, 102, 255));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -144,7 +161,7 @@ public class ThemBaiThi extends javax.swing.JDialog {
         jButton1.setBackground(new java.awt.Color(42, 72, 170));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("XÁC NHẬN");
+        jButton1.setText("ĐÓNG");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -295,7 +312,7 @@ public class ThemBaiThi extends javax.swing.JDialog {
                         .addGap(234, 234, 234)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(298, 298, 298)
+                        .addGap(307, 307, 307)
                         .addComponent(jLabel7)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -379,132 +396,26 @@ public class ThemBaiThi extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
         // TODO add your handling code here:
-        try {
-            // Get form values
-            String testCode = jTextField5.getText().trim();
-            String testTitle = jTextField6.getText().trim();
-            
-            // Parse the selected topic ID from the combo box
-            String selectedTopic = jComboBox1.getSelectedItem().toString();
-            int tpID = Integer.parseInt(selectedTopic.split(" - ")[0]);
-            
-            // Get test time in minutes from jTextField3 (not jTextField1)
-            int testTime = Integer.parseInt(jTextField3.getText().trim()); // Changed from jTextField1 to jTextField3
-            
-            // Get difficulty level counts
-            int numEasy = Integer.parseInt(jTextField7.getText().trim());
-            int numMedium = Integer.parseInt(jTextField8.getText().trim());
-            int numDiff = Integer.parseInt(jTextField9.getText().trim());
-            
-            // Get test limit (number of attempts allowed)
-            int testLimit = Integer.parseInt(jTextField2.getText().trim());
-            
-            // Get the date from jDateChooser1
-            java.util.Date selectedDate = jDateChooser1.getDate();
-            if (selectedDate == null) {
-                JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày thi", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            
-            // Create a Calendar instance and set its time to the selected date
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(selectedDate);
-            
-            // Parse the time from jTextField1 (HH:MM:SS format)
-            try {
-                String timeStr = jTextField1.getText().trim();
-                String[] timeParts = timeStr.split(":");
-                if (timeParts.length == 3) {
-                    int hours = Integer.parseInt(timeParts[0]);
-                    int minutes = Integer.parseInt(timeParts[1]);
-                    int seconds = Integer.parseInt(timeParts[2]);
-                    
-                    calendar.set(Calendar.HOUR_OF_DAY, hours);
-                    calendar.set(Calendar.MINUTE, minutes);
-                    calendar.set(Calendar.SECOND, seconds);
-                } else {
-                    // Default to 9:00:00 if format is incorrect
-                    calendar.set(Calendar.HOUR_OF_DAY, 9);
-                    calendar.set(Calendar.MINUTE, 0);
-                    calendar.set(Calendar.SECOND, 0);
-                }
-            } catch (Exception e) {
-                // Default to 9:00:00 if parsing fails
-                calendar.set(Calendar.HOUR_OF_DAY, 9);
-                calendar.set(Calendar.MINUTE, 0);
-                calendar.set(Calendar.SECOND, 0);
-            }
-            
-            // Convert to LocalDateTime
-            Instant instant = calendar.toInstant();
-            LocalDateTime testDate = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-        
-        // Validate required fields
-        if (testCode.isEmpty() || testTitle.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ thông tin", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        // Validate numeric fields
-        if (testTime <= 0 || numEasy < 0 || numMedium < 0 || numDiff < 0 || testLimit <= 0) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập số hợp lệ", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+    }//GEN-LAST:event_jTextField5ActionPerformed
 
-        // khong cho trung Mã code và tên bài thi 
-        for (DTO_Test test : listTest) {
-            if (test.getTestCode().equals(testCode)) {
-                JOptionPane.showMessageDialog(this, "Mã bài thi đã tồn tại", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (test.getTestTitle().equals(testTitle)) {
-                JOptionPane.showMessageDialog(this, "Tên bài thi đã tồn tại", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        }
-        
-        // Set test status (1 = active)
-        int testStatus = 1;
-        
-        // Create Test object
-        DTO_Test test = new DTO_Test(0, testCode, testTitle, tpID, testTime, numEasy, numMedium, numDiff, testLimit, testDate, testStatus);
-        
-        // Insert into database
-        BUS_Test testBUS = new BUS_Test();
-        int result = testBUS.insert(test);
-        
-        if (result > 0) {
-            JOptionPane.showMessageDialog(this, "Thêm bài thi thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Thêm bài thi thất bại. Có thể mã bài thi đã tồn tại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-        }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng số", "Lỗi", JOptionPane.ERROR_MESSAGE);
-        e.printStackTrace();
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-        e.printStackTrace();
-    }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_jTextField6ActionPerformed
 
     private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
         // TODO add your handling code here:
@@ -524,97 +435,36 @@ public class ThemBaiThi extends javax.swing.JDialog {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-    JDialog timeDialog = new JDialog(this, "Chọn Giờ:Phút:Giây", true);
-    timeDialog.setLayout(new BorderLayout());
-    timeDialog.setSize(300, 150);
-    timeDialog.setLocationRelativeTo(this);
-    
-    // Create time model with default time of 09:00:00
-    SpinnerDateModel timeModel = new SpinnerDateModel();
-    JSpinner timeSpinner = new JSpinner(timeModel);
-    
-    // Format spinner to display HH:mm:ss
-    JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm:ss");
-    timeSpinner.setEditor(timeEditor);
-    
-    // Set initial value to 09:00:00
-    Calendar calendar = Calendar.getInstance();
-    calendar.set(Calendar.HOUR_OF_DAY, 9);
-    calendar.set(Calendar.MINUTE, 0);
-    calendar.set(Calendar.SECOND, 0);
-    timeModel.setValue(calendar.getTime());
-    JPanel spinnerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
-    spinnerPanel.add(timeSpinner);
-    timeDialog.add(spinnerPanel, BorderLayout.CENTER);
-    spinnerPanel.add(timeSpinner);
-    timeDialog.add(spinnerPanel, BorderLayout.CENTER);
-    
-    // Create OK button
-    JButton okButton = new JButton("OK");
-    okButton.addActionListener(e -> {
-        // Get selected time
-        java.util.Date selectedTime = (java.util.Date) timeSpinner.getValue();
-        
-        // Format time as HH:mm:ss
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-        String formattedTime = formatter.format(selectedTime);
-        
-        // Update the text field
-        jTextField1.setText(formattedTime);
-        
-        // Close dialog
-        timeDialog.dispose();
-    });
-    
-    // Create panel for the OK button
-    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-    buttonPanel.add(okButton);
-    timeDialog.add(buttonPanel, BorderLayout.SOUTH);
-    
-    // Show dialog
-    timeDialog.setVisible(true);  
+      
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
+         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ThemBaiThi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ThemBaiThi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ThemBaiThi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ThemBaiThi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(XemBaiThi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
+        
         /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                ThemBaiThi dialog = new ThemBaiThi(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            XemBaiThi dialog = new XemBaiThi(new javax.swing.JFrame(), true, null);
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            dialog.setVisible(true);
         });
+    
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -636,7 +486,6 @@ public class ThemBaiThi extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private com.toedter.components.JSpinField jSpinField2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;

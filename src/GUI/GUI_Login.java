@@ -20,11 +20,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.*;
+
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 public class GUI_Login extends JFrame{
