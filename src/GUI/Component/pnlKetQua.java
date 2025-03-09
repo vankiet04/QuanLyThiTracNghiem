@@ -3,19 +3,23 @@ package GUI.Component;
 import DTO.DTO_Result;
 import DTO.DTO_Test;
 import com.raven.suportSwing.RoundedBorder;
+
+import BUS.BUS_Test;
+
 import javax.swing.JLayeredPane;
 import java.awt.Color;
 
 public class pnlKetQua extends JLayeredPane {
+    private BUS.BUS_Test testBUS = new BUS_Test();
 
     public pnlKetQua(DTO_Result res, DTO_Test baithi) {
         initComponents();
         lblMaBaiThi.setText("Mã bài thi: " + res.getExCode());
         lblDiemThi.setText("Điểm thi: " + res.getRsMask());
         lblTime.setText("Thời gian nộp: " + res.getRsDate());
-        int dapan = (int) Math.round(res.getRsMask() / 10 * baithi.getNumQuest());
+        int dapan = (int) Math.round(res.getRsMask() / 10 * testBUS.getSoLuongCauHoi(baithi.getTestCode()));
         lblNumDapAn.setText("Số đáp án đúng: " + dapan);
-        lblNumCauHoi.setText("Số lượng câu hỏi: " + baithi.getNumQuest());
+        lblNumCauHoi.setText("Số lượng câu hỏi: " + testBUS.getSoLuongCauHoi(baithi.getTestCode()));
         testpnl1.setBorder(new RoundedBorder(10, new Color(42, 74, 170))); // Thay đổi màu viền và bo tròn góc
     }
 

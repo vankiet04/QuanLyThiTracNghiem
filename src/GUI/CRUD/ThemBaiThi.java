@@ -466,16 +466,16 @@ public class ThemBaiThi extends javax.swing.JDialog {
         }
 
         // khong cho trung Mã code và tên bài thi 
-        for (DTO_Test test : listTest) {
-            if (test.getTestCode().equals(testCode)) {
-                JOptionPane.showMessageDialog(this, "Mã bài thi đã tồn tại", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (test.getTestTitle().equals(testTitle)) {
-                JOptionPane.showMessageDialog(this, "Tên bài thi đã tồn tại", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        }
+        // for (DTO_Test test : listTest) {
+        //     if (test.getTestCode().equals(testCode)) {
+        //         JOptionPane.showMessageDialog(this, "Mã bài thi đã tồn tại", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        //         return;
+        //     }
+        //     if (test.getTestTitle().equals(testTitle)) {
+        //         JOptionPane.showMessageDialog(this, "Tên bài thi đã tồn tại", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        //         return;
+        //     }
+        // }
         
         // Set test status (1 = active)
         int testStatus = 1;

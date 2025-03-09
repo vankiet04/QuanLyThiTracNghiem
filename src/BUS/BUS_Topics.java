@@ -14,4 +14,5 @@ public class BUS_Topics {
     public ArrayList<DTO_Topic> getAllTopics() {
         return topicsDAO.getAllData();
     }
+    
 }

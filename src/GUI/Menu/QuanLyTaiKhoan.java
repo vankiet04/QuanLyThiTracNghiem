@@ -319,7 +319,7 @@ public class QuanLyTaiKhoan extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Không thể chỉnh sửa tài khoản admin", "Cảnh báo!", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        SuaTaiKhoan dialog = new SuaTaiKhoan(curSelect, this);
+        SuaTaiKhoan dialog = new SuaTaiKhoan(curSelect,this);
         dialog.setVisible(true);
     }//GEN-LAST:event_btnSuaMousePressed
 

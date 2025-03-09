@@ -56,12 +56,21 @@ public class ChiTietBaiThi extends javax.swing.JFrame {
     
 private void LoadData() {
     // load giao diện bên trái
-    DTO_Topic topic = topicBUS.getInfo(baiThi.getTpID());
     this.luotBaiThi = baiThi.getTestLimit();
     this.luotDaLam = resBUS.CountResult(this.baiThi.getTestCode(), main.user.getUserID());
     lblTitle.setText(baiThi.getTestTitle());
-    lblTopic.setText("Chủ đề: " + topic.getTpTitle());
-    lblNumQuest.setText("Số lượng câu hỏi: " + String.valueOf(baiThi.getNumDiff() + baiThi.getNumEasy() + baiThi.getNumMedium()));
+    
+    // Changed: Retrieve and display all topics for the test instead of a single topic.
+    ArrayList<DTO_Topic> topics = topicBUS.getAllTopic(baiThi.getTestCode());
+    StringBuilder topicTitles = new StringBuilder();
+    for (int i = 0; i < topics.size(); i++) {
+        topicTitles.append(topics.get(i).getTpTitle());
+        if (i < topics.size() - 1)
+            topicTitles.append(", ");
+    }
+    lblTopic.setText("Chủ đề: " + topicTitles.toString());
+    
+    lblNumQuest.setText("Số lượng câu hỏi: " + String.valueOf(testBUS.getSoLuongCauHoi(baiThi.getTestCode())));
     lblTime.setText("Thời gian: " + String.valueOf(baiThi.getTestTime()));
     lblLuotBaiThi.setText("Số lượt thi của bài: " + String.valueOf(this.luotBaiThi));
     lblLuotLam.setText("Số lượt đã làm: " + String.valueOf(this.luotDaLam));

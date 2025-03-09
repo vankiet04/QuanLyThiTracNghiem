@@ -197,5 +197,25 @@ public int insert(DTO_Test t) {
         }
         return list;
     }
-    
+
+    // lấy số lượng câu hỏi của bài thi 
+    public int getSoLuongCauHoi(String testCode) {
+        int res = 0;
+        try {
+            Connection con = JDBCUtil.getConnectDB();
+            String sql = "SELECT SUM(num_easy + num_medium + num_diff) AS total FROM test WHERE testCode = ? AND testStatus = 1";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, testCode);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next())
+                res = rs.getInt("total");
+            JDBCUtil.close(con);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+
+
 }

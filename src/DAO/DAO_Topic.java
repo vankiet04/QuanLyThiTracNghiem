@@ -105,4 +105,26 @@ public class DAO_Topic {
         }
         return list;
     }
+
+    // getAllTopic đầu với testCode so với bảng test để lấy các tpID, sau đó kết nối với bảng topics để lấy thông tin topic
+    public ArrayList<DTO_Topic> getAllTopic(String testCode) {
+        ArrayList<DTO_Topic> list = new ArrayList<>();
+        try (Connection con = JDBCUtil.getConnectDB()) {
+            String sql = "SELECT * FROM topics WHERE tpID IN (SELECT tpID FROM test WHERE testCode = ?)";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, testCode);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                list.add(new DTO_Topic(
+                    rs.getInt("tpID"),
+                    rs.getString("tpTitle"),
+                    rs.getInt("tpParent"),
+                    rs.getInt("tpStatus")
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

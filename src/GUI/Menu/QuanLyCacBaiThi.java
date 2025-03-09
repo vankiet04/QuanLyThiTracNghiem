@@ -17,6 +17,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.HashSet;
 
 public class QuanLyCacBaiThi extends JPanel {
     private ArrayList<pnlBaiThi> listPnl = new ArrayList<>();
@@ -44,8 +45,14 @@ public class QuanLyCacBaiThi extends JPanel {
         });
     }
     
-    private void LoadUIBaiThi(ArrayList<DTO_Test> list){
-        for(DTO_Test item : list){
+    private void LoadUIBaiThi(ArrayList<DTO_Test> list) {
+        ArrayList<DTO_Test> listTest = new ArrayList<>();
+        HashSet<String> check = new HashSet<>();
+        for (DTO_Test t : list)
+            if (check.add(t.getTestCode()))
+                listTest.add(t);
+
+        for(DTO_Test item : listTest){
             int count = resBUS.CountResult(item.getTestCode());
             pnlBaiThi pnl = new pnlBaiThi(item.getTestCode(), item.getTestTitle(), count, item.getTestDate().toString());
             pnl.setPreferredSize(new java.awt.Dimension(250, 150));
@@ -65,11 +72,15 @@ public class QuanLyCacBaiThi extends JPanel {
     }
 
     private void LoadBaiThi() {
-        ArrayList<DTO_Test> listTest = testBUS.getAllData();
+        ArrayList<DTO_Test> list = testBUS.getAllData();
+        ArrayList<DTO_Test> listTest = new ArrayList<>();
+        HashSet<String> check = new HashSet<>();
+        for (DTO_Test t : list)
+            if (check.add(t.getTestCode()))
+            listTest.add(t);
         listPnl.clear();
         pnlContent.removeAll();
         LoadUIBaiThi(listTest);
-
     }
 
     private void searchBaiThi(String searchText){

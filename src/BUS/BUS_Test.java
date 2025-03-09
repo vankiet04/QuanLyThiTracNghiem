@@ -100,10 +100,15 @@ public class BUS_Test implements DAOInterface<DTO_Test> {
         return daoTest.searchData(searchText);
     }
 
+    public int getSoLuongCauHoi(String testCode) {
+        return daoTest.getSoLuongCauHoi(testCode);
+    }
+
     @Override
     public int getAutoIncrement() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getAutoIncrement'");
     }
+
     
 }

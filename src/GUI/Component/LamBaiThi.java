@@ -5,6 +5,7 @@ import BUS.BUS_Exam;
 import BUS.BUS_Log;
 import BUS.BUS_Questions;
 import BUS.BUS_Result;
+import BUS.BUS_Test;
 import DTO.DTO_Exam;
 import DTO.DTO_Answer;
 import DTO.DTO_Log;
@@ -43,6 +44,7 @@ import java.util.ArrayList;
 public class LamBaiThi extends javax.swing.JPanel {
     // support database
     private BUS_Questions questBUS = new BUS_Questions();
+    private BUS.BUS_Test testBUS = new BUS_Test();
     private BUS_Answers answerBUS = new BUS_Answers();
     private BUS_Exam examBUS = new BUS_Exam();
     private BUS_Log logBUS = new BUS_Log();
@@ -406,11 +408,11 @@ public class LamBaiThi extends javax.swing.JPanel {
             ArrayList<DTO_Log> timeLine = logBUS.LayLogCuaNguoiThi(mainFrm.user.getUserID(), examCur.getExCode(), this.baithi.getTestTime());
             DTO_Result res = new DTO_Result(this.mainFrm.user.getUserID(), examCur.getExCode(), timeLine.get(1).getLogContent(), curTime);
 
-            resBUS.insert(res, this.baithi.getNumQuest());
+            resBUS.insert(res, testBUS.getSoLuongCauHoi(baithi.getTestCode()));
             
             // hiển thị điểm
             double diem = res.getRsMask();
-            int soCauDung = (int)Math.round(diem / 10.0 * baithi.getNumQuest());
+            int soCauDung = (int)Math.round(diem / 10.0 * testBUS.getSoLuongCauHoi(baithi.getTestCode()));
            
             DecimalFormat df = new DecimalFormat("0.00");
             String formattedScore = df.format(diem);

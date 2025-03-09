@@ -85,5 +85,10 @@ public class BUS_Topic {
         }
         return 0;
     }
+    // getAllTopic
+    public ArrayList<DTO_Topic> getAllTopic(String testCode) {
+        return topicDAO.getAllTopic(testCode);
+    }
+
     
 }

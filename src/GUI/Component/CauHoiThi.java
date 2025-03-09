@@ -25,9 +25,15 @@ public class CauHoiThi extends javax.swing.JPanel {
     }
         
     private void taoRadioButton(ArrayList<DTO_Answer> listAnswer) {
+        // Create a shuffled copy of the answer list
+        ArrayList<DTO_Answer> shuffledList = new ArrayList<>(listAnswer);
+        java.util.Collections.shuffle(shuffledList);
+        // Update field to maintain correct mapping with radioButtons
+        this.listAnswer = shuffledList;
+        
         ButtonGroup group = new ButtonGroup();
         pnlAnswer.setLayout(new java.awt.GridLayout(0, 2)); // Sử dụng GridLayout với 2 cột
-        for (DTO_Answer answer : listAnswer) {
+        for (DTO_Answer answer : shuffledList) {
             JRadioButton radioButton = new JRadioButton(answer.getContent());
             radioButton.setFont(new Font("Segoe UI", Font.PLAIN, 14)); // Đặt kích thước phông chữ lên 14
             group.add(radioButton);
