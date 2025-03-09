@@ -89,6 +89,9 @@ public class BUS_Topic {
     public ArrayList<DTO_Topic> getAllTopic(String testCode) {
         return topicDAO.getAllTopic(testCode);
     }
+    public String getNameById (int id) {
+        return topicDAO.getNameById(id);
+    }
 
     
 }

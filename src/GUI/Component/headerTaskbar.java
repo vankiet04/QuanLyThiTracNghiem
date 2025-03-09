@@ -11,12 +11,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 
-public class HeaderTaskbar extends JPanel {
+public class headerTaskbar extends JPanel {
     Color DefaultColor = new Color(255, 255, 255);
     Color ColorBlack = new Color(26, 26, 26);
     JLabel lblIcon, pnlContent;
      
-    public HeaderTaskbar(String linkIcon, String content) {
+    public headerTaskbar(String linkIcon, String content) {
         this.setLayout(new FlowLayout(1, 10, 7));
         this.setPreferredSize(new Dimension(225, 145));
         this.setBackground(DefaultColor);

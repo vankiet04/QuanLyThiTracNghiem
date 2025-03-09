@@ -116,15 +116,28 @@ public class DAO_Topic {
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 list.add(new DTO_Topic(
-                    rs.getInt("tpID"),
-                    rs.getString("tpTitle"),
-                    rs.getInt("tpParent"),
-                    rs.getInt("tpStatus")
-                ));
+                        rs.getInt("tpID"),
+                        rs.getString("tpTitle"),
+                        rs.getInt("tpParent"),
+                        rs.getInt("tpStatus")));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return list;
+    }
+    public String getNameById (int id) {
+        try (Connection con = JDBCUtil.getConnectDB()) {
+            String sql = "SELECT tpTitle FROM topics WHERE tpID = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                return rs.getString("tpTitle");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

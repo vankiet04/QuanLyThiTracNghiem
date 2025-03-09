@@ -57,7 +57,7 @@ public class MenuTaskBar extends JPanel {
         pnlHeader.setLayout(new FlowLayout(0, 0, 5));
         pnlHeader.setBorder(new EmptyBorder(5, 10, 0, 10));
 
-        HeaderTaskbar header = new HeaderTaskbar("admin.svg", "    Xin chào " + user.getUserName());
+        headerTaskbar header = new headerTaskbar("admin.svg", "    Xin chào " + user.getUserName());
         pnlHeader.add(header, BorderLayout.CENTER);
         this.add(pnlHeader, BorderLayout.NORTH);
 

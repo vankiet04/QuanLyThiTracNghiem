@@ -69,7 +69,7 @@ public class QuanLyBaiThi extends javax.swing.JPanel {
                         String DateStr = dto.getTestDate().toString().split("T")[0];
                         String TimeStr = dto.getTestDate().toString().split("T")[1];
                         modelTK.addRow(new Object[] { dto.getTestID(), dto.getTestCode(), dto.getTestTitle(),
-                                        dto.getTpID(), dto.getTestTime() + " phút",
+                            busTopic.getNameById(dto.getTpID()), dto.getTestTime() + " phút",
                                         "Ngày:" + DateStr + " | " + "Giờ:" + TimeStr, dto.getTestLimit() + " lần" });
                 }
         }

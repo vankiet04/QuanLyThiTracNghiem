@@ -109,6 +109,17 @@ public class BUS_Test implements DAOInterface<DTO_Test> {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getAutoIncrement'");
     }
+    // ArrayList<DTO_Test> testsWithSameCode = testBUS.getAllByTestCode(testCode);
+    public ArrayList<DTO_Test> getAllByTestCode(String testCode) {
+        ArrayList<DTO_Test> testsWithSameCode = new ArrayList<>();
+        for (DTO_Test test : listTest) {
+            if (test.getTestCode().equals(testCode)) {
+                testsWithSameCode.add(test);
+            }
+        }
+        return testsWithSameCode;
+    }
+
 
     
 }

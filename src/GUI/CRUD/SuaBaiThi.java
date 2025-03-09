@@ -13,6 +13,7 @@ import java.util.Calendar;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -45,6 +46,16 @@ public class SuaBaiThi extends javax.swing.JDialog {
         this.test = test;
         initComponents();
         loadTestData();
+        JLabel explainLabel = new JLabel("<html>- Thời gian, ngày thi, thời lượng, lượt thi: áp dụng cho tất cả bài thi cùng mã code<br>- Số câu hỏi: chỉ áp dụng cho chủ đề hiện tại</html>");
+explainLabel.setForeground(new java.awt.Color(255, 0, 0));
+explainLabel.setFont(new java.awt.Font("Segoe UI", java.awt.Font.ITALIC, 12));
+explainLabel.setBounds(60, 550, 641, 40);
+jPanel1.add(explainLabel);
+
+// Thêm thông tin giải thích cho các trường không được sửa
+jTextField5.setToolTipText("Không thể sửa mã code");
+jTextField6.setToolTipText("Không thể sửa tên bài thi");
+jComboBox1.setToolTipText("Không thể sửa chủ đề");
 
         // Load topics into combo box
         listTopic = topicBUS.getAllData();
@@ -81,6 +92,14 @@ public class SuaBaiThi extends javax.swing.JDialog {
         jTextField3.setText(String.valueOf(test.getTestTime()));
         jTextField2.setText(String.valueOf(test.getTestLimit()));
     
+        // Make fields read-only
+        jTextField5.setEditable(false);
+        jTextField6.setEditable(false);
+        jComboBox1.setEnabled(false);
+    
+        // Set the title to indicate that some fields are read-only
+        this.setTitle("Sửa Bài Thi - Mã: " + test.getTestCode());
+        
         // Set date
         if (test.getTestDate() != null) {
             // Convert LocalDateTime to java.util.Date (not java.sql.Date)
@@ -394,36 +413,31 @@ public class SuaBaiThi extends javax.swing.JDialog {
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
         try {
-            // Get form values
-            String testCode = jTextField5.getText().trim();
-            String testTitle = jTextField6.getText().trim();
-
-            // Parse the selected topic ID from the combo box
-            String selectedTopic = jComboBox1.getSelectedItem().toString();
-            int tpID = Integer.parseInt(selectedTopic.split(" - ")[0]);
-
+            // Get form values - test code is fixed
+            String testCode = test.getTestCode();
+    
             // Get test time in minutes
             int testTime = Integer.parseInt(jTextField3.getText().trim());
-
+    
             // Get difficulty level counts
             int numEasy = Integer.parseInt(jTextField7.getText().trim());
             int numMedium = Integer.parseInt(jTextField8.getText().trim());
             int numDiff = Integer.parseInt(jTextField9.getText().trim());
-
+    
             // Get test limit (number of attempts allowed)
             int testLimit = Integer.parseInt(jTextField2.getText().trim());
-
+    
             // Get the date from jDateChooser1
             java.util.Date selectedDate = jDateChooser1.getDate();
             if (selectedDate == null) {
                 JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày thi", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
+    
             // Create a Calendar instance and set its time to the selected date
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(selectedDate);
-
+    
             // Parse the time from jTextField1 (HH:MM:SS format)
             try {
                 String timeStr = jTextField1.getText().trim();
@@ -432,7 +446,7 @@ public class SuaBaiThi extends javax.swing.JDialog {
                     int hours = Integer.parseInt(timeParts[0]);
                     int minutes = Integer.parseInt(timeParts[1]);
                     int seconds = Integer.parseInt(timeParts[2]);
-
+    
                     calendar.set(Calendar.HOUR_OF_DAY, hours);
                     calendar.set(Calendar.MINUTE, minutes);
                     calendar.set(Calendar.SECOND, seconds);
@@ -448,41 +462,50 @@ public class SuaBaiThi extends javax.swing.JDialog {
                 calendar.set(Calendar.MINUTE, 0);
                 calendar.set(Calendar.SECOND, 0);
             }
-
+    
             // Convert to LocalDateTime
             java.time.Instant instant = calendar.toInstant();
             LocalDateTime testDate = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-
-            // Validate required fields
-            if (testCode.isEmpty() || testTitle.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ thông tin", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
+    
             // Validate numeric fields
             if (testTime <= 0 || numEasy < 0 || numMedium < 0 || numDiff < 0 || testLimit <= 0) {
                 JOptionPane.showMessageDialog(this, "Vui lòng nhập số hợp lệ", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
-            // Update test object
-            test.setTestCode(testCode);
-            test.setTestTitle(testTitle);
-            test.setTpID(tpID);
-            test.setTestTime(testTime);
-            test.setNumEasy(numEasy);
-            test.setNumMedium(numMedium);
-            test.setNumDiff(numDiff);
-            test.setTestLimit(testLimit);
-            test.setTestDate(testDate);
-
-            // Update in database
+    
             BUS_Test testBUS = new BUS_Test();
-            int result = testBUS.update(test);
-
-            if (result > 0) {
-                JOptionPane.showMessageDialog(this, "Cập nhật bài thi thành công", "Thông báo",
-                        JOptionPane.INFORMATION_MESSAGE);
+            
+            // 1. Cập nhật các thuộc tính chung (thời gian, ngày thi, lượt thi) cho tất cả bài thi có cùng mã code
+            ArrayList<DTO_Test> testsWithSameCode = testBUS.getAllByTestCode(testCode);
+            int updateCount = 0;
+            
+            // 2. Cập nhật các thuộc tính chung cho tất cả bài thi có cùng mã code
+            for (DTO_Test t : testsWithSameCode) {
+                t.setTestTime(testTime);  
+                t.setTestLimit(testLimit);
+                t.setTestDate(testDate);
+                
+                // Chỉ cập nhật số lượng câu hỏi cho bài thi hiện tại (cùng chủ đề)
+                if (t.getTpID() == test.getTpID()) {
+                    t.setNumEasy(numEasy);
+                    t.setNumMedium(numMedium);
+                    t.setNumDiff(numDiff);
+                }
+                
+                int result = testBUS.update(t);
+                if (result > 0) {
+                    updateCount++;
+                }
+            }
+    
+            // Hiển thị kết quả
+            if (updateCount > 0) {
+                JOptionPane.showMessageDialog(this, 
+                    "Cập nhật thành công " + updateCount + " bài thi!\n" +
+                    "- Thời gian, ngày thi và lượt thi đã được cập nhật cho tất cả bài thi có mã " + testCode + "\n" +
+                    "- Số lượng câu hỏi chỉ được cập nhật cho chủ đề hiện tại",
+                    "Thành công",
+                    JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Cập nhật bài thi thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -495,7 +518,19 @@ public class SuaBaiThi extends javax.swing.JDialog {
             e.printStackTrace();
         }
     }// GEN-LAST:event_jTextField1ActionPerformed
-
+// Phương thức lấy tất cả bài thi theo mã code
+public ArrayList<DTO_Test> getAllByTestCode(String testCode) {
+    ArrayList<DTO_Test> result = new ArrayList<>();
+    // Lọc từ danh sách các bài thi có cùng mã code
+    BUS_Test testBUS = new BUS_Test();
+    ArrayList<DTO_Test> allTests = testBUS.getAllData();
+    for (DTO_Test test : allTests) {
+        if (test.getTestCode().equals(testCode)) {
+            result.add(test);
+        }
+    }
+    return result;
+}
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         jTextField1ActionPerformed(evt);
